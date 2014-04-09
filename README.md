@@ -9,7 +9,7 @@ Autohotkey_L installed should be exactly Unicode x32 version.
 
 ====================================================================
 
-                          Hotkeys:
+Hotkeys:
 
 
 [F1] --- Use Resync Command
