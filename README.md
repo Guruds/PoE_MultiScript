@@ -1,10 +1,10 @@
 PoE_MultiScript
 ===============
 
-Requires Autohotkey_L to run
+Requires Autohotkey to run
 http://ahkscript.org/download/
 
-Autohotkey_L installed should be exactly Unicode x32 version.
+Autohotkey installed should be exactly Unicode x32 version.
 
 
 ====================================================================
