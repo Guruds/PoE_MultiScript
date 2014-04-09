@@ -12,14 +12,14 @@ Autohotkey_L installed should be exactly Unicode x32 version.
 Hotkeys:
 
 
-[F1] --- Use Resync Command
-[F2] --- Use Remaining Command
-[F3] --- Over an Item for DPSCalc
-[Ctrl+F3] --- Over an Item for More info on the Internet
-[F4] --- Test Exit to Log In Screen
-[Shift+F4] -- Test Exit to Character Selection
-[Ctrl+F4] -- Test Use Portal
-[F10] -- Send Last Chat Message to Trade Channels 1-10
+[F1] --- Use Resync Command.
+[F2] --- Use Remaining Command.
+[F3] --- Over an Item for DPSCalc.
+[Ctrl+F3] --- Over an Item for More info on the Internet.
+[F4] --- Test Exit to Log In Screen.
+[Shift+F4] -- Test Exit to Character Selection.
+[Ctrl+F4] -- Test Use Portal.
+[F10] -- Send Last Chat Message to Trade Channels 1-10.
 [Alt + W] - Change Window to Bordeless, and locks mouse on window.
 
 
