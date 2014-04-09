@@ -10,8 +10,7 @@ Autohotkey_L installed should be exactly Unicode x32 version.
 ====================================================================
 
                           Hotkeys:
-                          
-====================================================================
+
 
 [F1] --- Use Resync Command
 [F2] --- Use Remaining Command
@@ -26,9 +25,8 @@ Autohotkey_L installed should be exactly Unicode x32 version.
 
 ====================================================================
 
-                          Credits:
-                          
-====================================================================
+Credits:
+
 
 Gurud for the GUI and lots of improvements.
 
