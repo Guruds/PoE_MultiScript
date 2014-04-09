@@ -8,7 +8,9 @@ Autohotkey_L installed should be exactly Unicode x32 version.
 
 
 ====================================================================
+
                           Hotkeys:
+                          
 ====================================================================
 
 [F1] --- Use Resync Command
@@ -23,11 +25,15 @@ Autohotkey_L installed should be exactly Unicode x32 version.
 
 
 ====================================================================
+
                           Credits:
+                          
 ====================================================================
 
 Gurud for the GUI and lots of improvements.
+
 Wrongusername for the basic AutoFlask/AutoQuit Script
+
 Nipper for the DPSCalc
 
 
