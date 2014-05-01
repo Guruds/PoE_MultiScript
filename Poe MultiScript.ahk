@@ -321,7 +321,7 @@ Menu, Tray, Add, Configuration Window, showgui
 
 Gui, Submit
 
-Gui, Show, x760 y198 h525 w474, PoE MultiScript v03.30.2014
+Gui, Show, x760 y198 h525 w474, PoE MultiScript v04.30.2014
 
 
 ;-------GUI-----------------GUI-----------------GUI-----------------GUI-----------------GUI----------
@@ -474,7 +474,7 @@ GetFrameBase(hwnd)
          ScanBaseMgrPtr(mBase, pH, mSize)
       }
 
-      fB:=GetMultilevelPointer(pH,[mBase+baseMgrPtr,4,0x7C,0x94])
+      fB:=GetMultilevelPointer(pH,[mBase+baseMgrPtr,4,0x7C,0x9c])
       WindowBasicsCache[k].fBase:=fB
    }
    return fB
@@ -911,7 +911,7 @@ GetMaxChargesOfInstantFlask(ByRef FlasksData,TypeStr)
          {
             if FlasksData[A_Index].ChargesCurrent>currMaxCharges
             {
-               If (PanickedTimer>10)
+               If (PanickedTimer>35)
                {
                   currMaxI:=A_Index
                   currMaxCharges:=FlasksData[A_Index].ChargesCurrent
@@ -923,7 +923,7 @@ GetMaxChargesOfInstantFlask(ByRef FlasksData,TypeStr)
          {
             if FlasksData[A_Index].ChargesCurrent>currMaxCharges
             {
-               If (PanickedTimer>10)
+               If (PanickedTimer>35)
                {
                   currMaxI:=A_Index
                   currMaxCharges:=FlasksData[A_Index].ChargesCurrent
