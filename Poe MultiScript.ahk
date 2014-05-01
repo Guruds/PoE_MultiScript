@@ -244,13 +244,25 @@ Gui, Tab, Settings
 IniRead, SteamCheck , Config.ini, Config, SteamCheck, 0
 If SteamCheck = 0
 {
-   Gui, Add, CheckBox, x272 y70 w190 h30 vSteamCheckBox gSteamCheck, Using Steam
+   Gui, Add, CheckBox, x272 y100 w190 h30 vSteamCheckBox gSteamCheck, Using Steam
    global Steam:=false
 }
 If SteamCheck = 1
 {
-   Gui, Add, CheckBox, x272 y70 w190 h30  vSteamCheckBox gSteamCheck Checked, Using Steam
+   Gui, Add, CheckBox, x272 y100 w190 h30  vSteamCheckBox gSteamCheck Checked, Using Steam
    global Steam:=true
+}
+
+IniRead, DPSCheck , Config.ini, Config, DPSCheck, 0
+If DPSCheck = 0
+{
+   Gui, Add, CheckBox, x272 y70 w190 h30 vDPSCheckBox gDPSCheck, Disable DPS Calculator
+   global DPS:=false
+}
+If DPSCheck = 1
+{
+   Gui, Add, CheckBox, x272 y70 w190 h30  vDPSCheckBox gDPSCheck Checked, Disable DPS Calculator
+   global DPS:=true
 }
 
 ;display tray notifications about script actions : drinking potions, autoquitting
@@ -321,7 +333,7 @@ Menu, Tray, Add, Configuration Window, showgui
 
 Gui, Submit
 
-Gui, Show, x760 y198 h525 w474, PoE MultiScript v04.30.2014
+Gui, Show, x760 y198 h525 w474, PoE MultiScript v05.01.2014
 
 
 ;-------GUI-----------------GUI-----------------GUI-----------------GUI-----------------GUI----------
@@ -2007,6 +2019,14 @@ F2::
    remaining = 1
 return
 
+F3::
+   DPSCalc()
+return
+
+^F3::
+   Webgrab()
+return
+
 F4::
    QuitToLoginScreen(WinActive("A"))
 return
@@ -2492,6 +2512,18 @@ SteamCheck:
    }
 ExitApp   
 
+DPSCheck:
+   Gui, Submit, NoHide
+   If DPSCheckBox = 0
+   {
+      IniWrite, 0 , Config.ini, Config, DPSCheck
+   }
+   If DPSCheckBox = 1
+   {
+      IniWrite, 1 , Config.ini, Config, DPSCheck
+   }
+Return
+
 showgui:
    Gui, Show, x760 y198 h525 w474,
 Return
@@ -2748,6 +2780,9 @@ ParseDamage(String, DmgType, ByRef DmgLo, ByRef DmgHi)
 ; Parse clipboard content for item level and dps
 DPSCalc()
 {
+   Global DPS
+   If DPS
+   return
    IfWinActive Path of Exile ahk_class Direct3DWindowClass
    {
       SendMode Input
