@@ -1,103 +1,79 @@
+;██████╗ ██╗   ██╗     ██████╗ ██╗   ██╗██████╗ ██╗   ██╗██████╗ 
+;██╔══██╗╚██╗ ██╔╝    ██╔════╝ ██║   ██║██╔══██╗██║   ██║██╔══██╗
+;██████╔╝ ╚████╔╝     ██║  ███╗██║   ██║██████╔╝██║   ██║██║  ██║
+;██╔══██╗  ╚██╔╝      ██║   ██║██║   ██║██╔══██╗██║   ██║██║  ██║
+;██████╔╝   ██║       ╚██████╔╝╚██████╔╝██║  ██║╚██████╔╝██████╔╝
+;╚═════╝    ╚═╝        ╚═════╝  ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚═════╝ 
+                                                                
+;-------GUI-----------------GUI-----------------GUI-----------------GUI-----------------GUI----------
+
 #SingleInstance force
 
-IniRead, ConfigNumber , Config.ini, Config, ConfigNumber, 1
+IniRead, LastTab, Config.ini, Config, LastTab, Settings
 
-Gui,Add,Tab2, x0 y0 w474 h525,AutoFlask|AutoQuit|Others|Settings||
+If LastTab = AutoFlask
+{
+   Gui,Add,Tab2, x0 y0 w474 h525 gTabFunc vTabChoice,AutoFlask||AutoQuit|Others|Settings|
+}
+else If LastTab = AutoQuit
+{
+   Gui,Add,Tab2, x0 y0 w474 h525 gTabFunc vTabChoice,AutoFlask|AutoQuit||Others|Settings|
+}
+else If LastTab = Others
+{
+   Gui,Add,Tab2, x0 y0 w474 h525 gTabFunc vTabChoice,AutoFlask|AutoQuit|Others||Settings|
+}
+else If LastTab = Settings
+{
+   Gui,Add,Tab2, x0 y0 w474 h525 gTabFunc vTabChoice,AutoFlask|AutoQuit|Others|Settings||
+}
 
 Gui, Tab, Settings
 
-Gui, Add, GroupBox, x12 y110 w220 h60, Configuration Profile
+Gui, Add, GroupBox, x12 y110 w220 h60, AutoFlask/AutoQuit Profile
 
+IniRead, ConfigNumber , Config.ini, Config, ConfigNumber, 1
 
 If ConfigNumber = 1
 {
-   IniRead, minLifePercentToQuit , Config.ini, Config1, minLifePercentToQuit, 35
-   IniRead, minESPercentToQuit , Config.ini, Config1, minESPercentToQuit, 0
-   IniRead, minLifePercentToJade , Config.ini, Config1, minLifePercentToJade, 70
-   IniRead, minLifePercentToJade , Config.ini, Config1, minLifePercentToJade, 70
-   IniRead, minESPercentToJade , Config.ini, Config1, minESPercentToJade, 0
-   IniRead, minLifePercentToElementalResist , Config.ini, Config1, minLifePercentToElementalResist, 70
-   IniRead, minESPercentToElementalResist , Config.ini, Config1, minESPercentToElementalResist, 0
-   IniRead, minLifePercentToDrink , Config.ini, Config1, minLifePercentToDrink, 55
-   IniRead, minManaPercentToDrink , Config.ini, Config1, minManaPercentToDrink, 25
-   IniRead, minManaToDrinkPot , Config.ini, Config1, minManaToDrinkPot, 15
-   IniRead, minLifePercentToSpam, Config.ini, Config1, minLifePercentToSpam, 35
-   IniRead, ResyncSpam, Config.ini, Config1, ResyncSpam, 0
-   IniRead, InstantFlaskDelay, Config.ini, Config1, InstantFlaskDelay, 0
-   IniRead, QuickSilverMovementTimer , Config.ini, Config1, QuickSilverMovementTimer, 15
    Gui, Add, DropDownList, x22 y130 w200 h21 AltSubmit gConfigList vConfigChoice R5 , Profile 1||Profile 2|Profile 3|Profile 4|Profile 5
 }
 else If ConfigNumber = 2
 {
-   IniRead, minLifePercentToQuit , Config.ini, Config2, minLifePercentToQuit, 35
-   IniRead, minESPercentToQuit , Config.ini, Config2, minESPercentToQuit, 0
-   IniRead, minLifePercentToJade , Config.ini, Config2, minLifePercentToJade, 70
-   IniRead, minLifePercentToJade , Config.ini, Config2, minLifePercentToJade, 70
-   IniRead, minESPercentToJade , Config.ini, Config2, minESPercentToJade, 0
-   IniRead, minLifePercentToElementalResist , Config.ini, Config2, minLifePercentToElementalResist, 70
-   IniRead, minESPercentToElementalResist , Config.ini, Config2, minESPercentToElementalResist, 0
-   IniRead, minLifePercentToDrink , Config.ini, Config2, minLifePercentToDrink, 55
-   IniRead, minManaPercentToDrink , Config.ini, Config2, minManaPercentToDrink, 25
-   IniRead, minManaToDrinkPot , Config.ini, Config2, minManaToDrinkPot, 15
-   IniRead, minLifePercentToSpam, Config.ini, Config2, minLifePercentToSpam, 35
-   IniRead, ResyncSpam, Config.ini, Config2, ResyncSpam, 0
-   IniRead, InstantFlaskDelay, Config.ini, Config2, InstantFlaskDelay, 0
-   IniRead, QuickSilverMovementTimer , Config.ini, Config2, QuickSilverMovementTimer, 15
    Gui, Add, DropDownList, x22 y130 w200 h21 AltSubmit gConfigList vConfigChoice R5 , Profile 1|Profile 2||Profile 3|Profile 4|Profile 5
 }
 else If ConfigNumber = 3
 {
-   IniRead, minLifePercentToQuit , Config.ini, Config3, minLifePercentToQuit, 35
-   IniRead, minESPercentToQuit , Config.ini, Config3, minESPercentToQuit, 0
-   IniRead, minLifePercentToJade , Config.ini, Config3, minLifePercentToJade, 70
-   IniRead, minLifePercentToJade , Config.ini, Config3, minLifePercentToJade, 70
-   IniRead, minESPercentToJade , Config.ini, Config3, minESPercentToJade, 0
-   IniRead, minLifePercentToElementalResist , Config.ini, Config3, minLifePercentToElementalResist, 70
-   IniRead, minESPercentToElementalResist , Config.ini, Config3, minESPercentToElementalResist, 0
-   IniRead, minLifePercentToDrink , Config.ini, Config3, minLifePercentToDrink, 55
-   IniRead, minManaPercentToDrink , Config.ini, Config3, minManaPercentToDrink, 25
-   IniRead, minManaToDrinkPot , Config.ini, Config3, minManaToDrinkPot, 15
-   IniRead, minLifePercentToSpam, Config.ini, Config3, minLifePercentToSpam, 35
-   IniRead, ResyncSpam, Config.ini, Config3, ResyncSpam, 0
-   IniRead, InstantFlaskDelay, Config.ini, Config3, InstantFlaskDelay, 0
-   IniRead, QuickSilverMovementTimer , Config.ini, Config3, QuickSilverMovementTimer, 15
    Gui, Add, DropDownList, x22 y130 w200 h21 AltSubmit gConfigList vConfigChoice R5 , Profile 1|Profile 2|Profile 3||Profile 4|Profile 5
 }
 else If ConfigNumber = 4
 {
-   IniRead, minLifePercentToQuit , Config.ini, Config4, minLifePercentToQuit, 35
-   IniRead, minESPercentToQuit , Config.ini, Config4, minESPercentToQuit, 0
-   IniRead, minLifePercentToJade , Config.ini, Config4, minLifePercentToJade, 70
-   IniRead, minLifePercentToJade , Config.ini, Config4, minLifePercentToJade, 70
-   IniRead, minESPercentToJade , Config.ini, Config4, minESPercentToJade, 0
-   IniRead, minLifePercentToElementalResist , Config.ini, Config4, minLifePercentToElementalResist, 70
-   IniRead, minESPercentToElementalResist , Config.ini, Config4, minESPercentToElementalResist, 0
-   IniRead, minLifePercentToDrink , Config.ini, Config4, minLifePercentToDrink, 55
-   IniRead, minManaPercentToDrink , Config.ini, Config4, minManaPercentToDrink, 25
-   IniRead, minManaToDrinkPot , Config.ini, Config4, minManaToDrinkPot, 15
-   IniRead, minLifePercentToSpam, Config.ini, Config4, minLifePercentToSpam, 35
-   IniRead, ResyncSpam, Config.ini, Config4, ResyncSpam, 0
-   IniRead, InstantFlaskDelay, Config.ini, Config4, InstantFlaskDelay, 0
-   IniRead, QuickSilverMovementTimer , Config.ini, Config4, QuickSilverMovementTimer, 15
    Gui, Add, DropDownList, x22 y130 w200 h21 AltSubmit gConfigList vConfigChoice R5 , Profile 1|Profile 2|Profile 3|Profile 4||Profile 5
 }
 else If ConfigNumber = 5
 {
-   IniRead, minLifePercentToQuit , Config.ini, Config5, minLifePercentToQuit, 35
-   IniRead, minESPercentToQuit , Config.ini, Config5, minESPercentToQuit, 0
-   IniRead, minLifePercentToJade , Config.ini, Config5, minLifePercentToJade, 70
-   IniRead, minLifePercentToJade , Config.ini, Config5, minLifePercentToJade, 70
-   IniRead, minESPercentToJade , Config.ini, Config5, minESPercentToJade, 0
-   IniRead, minLifePercentToElementalResist , Config.ini, Config5, minLifePercentToElementalResist, 70
-   IniRead, minESPercentToElementalResist , Config.ini, Config5, minESPercentToElementalResist, 0
-   IniRead, minLifePercentToDrink , Config.ini, Config5, minLifePercentToDrink, 55
-   IniRead, minManaPercentToDrink , Config.ini, Config5, minManaPercentToDrink, 25
-   IniRead, minManaToDrinkPot , Config.ini, Config5, minManaToDrinkPot, 15
-   IniRead, minLifePercentToSpam, Config.ini, Config5, minLifePercentToSpam, 35
-   IniRead, ResyncSpam, Config.ini, Config5, ResyncSpam, 0
-   IniRead, InstantFlaskDelay, Config.ini, Config5, InstantFlaskDelay, 0
-   IniRead, QuickSilverMovementTimer , Config.ini, Config5, QuickSilverMovementTimer, 15
    Gui, Add, DropDownList, x22 y130 w200 h21 AltSubmit gConfigList vConfigChoice R5 , Profile 1|Profile 2|Profile 3|Profile 4|Profile 5||
+}
+
+Loop, 5
+{
+	If ConfigNumber = %A_Index%
+	{
+		IniRead, minLifePercentToQuit , Config.ini, Config%A_Index%, minLifePercentToQuit, 35
+		IniRead, minESPercentToQuit , Config.ini, Config%A_Index%, minESPercentToQuit, 0
+		IniRead, minLifePercentToJade , Config.ini, Config%A_Index%, minLifePercentToJade, 70
+		IniRead, minLifePercentToJade , Config.ini, Config%A_Index%, minLifePercentToJade, 70
+		IniRead, minESPercentToJade , Config.ini, Config%A_Index%, minESPercentToJade, 0
+		IniRead, minLifePercentToElementalResist , Config.ini, Config%A_Index%, minLifePercentToElementalResist, 70
+		IniRead, minESPercentToElementalResist , Config.ini, Config%A_Index%, minESPercentToElementalResist, 0
+		IniRead, minLifePercentToDrink , Config.ini, Config%A_Index%, minLifePercentToDrink, 55
+		IniRead, minManaPercentToDrink , Config.ini, Config%A_Index%, minManaPercentToDrink, 25
+		IniRead, minManaToDrinkPot , Config.ini, Config%A_Index%, minManaToDrinkPot, 15
+		IniRead, minLifePercentToSpam, Config.ini, Config%A_Index%, minLifePercentToSpam, 35
+		IniRead, ResyncSpam, Config.ini, Config%A_Index%, ResyncSpam, 0
+		IniRead, InstantFlaskDelay, Config.ini, Config%A_Index%, InstantFlaskDelay, 0
+		IniRead, QuickSilverMovementTimer , Config.ini, Config%A_Index%, QuickSilverMovementTimer, 15
+	}	
 }
 
 IniRead, QuickSilverCheck , Config.ini, Config, QuickSilverCheck, 0
@@ -123,7 +99,7 @@ Gui, Add, Slider, x22 y340 w170 h30 gGuiUpdate vminLifePercentToElementalResist 
 Gui, Add, Text, x192 y340 w20 h30 vminLifePercentToElementalResistUpdate, %minLifePercentToElementalResist%
 Gui, Add, Text, x212 y340 w10 h30 , `%
 
-Gui, Add, GroupBox, x242 y320 w220 h60 , Min E.Shield `% to Use Elemental Resist Flask
+Gui, Add, GroupBox, x242 y320 w220 h60 , Min E.Shield `% to Use Element. Resist Flask
 Gui, Add, Slider, x252 y340 w170 h30 gGuiUpdate vminESPercentToElementalResist +ToolTip TickInterval25, %minESPercentToElementalResist%
 Gui, Add, Text, x422 y340 w20 h30 vminESPercentToElementalResistUpdate, %minESPercentToElementalResist%
 Gui, Add, Text, x442 y340 w10 h30 , `%
@@ -147,7 +123,7 @@ Gui, Add, GroupBox, x242 y110 w220 h60 , Min Mana to Drink Mana Potion
 Gui, Add, Slider, x252 y130 w170 h30 Range0-300 gGuiUpdate vminManaToDrinkPot +ToolTip TickInterval50, %minManaToDrinkPot%
 Gui, Add, Text, x422 y130 w30 h30 vminManaToDrinkPotUpdate, %minManaToDrinkPot%
 
-Gui, Add, GroupBox, x242 y180 w220 h60 , Instant Flask Spam Delay (100 = 1 Second)  ;x12 y149 w220 h60
+Gui, Add, GroupBox, x242 y180 w220 h60 , Instant Flask Spam Delay  ;x12 y149 w220 h60
 IniRead, InstantFlaskDelay , Config.ini, Config, InstantFlaskDelay, 0
 Gui, Add, Slider, x252 y200 w170 h30 Range0-50 gGuiUpdate vInstantFlaskDelay +ToolTip TickInterval50, %InstantFlaskDelay%
 Gui, Add, Text, x422 y200 w25 h30 vInstantFlaskDelayUpdate, % Round(InstantFlaskDelay/100,2)
@@ -159,32 +135,17 @@ Gui, Add, Text, x192 y410 w22 h30 vQuickSilverMovementTimerUpdate, % Round(Quick
 Gui, Add, Text, x214 y410 w10 h30 , s
 
 Gui, Add, GroupBox, x12 y110 w220 h60 , Disable AutoFlask on Slot ;x12 y359 w220 h60
-IniRead, Slot1Disabled, Config.ini, DisableSlot, DisableSlot1, 0
-If Slot1Disabled = 0
-Gui, Add, CheckBox, x22 y130 w30 h30 vDisableSlot1 gDisableSlot, 1
-Else If Slot1Disabled = 1
-Gui, Add, CheckBox, x22 y130 w30 checked vDisableSlot1 gDisableSlot, 1
-IniRead, Slot2Disabled, Config.ini, DisableSlot, DisableSlot2, 0
-If Slot2Disabled = 0
-Gui, Add, CheckBox, x62 y130 w30 h30 vDisableSlot2 gDisableSlot, 2
-Else If Slot2Disabled = 1
-Gui, Add, CheckBox, x62 y130 w30 h30 checked vDisableSlot2 gDisableSlot, 2
-IniRead, Slot3Disabled, Config.ini, DisableSlot, DisableSlot3, 0
-If Slot3Disabled = 0
-Gui, Add, CheckBox, x102 y130 w30 h30 vDisableSlot3 gDisableSlot, 3
-Else If Slot3Disabled = 1
-Gui, Add, CheckBox, x102 y130 w30 h30 checked vDisableSlot3 gDisableSlot, 3
-IniRead, Slot4Disabled, Config.ini, DisableSlot, DisableSlot4, 0
-If Slot4Disabled = 0
-Gui, Add, CheckBox, x142 y130 w30 h30 vDisableSlot4 gDisableSlot, 4
-Else If Slot4Disabled = 1
-Gui, Add, CheckBox, x142 y130 w30 h30 checked vDisableSlot4 gDisableSlot, 4
-IniRead, Slot5Disabled, Config.ini, DisableSlot, DisableSlot5, 0
-If Slot5Disabled = 0
-Gui, Add, CheckBox, x182 y130 w30 h30 vDisableSlot5 gDisableSlot, 5
-Else If Slot5Disabled = 1
-Gui, Add, CheckBox, x182 y130 w30 h30 checked vDisableSlot5 gDisableSlot, 5
 
+Loop, 5
+{
+	IniRead, Slot%A_Index%Disabled, Config.ini, DisableSlot, DisableSlot%A_Index%, 0
+	XSlot:=((A_Index*40)-18)
+	X=x%XSlot%
+	If (Slot%A_Index%Disabled = 0)
+	Gui, Add, CheckBox, %X% y130 w30 h30 vDisableSlot%A_Index% gDisableSlot, %A_Index%
+	Else If (Slot%A_Index%Disabled = 1)
+	Gui, Add, CheckBox, %X% y130 w30 h30 checked vDisableSlot%A_Index% gDisableSlot, %A_Index%
+}
 
 If QuickSilverCheck = 0
 {
@@ -241,18 +202,6 @@ Gui, Add, Text, x442 y60 w10 h30 , `%
 
 Gui, Tab, Settings
 
-IniRead, SteamCheck , Config.ini, Config, SteamCheck, 0
-If SteamCheck = 0
-{
-   Gui, Add, CheckBox, x272 y100 w190 h30 vSteamCheckBox gSteamCheck, Using Steam
-   global Steam:=false
-}
-If SteamCheck = 1
-{
-   Gui, Add, CheckBox, x272 y100 w190 h30  vSteamCheckBox gSteamCheck Checked, Using Steam
-   global Steam:=true
-}
-
 IniRead, DPSCheck , Config.ini, Config, DPSCheck, 0
 If DPSCheck = 0
 {
@@ -278,8 +227,8 @@ If TrayNotificationsCheck = 1
    global trayNotifications:=false
 }
 
-Gui, Add, GroupBox, x12 y40 w220 h60 , Base Pointer (Click Find After New Patch)
-Gui, Add, Button, x92 y60 w130 h30 gFind, Find
+Gui, Add, GroupBox, x12 y40 w220 h60 , Base Pointer
+Gui, Add, Text, x92 y60 w130 h30, Will Automatically Find Itself On New Client/Patch
 IniRead, baseMgrPtr , Config.ini, Config, baseMgrPtr, 0
 Gui, Add, Text, x22 y70 w70 h20 vbasePtrText , %baseMgrPtr%
 
@@ -311,11 +260,11 @@ If AutoShiftCheck = 1
 
 Gui, Tab
 
-Gui, Add, Button, x22 y469 w130 h40 gDefault, Reset to Default
+Gui, Add, Button, x22 y469 w130 h40 gDefault, Reset Profile
 Gui, Add, Button, x182 y469 w120 h40 gReadMe, ReadMe
 Gui, Add, Button, x332 y469 w120 h40 gDonate, Donate
 
-Gui, Add, Text, x360 y1 w110 h20 vguicontroled, GUI Created by Gurud.
+Gui, Add, Text, x380 y1 w110 h18 vguicontroled, Created by Gurud.
 
 Gui, Add, GroupBox, x0 y450 w472 h74 ,
 Gui, Add, GroupBox, x1 y451 w470 h72 ,
@@ -333,23 +282,22 @@ Menu, Tray, Add, Configuration Window, showgui
 
 Gui, Submit
 
-Gui, Show, x760 y198 h525 w474, PoE MultiScript v05.01.2014
+Gui, Show, x760 y198 h525 w474, PoE MultiScript v07.27.2014
 
 
 ;-------GUI-----------------GUI-----------------GUI-----------------GUI-----------------GUI----------
+
+;-------START VARIABLES-----------------START VARIABLES-----------------START VARIABLES--------------
 
 SetBatchLines, -1
 DetectHiddenWindows, On
 
 cliname=Path of Exile
 
-if (Steam)
-{
-   cliexe=PathOfExileSteam.exe
-}
-else
+cliexesteam=PathOfExileSteam.exe
+
 cliexe=PathOfExile.exe
-autoPotionsWatchdogPeriod:=10 ;milliseconds, time to have script recheck life/mana/flasks availability more often/increase chances of getting saved from death in time, increase this if fps drop.
+AutoFlaskWatchdogPeriod:=10 ;milliseconds, time to have script recheck life/mana/flasks availability more often/increase chances of getting saved from death in time, increase this if fps drop.
 lagCompensation:=50
 ; Font size for the tooltip, leave empty for default(part of DPSCalc)
 FontSize := 12
@@ -361,13 +309,13 @@ ChatStatusTimer:= A_TickCount+99999999999
 TradeTimer:= 0
 TradeChannel:= 0
 tradechat:= 0
-TradeTimer2:= 0
 TradeStep:= 3
 TradeSpamTimer:= 3
 ShiftDownOn:=0
 ChatCheckTimer:= 1
-
-PanickedTimer=40
+10secsTimer:=A_TickCount-10000
+20secsTimer:=A_TickCount-20000
+PanickedTimer:=40
 
 autoQuitPauseBeforeClick:=100
 autoQuitSoftToleranceBeforeKill:=2000 ; try to quit to loginscreen at most milliseconds before killing game window(in case we can't quit by clicking menu option for some reason)
@@ -378,12 +326,13 @@ PlayerConfig["Default"]:={QuickSilverTimer:QuickSilverMovementTimer*100,minLifeR
 
 PlayerConfig["Default"].FlaskConfig:=[]
 
+/*
 PlayerConfig["Default"].FlaskConfig[1]:={Hotkey:"{1 Down 1 UP}"} ; ,OverrideFlaskDuration: 70, instantRecoveryOnLowLife:true, } ;specify override recovery time in deciseconds, e.g. 7 seconds = 70
 PlayerConfig["Default"].FlaskConfig[2]:={Hotkey:"{2 Down 2 UP}"}
 PlayerConfig["Default"].FlaskConfig[3]:={Hotkey:"{3 Down 3 UP}"}
 PlayerConfig["Default"].FlaskConfig[4]:={Hotkey:"{4 Down 4 UP}"}
 PlayerConfig["Default"].FlaskConfig[5]:={Hotkey:"{5 Down 5 UP}"}
-
+*/
 
 attachedtext=:false
 
@@ -397,11 +346,16 @@ WindowBasicsCache:=[] ; keyed by "%hwnd%%CurrPid%", entries are objects with pro
 
 #Include AutoHotkeyMemoryLib.ahk
 
+OnExit, ExitSub
 
 Loop
 {
    Main()
 }
+
+;-------START VARIABLES-----------------START VARIABLES-----------------START VARIABLES--------------
+
+;-------MAIN FUNCTIONS-----------------MAIN FUNCTIONS-----------------MAIN FUNCTIONS-----------------
 
 GetWindowBasics(hwnd, byref mB="", byref pH="", byref mS="")
 {
@@ -471,6 +425,8 @@ GetFrameBase(hwnd)
 {
    global baseMgrPtr
    global WindowBasicsCache
+   global cliname
+   global 10secsTimer
 
    WinGet, CurrPid, PID, ahk_id %hwnd%
    k="%hwnd%%CurrPid%"
@@ -479,7 +435,23 @@ GetFrameBase(hwnd)
 
    if fB=
    {
-      GetWindowBasics(hwnd, mBase, pH, mSize)
+   		If (A_TickCount>=10secsTimer+10000)
+   		{
+	   		IniRead, MD5Hash , Config.ini, Config, MD5Hash, 0
+			WinGet FullEXEPath, ProcessPath, %cliname%
+			NewMD5Hash:=FileMD5(FullEXEPath)
+
+			If (NewMD5Hash!=MD5Hash)
+			{
+				IniWrite, 0 , Config.ini, Config, baseMgrPtr
+				baseMgrPtr:= 0
+				IniWrite, %NewMD5Hash% , Config.ini, Config, MD5Hash
+			}
+			10secsTimer:=A_TickCount
+   		}
+
+		GetWindowBasics(hwnd, mBase, pH, mSize)
+
 
       if baseMgrPtr= 0
       {
@@ -495,8 +467,28 @@ GetFrameBase(hwnd)
 GetUiBase(hwnd)
 {
    global baseMgrPtr
+   global cliname
+   global 10secsTimer
+   global Steam
 
-      GetWindowBasics(hwnd, mBase, pH, mSize)
+
+	If (A_TickCount>=10secsTimer+10000)
+	{
+		IniRead, MD5Hash , Config.ini, Config, MD5Hash, 0
+		WinGet FullEXEPath, ProcessPath, %cliname%
+		NewMD5Hash:=FileMD5(FullEXEPath)
+
+		If (NewMD5Hash!=MD5Hash)
+		{
+			IniWrite, 0 , Config.ini, Config, baseMgrPtr
+			baseMgrPtr:= 0
+			IniWrite, %NewMD5Hash% , Config.ini, Config, MD5Hash
+		}
+		10secsTimer:=A_TickCount
+	}
+
+
+	GetWindowBasics(hwnd, mBase, pH, mSize)
       
       if baseMgrPtr= 0
       {
@@ -517,6 +509,8 @@ GetUiBase(hwnd)
 
 ReadClientResolution(hwnd, ByRef w, ByRef h)
 {
+   global Steam
+
    GetWindowBasics(hwnd,mBase,pH)
    if (mBase!=0 && pH && pH!=-1)
    {
@@ -539,14 +533,22 @@ ReadClientResolution(hwnd, ByRef w, ByRef h)
 
 ReadPlayerStats(hwnd, byRef PlayerStats)
 {
+   global baseMgrPtr
+   global Steam
+
    GetWindowBasics(hwnd, mBase, pH)
    fBase:=GetFrameBase(hwnd)
+   BaseMgr:=ReadMemUInt(pH,mBase+baseMgrPtr)
    if (Steam)
    {
+      PlayerStats.ConfigPath:=ReadMemStr(ph,BaseMgr+0x5e18,255,"UTF-16")
       PlayerBase:=GetMultilevelPointer(pH,[fBase+0xD8,0x5A0])
    }
    else
-   PlayerBase:=GetMultilevelPointer(pH,[fBase+0xBC,0x5A0])
+   {
+      PlayerStats.ConfigPath:=ReadMemStr(ph,BaseMgr+0x39e8,255,"UTF-16")
+      PlayerBase:=GetMultilevelPointer(pH,[fBase+0xBC,0x5A0])
+   }
    PlayerMain:=ReadMemUInt(pH,PlayerBase+4)
    PlayerStatsOffset:=ReadMemUInt(pH,PlayerMain+0xC)
    PlayerStats.MaxHP:=ReadMemUInt(pH,PlayerStatsOffset+0x50)
@@ -595,8 +597,6 @@ ReadPlayerStats(hwnd, byRef PlayerStats)
    EntityNamePtr2:=GetMultilevelPointer(ph,[CheckBase+0x164,0x978,0xBBC])
    EntityName2:=ReadMemStr(ph,EntityNamePtr2+0x32,70,"UTF-16")
    PlayerStats.EntityName2:=EntityName2
-
-   ;GuiControl, , guicontroled,  testvar
 }
 
 ReadFlasksData(hwnd, byRef FlasksData)
@@ -761,6 +761,7 @@ IsInGame(hwnd)
 
 SetGameStateMenu(hwnd)
 {
+   global Steam
    if (hwnd=0 || hwnd="")
       return false
    GetWindowBasics(hwnd,mBase,pH)
@@ -783,6 +784,7 @@ SetGameStateMenu(hwnd)
 
 ReadHeroPos(hwnd,ByRef x, ByRef y)
 {
+   global Steam
    GetWindowBasics(hwnd,mBase,pH)
    if (mBase!=0 && pH && pH!=-1)
    {
@@ -947,15 +949,34 @@ GetMaxChargesOfInstantFlask(ByRef FlasksData,TypeStr)
    return currMaxI
 }
 
+FileMD5( sFile="", cSz=4 )
+{  ; by SKAN www.autohotkey.com/community/viewtopic.php?t=64211
+	cSz := (cSz<0||cSz>8) ? 2**22 : 2**(18+cSz), VarSetCapacity( Buffer,cSz,0 ) ; 18-Jun-2009
+	hFil := DllCall( "CreateFile", Str,sFile,UInt,0x80000000, Int,3,Int,0,Int,3,Int,0,Int,0 )
+	IfLess,hFil,1, Return,hFil
+	hMod := DllCall( "LoadLibrary", Str,"advapi32.dll" )
+	DllCall( "GetFileSizeEx", UInt,hFil, UInt,&Buffer ),    fSz := NumGet( Buffer,0,"Int64" )
+	VarSetCapacity( MD5_CTX,104,0 ),    DllCall( "advapi32\MD5Init", UInt,&MD5_CTX )
+	Loop % ( fSz//cSz + !!Mod( fSz,cSz ) )
+	DllCall( "ReadFile", UInt,hFil, UInt,&Buffer, UInt,cSz, UIntP,bytesRead, UInt,0 )
+	, DllCall( "advapi32\MD5Update", UInt,&MD5_CTX, UInt,&Buffer, UInt,bytesRead )
+	DllCall( "advapi32\MD5Final", UInt,&MD5_CTX )
+	DllCall( "CloseHandle", UInt,hFil )
+	Loop % StrLen( Hex:="123456789ABCDEF0" )
+	N := NumGet( MD5_CTX,87+A_Index,"Char"), MD5 .= SubStr(Hex,N>>4,1) . SubStr(Hex,N&15,1)
+	Return MD5, DllCall( "FreeLibrary", UInt,hMod )
+}
+
 
 Main()
 {
-   global autoPotionsWatchdogPeriod
+   global AutoFlaskWatchdogPeriod
    global lagCompensation
    global PlayerConfig
    global WindowQueuedFlaskEffects
    global cliname
    global cliexe
+   global cliexesteam
    global trayNotifications
    global autoQuitMode
    global desync
@@ -968,7 +989,6 @@ Main()
    global TradeSpam
    global TradeSpamTimer
    global TradeTimer
-   global TradeTimer2
    global TradeChannel
    global TradeStep
    global PanickedTimer
@@ -978,7 +998,14 @@ Main()
    global ShiftDownOn
    global ChatStatusTimer
    global ChatCheckTimer
+   global Steam
    global MovementTimer
+   global 20secsTimer
+   global FLaskHotkey1
+   global FLaskHotkey2
+   global FLaskHotkey3
+   global FLaskHotkey4
+   global FLaskHotkey5
 
    WinGet, WinID, List, %cliname%
    
@@ -987,21 +1014,59 @@ Main()
       
       WinGet, ProcModuleName, ProcessName,  % "ahk_id" WinID%A_Index%
 
-      If(ProcModuleName!=cliexe) ; got a window with title "Path of Exile" but exe is not Client.exe, perhaps we have browser window open with PoE site, ignore it
+      If (ProcModuleName!="PathOfExile.exe") And (ProcModuleName!="PathOfExileSteam.exe") ; got a window with title "Path of Exile" but exe is not Client.exe, perhaps we have browser window open with PoE site, ignore it
          continue
+
+		If (ProcModuleName="PathOfExileSteam.exe")
+		{
+			Steam:=True
+			cliexe:="PathOfExileSteam.exe"
+		}
+		Else If (ProcModuleName="PathOfExile.exe")
+		{
+			Steam:=False
+			cliexe=PathOfExile.exe
+		}
+
 
       if (!IsInGame(WinID%A_Index%)) ;not ingame
          continue
        
       if (WinID%A_Index%=WinActive("A"))
       ThisID:=WinActive("A")
-      
+
       PlayerStats:={}
       ReadPlayerStats(WinID%A_Index%, PlayerStats)
       if (PlayerStats.MaxHP<1 || PlayerStats.CurrHP=0) ;dead, don't bother
          continue
 
       CurrentConfig:=PlayerConfig["Default"]
+
+      If (A_TickCount>=20secsTimer+20000)
+      {
+         Loop, 5
+         {
+            ConfigPath:= PlayerStats.ConfigPath
+            if (InStr(PlayerStats.ConfigPath,".ini"))
+            {
+               IniRead, HotkeyFlask%A_Index%, %ConfigPath%, ACTION_KEYS, use_flask_in_slot%A_Index%, %A_Index%
+               vk:=HotkeyFlask%A_Index%
+               SetFormat, IntegerFast, hex
+               vk += 0
+               vk .= ""
+               SetFormat, IntegerFast, d
+               FlaskHotkey%A_Index%={vk%vk% Down vk%vk% UP}
+            }
+            Else
+            {
+               FlaskHotkey%A_Index%={%A_Index% Down %A_Index% UP}
+            }
+         }
+         20secsTimer:=A_TickCount
+      }
+      
+      
+
       
       if PlayerStats.MaxNShield>0
       {
@@ -1108,9 +1173,9 @@ Main()
 
                if (trayNotifications)
                {
-                  TrayTip, PoE AutoPotions sipping HP flask %flaskNum%, %A_Space% , 2
+                  TrayTip, PoE AutoFlask Using HP flask %flaskNum%, %A_Space% , 2
                }
-               hKey:=CurrentConfig.FlaskConfig[flaskNum].Hotkey
+               hKey:=FlaskHotkey%flaskNum%
                ControlSend,,%hkey%, % "ahk_id" hwnd
                Break
             }
@@ -1130,9 +1195,9 @@ Main()
                WindowQueuedFlaskEffects[k].InstantQueueEndtime:=A_TickCount+IFDelay
                if (trayNotifications)
                {
-                  TrayTip, PoE AutoPotions sipping HP flask %flaskNum%, %A_Space% , 2
+                  TrayTip, PoE AutoFlask Using HP Flask %flaskNum%, %A_Space% , 2
                }
-               hKey:=CurrentConfig.FlaskConfig[flaskNum].Hotkey
+               hKey:=FlaskHotkey%flaskNum%
                ControlSend,,%hkey%, % "ahk_id" hwnd
                break
             }
@@ -1150,9 +1215,9 @@ Main()
                WindowQueuedFlaskEffects[k].jadeQueueEndtime:=A_TickCount+EffectDuration*100
                if (trayNotifications)
                {
-                  TrayTip, PoE AutoPotions popping Jade flask %flaskNum%, %A_Space% , 2
+                  TrayTip, PoE AutoFlask Using Jade Flask %flaskNum%, %A_Space% , 2
                }
-               hKey:=CurrentConfig.FlaskConfig[flaskNum].Hotkey
+               hKey:=FlaskHotkey%flaskNum%
                ControlSend,,%hkey%, % "ahk_id" hwnd
                break
             }
@@ -1167,9 +1232,9 @@ Main()
                WindowQueuedFlaskEffects[k].GraniteQueueEndtime:=A_TickCount+EffectDuration*100
                if (trayNotifications)
                {
-                  TrayTip, PoE AutoPotions popping Granite flask %flaskNum%, %A_Space% , 2
+                  TrayTip, PoE AutoFlask Using Granite Flask %flaskNum%, %A_Space% , 2
                }
-               hKey:=CurrentConfig.FlaskConfig[flaskNum].Hotkey
+               hKey:=FlaskHotkey%flaskNum%
                ControlSend,,%hkey%, % "ahk_id" hwnd
                break
             }
@@ -1187,9 +1252,9 @@ Main()
                WindowQueuedFlaskEffects[k].RubyQueueEndtime:=A_TickCount+EffectDuration*100
                if (trayNotifications)
                {
-                  TrayTip, PoE AutoPotions popping Ruby flask %flaskNum%, %A_Space% , 2
+                  TrayTip, PoE AutoFlask Using Ruby Flask %flaskNum%, %A_Space% , 2
                }
-               hKey:=CurrentConfig.FlaskConfig[flaskNum].Hotkey
+               hKey:=FlaskHotkey%flaskNum%
                ControlSend,,%hkey%, % "ahk_id" hwnd
                break
             }
@@ -1204,9 +1269,9 @@ Main()
                WindowQueuedFlaskEffects[k].TopazQueueEndtime:=A_TickCount+EffectDuration*100
                if (trayNotifications)
                {
-                  TrayTip, PoE AutoPotions popping Topaz flask %flaskNum%, %A_Space% , 2
+                  TrayTip, PoE AutoFlask Using Topaz Flask %flaskNum%, %A_Space% , 2
                }
-               hKey:=CurrentConfig.FlaskConfig[flaskNum].Hotkey
+               hKey:=FlaskHotkey%flaskNum%
                ControlSend,,%hkey%, % "ahk_id" hwnd
                break
             }
@@ -1221,9 +1286,9 @@ Main()
                WindowQueuedFlaskEffects[k].SapphireQueueEndtime:=A_TickCount+EffectDuration*100
                if (trayNotifications)
                {
-                  TrayTip, PoE AutoPotions popping Sapphire flask %flaskNum%, %A_Space% , 2
+                  TrayTip, PoE AutoFlask Using Sapphire flask %flaskNum%, %A_Space% , 2
                }
-               hKey:=CurrentConfig.FlaskConfig[flaskNum].Hotkey
+               hKey:=FlaskHotkey%flaskNum%
                ControlSend,,%hkey%, % "ahk_id" hwnd
                break
             }
@@ -1238,9 +1303,9 @@ Main()
                WindowQueuedFlaskEffects[k].AmethystQueueEndtime:=A_TickCount+EffectDuration*100
                if (trayNotifications)
                {
-                  TrayTip, PoE AutoPotions popping Amethyst flask %flaskNum%, %A_Space% , 2
+                  TrayTip, PoE AutoFlask Using Amethyst Flask %flaskNum%, %A_Space% , 2
                }
-               hKey:=CurrentConfig.FlaskConfig[flaskNum].Hotkey
+               hKey:=FlaskHotkey%flaskNum%
                ControlSend,,%hkey%, % "ahk_id" hwnd
                break
             }
@@ -1286,9 +1351,9 @@ Main()
 
                if (trayNotifications)
                {
-                  TrayTip, PoE AutoPotions sipping mana flask %flaskNum%, %A_Space% , 2
+                  TrayTip, PoE AutoFlask Using Mana Flask %flaskNum%, %A_Space% , 2
                }
-               hKey:=CurrentConfig.FlaskConfig[flaskNum].Hotkey
+               hKey:=FlaskHotkey%flaskNum%
                ControlSend,,%hkey%, % "ahk_id" hwnd
                Break
             }
@@ -1297,8 +1362,9 @@ Main()
 
       if (PlayerStats.PlayerActionID!="" && PlayerStats.PlayerActionID!=80 && PlayerStats.PlayerActionID!=90)
       {
-         MovementTimer:= A_TickCount
+         MovementTimer:= A_TickCounti
       }
+      ;TODO MovementTimer%A_Index%
 
       if(QuickSilverCheck)
       {
@@ -1321,9 +1387,9 @@ Main()
                               WindowQueuedFlaskEffects[k].QuickQueueEndtime:=A_TickCount+EffectDuration*100
                               if (trayNotifications)
                               {
-                                 TrayTip, PoE AutoPotions popping QuickSilver flask %flaskNum%, %A_Space% , 2
+                                 TrayTip, PoE AutoFlask Using QuickSilver Flask %flaskNum%, %A_Space% , 2
                               }
-                              hKey:=CurrentConfig.FlaskConfig[flaskNum].Hotkey
+                              hKey:=FlaskHotkey%flaskNum%
                               ControlSend,,%hkey%, % "ahk_id" hwnd
                               break
                            }
@@ -1356,9 +1422,9 @@ Main()
                               WindowQueuedFlaskEffects[k].QuickQueueEndtime:=A_TickCount+EffectDuration*100
                               if (trayNotifications)
                               {
-                                 TrayTip, PoE AutoPotions popping QuickSilver flask %flaskNum%, %A_Space% , 2
+                                 TrayTip, PoE AutoFlask Using QuickSilver flask %flaskNum%, %A_Space% , 2
                               }
-                              hKey:=CurrentConfig.FlaskConfig[flaskNum].Hotkey
+                              hKey:=FlaskHotkey%flaskNum%
                               ControlSend,,%hkey%, % "ahk_id" hwnd
                               break
                            }
@@ -1509,14 +1575,16 @@ Main()
                ShiftDownOn:= 0
             }
          }
+
+
       }
       
    ;if (PlayerStats.PlayerActionID!="" && PlayerStats.PlayerActionID=2176)  ;2048 not
    ;if ((autoQuit=1) && (ThisID!="") && (ThisID!=WinActive("A")))
    ;WinActivate, % "ahk_id" ThisID
-   
-   
-      ++PanickedTimer
+      
+      ++PanickedTimer  ;TODO better way
+
 
       if desync = 1
       {
@@ -1530,10 +1598,18 @@ Main()
                   {
                      SendInput {NumpadEnter}/oos{NumpadEnter}
                   }
+                  Else
+                  {
+                     ControlSend,,{NumpadEnter}, % "ahk_id" hwnd
+                     SetKeyDelay, 40, 20
+                     ControlSend,,`/oos, % "ahk_id" hwnd
+                     SetKeyDelay, 0, 0
+                     ControlSend,,{NumpadEnter}, % "ahk_id" hwnd
+                  }
                }
             }
          }
-         desync = 0
+         desync := 0
       }
 
       if remaining = 1
@@ -1546,16 +1622,20 @@ Main()
                {
                   IfWinActive Path of Exile ahk_class Direct3DWindowClass
                   {
-                     GetKeyState, stateSH, SHIFT, P
-                     if stateSH = D
-                     {
-                        Sendinput {SHIFT up}
-                     }
                      SendInput {NumpadEnter}/remaining{NumpadEnter}
+                  }
+                  Else
+                  {
+                     ControlSend,,{NumpadEnter}, % "ahk_id" hwnd
+                     SetKeyDelay, 40, 20
+                     ControlSend,,`/remaining, % "ahk_id" hwnd
+                     SetKeyDelay, 0, 0
+                     ControlSend,,{NumpadEnter}, % "ahk_id" hwnd
                   }
                }
             }
-            remaining = 0
+            remaining := 0
+            break
          }
       }
 
@@ -1577,10 +1657,9 @@ Main()
                   GuiControl, , TradeSpam, 0
                   GuiControl, , TradeSpamUpdate, 0
                   IniWrite, 0 , Config.ini, Config, TradeSpam
-                  TradeChannel:= 0
+                  TradeChannel:= 1
                   tradechat:= 0
                   TradeTimer:= 0
-                  TradeTimer2:= 0
                   TradeStep:= 3
                   TradeSpamTimer:= 3
                }
@@ -1612,7 +1691,8 @@ Main()
 
       if tradechat = 1
       {
-         If (A_TickCount>=TradeTimer+50)
+         SendMode, Input
+         If (A_TickCount>=TradeTimer+1000+(TradeSpam*2000))
          {
             if (PlayerStats.ChatStatus!="" && PlayerStats.ChatStatus=65536)
             {
@@ -1631,50 +1711,73 @@ Main()
                         If (TradeStep = 1)
                         {
                            Send {NumpadEnter}
-                           Send {Raw}/trade %TradeChannel%
+                           Send /trade %TradeChannel%
                            Send {NumpadEnter}
                            TradeStep:= 2
                            TradeTimer:= A_TickCount
                         }
                         else If (TradeStep = 2)
                         {
-                           Send {NumpadEnter}{Up 3}{NumpadEnter}
+                           Send {NumpadEnter}{Up 2}{NumpadEnter}
                            TradeStep:= 3
-                           TradeTimer:= A_TickCount-150
+                           TradeTimer:= A_TickCount
                         }
                         else If (TradeStep = 3)
-                        {
-                           Random, randvar, 50, 200
-                           Send {NumpadEnter}
-                           Send {Raw}/trade %randvar%
-                           Send {NumpadEnter}
-                           TradeStep:= 4
-                           TradeTimer:= A_TickCount
-                           TradeTimer2:= A_TickCount
-                        }
-                        else If (TradeStep = 4)
-                        { 
-                           If (A_TickCount>=TradeTimer2+2500)
-                           {
-                              TradeTimer:= A_TickCount
-                              TradeStep:= 5
-                           }
-                        }
-                        else If (TradeStep = 5)
                         {
                            If (TradeChannel<10)
                            {
                               TradeChannel++
                               TradeStep:= 1
                               TradeTimer:= A_TickCount
-                              TradeTimer2:= 0
                            }
                            Else
                            {
-                              TradeChannel:= 0
+                              TradeChannel:= 1
                               tradechat:= 0
                               TradeTimer:= 0
-                              TradeTimer2:= 0
+                              TradeStep:= 1
+                           }
+                        }
+                     }
+                     Else
+                     {
+                        SendMode Input
+                        GetKeyState, stateSH, SHIFT, P
+                        if stateSH = D
+                        {
+                           Sendinput {SHIFT up}
+                        }
+                        If (TradeStep = 1)
+                        {
+                           SetKeyDelay, 60, 20
+                           ControlSend,,{NumpadEnter}, % "ahk_id" hwnd
+                           ControlSendRaw,,`/trade %TradeChannel%, % "ahk_id" hwnd
+                           ControlSend,,{NumpadEnter}, % "ahk_id" hwnd
+                           SetKeyDelay, 0, 0
+                           TradeStep:= 2
+                           TradeTimer:= A_TickCount
+                        }
+                        else If (TradeStep = 2)
+                        {
+                           SetKeyDelay, 20, 20
+                           ControlSend,,{NumpadEnter}{Up 2}{NumpadEnter}, % "ahk_id" hwnd
+                           SetKeyDelay, 0, 0
+                           TradeStep:= 3
+                           TradeTimer:= A_TickCount
+                        }
+                        else If (TradeStep = 3)
+                        {
+                           If (TradeChannel<10)
+                           {
+                              TradeChannel++
+                              TradeStep:= 1
+                              TradeTimer:= A_TickCount
+                           }
+                           Else
+                           {
+                              TradeChannel:= 1
+                              tradechat:= 0
+                              TradeTimer:= 0
                               TradeStep:= 1
                            }
                         }
@@ -1688,40 +1791,40 @@ Main()
       }
       Else
       {
-         If (TradeSpam=0)
+         If (A_TickCount>=(ResyncTimer+ResyncSpam*1000) And (ResyncSpam>0))
          {
-            If (A_TickCount>=(ResyncTimer+ResyncSpam*1000) And (ResyncSpam>0))
-            {
-               if (PlayerStats.InCity!="" && PlayerStats.InCity=65537)
-               { 
-                  if (PlayerStats.ChatStatus!="" && PlayerStats.ChatStatus=65536)
+            if (PlayerStats.InCity!="" && PlayerStats.InCity=65537)
+            { 
+               if (PlayerStats.ChatStatus!="" && PlayerStats.ChatStatus=65536)
+               {
+                  if (IsInGame(hwnd))
                   {
-                     if (IsInGame(hwnd))
+                     if (PlayerStats.PanelWaypoint=65536 && PlayerStats.PanelInventory=65536 && PlayerStats.PanelSkillTree=65536 && PlayerStats.PanelSocial=65536)
                      {
-                        if (PlayerStats.PanelWaypoint=65536 && PlayerStats.PanelInventory=65536 && PlayerStats.PanelSkillTree=65536 && PlayerStats.PanelSocial=65536)
+                        IfWinActive Path of Exile ahk_class Direct3DWindowClass
                         {
-                           IfWinActive Path of Exile ahk_class Direct3DWindowClass
+                           GetKeyState, stateSH, SHIFT, P
+                           if stateSH = D
                            {
-                              GetKeyState, stateSH, SHIFT, P
-                              if stateSH = D
-                              {
-                                 Sendinput {SHIFT up}
-                              }
-                              Sendinput {NumpadEnter}/oos{NumpadEnter}
+                              Sendinput {SHIFT up}
                            }
+                           Sendinput {NumpadEnter}/oos{NumpadEnter}
                         }
                      }
                   }
                }
-               ResyncTimer:= A_TickCount
             }
+            ResyncTimer:= A_TickCount
          }
       }
-
    }
 
-   Sleep, %autoPotionsWatchdogPeriod%   
+   Sleep, %AutoFlaskWatchdogPeriod%   
 }
+
+;-------MAIN FUNCTIONS-----------------MAIN FUNCTIONS-----------------MAIN FUNCTIONS-----------------
+
+;-------TEST FUNCTIONS-----------------TEST FUNCTIONS-----------------TEST FUNCTIONS-----------------
 
 
 UsePortal()
@@ -2011,591 +2114,6 @@ Webgrab()
 }
 
 
-F1::
-   desync=1
-return
-
-F2::
-   remaining = 1
-return
-
-F3::
-   DPSCalc()
-return
-
-^F3::
-   Webgrab()
-return
-
-F4::
-   QuitToLoginScreen(WinActive("A"))
-return
-
-^F4::
-   UsePortal()
-return
-
-F10::
-   tradechat = 1
-return
-
-
-!w::
-   WinGet, window, ID, A   ; Use the ID of the active window.
-   Toggle_Window(window)
-return
-
-GuiUpdate:
-   Gui, Submit, NoHide
-   GuiControl, , minLifePercentToQuitUpdate, %minLifePercentToQuit%
-   GuiControl, , minESPercentToQuitUpdate, %minESPercentToQuit%
-   GuiControl, , minLifePercentToJadeUpdate, %minLifePercentToJade%
-   GuiControl, , minESPercentToJadeUpdate, %minESPercentToJade%
-   GuiControl, , minLifePercentToElementalResistUpdate, %minLifePercentToElementalResist%
-   GuiControl, , minESPercentToElementalResistUpdate, %minESPercentToElementalResist%
-   GuiControl, , minLifePercentToDrinkUpdate, %minLifePercentToDrink%
-   GuiControl, , minManaPercentToDrinkUpdate, %minManaPercentToDrink%
-   GuiControl, , minManaToDrinkPotUpdate, %minManaToDrinkPot%
-   GuiControl, , InstantFlaskDelayUpdate,  % Round(InstantFlaskDelay/100,2)
-   GuiControl, , minLifePercentToSpamUpdate, %minLifePercentToSpam%
-   GuiControl, , QuickSilverMovementTimerUpdate, % Round(QuickSilverMovementTimer/10,1)
-   GuiControl, , TradeSpamUpdate, %TradeSpam%
-   GuiControl, , ResyncSpamUpdate, %ResyncSpam%
-
-   If ConfigChoice = 1
-   {
-      IniWrite, %minLifePercentToQuit% , Config.ini, Config1, minLifePercentToQuit
-      IniWrite, %minESPercentToQuit% , Config.ini, Config1, minESPercentToQuit
-      IniWrite, %minLifePercentToJade% , Config.ini, Config1, minLifePercentToJade
-      IniWrite, %minESPercentToJade% , Config.ini, Config1, minESPercentToJade
-      IniWrite, %minLifePercentToElementalResist% , Config.ini, Config1, minLifePercentToElementalResist
-      IniWrite, %minESPercentToElementalResist% , Config.ini, Config1, minESPercentToElementalResist
-      IniWrite, %minLifePercentToDrink% , Config.ini, Config1, minLifePercentToDrink
-      IniWrite, %minManaPercentToDrink% , Config.ini, Config1, minManaPercentToDrink
-      IniWrite, %minManaToDrinkPot% , Config.ini, Config1, minManaToDrinkPot
-      IniWrite, %minLifePercentToSpam% , Config.ini, Config1, minLifePercentToSpam
-      IniWrite, %InstantFlaskDelay% , Config.ini, Config1, InstantFlaskDelay
-      IniWrite, %QuickSilverMovementTimer% , Config.ini, Config1, QuickSilverMovementTimer
-      IniWrite, %ResyncSpam% , Config.ini, Config1, ResyncSpam
-
-   }
-   else If ConfigChoice = 2
-   {
-      IniWrite, %minLifePercentToQuit% , Config.ini, Config2, minLifePercentToQuit
-      IniWrite, %minESPercentToQuit% , Config.ini, Config2, minESPercentToQuit
-      IniWrite, %minLifePercentToJade% , Config.ini, Config2, minLifePercentToJade
-      IniWrite, %minESPercentToJade% , Config.ini, Config2, minESPercentToJade
-      IniWrite, %minLifePercentToElementalResist% , Config.ini, Config2, minLifePercentToElementalResist
-      IniWrite, %minESPercentToElementalResist% , Config.ini, Config2, minESPercentToElementalResist
-      IniWrite, %minLifePercentToDrink% , Config.ini, Config2, minLifePercentToDrink
-      IniWrite, %minManaPercentToDrink% , Config.ini, Config2, minManaPercentToDrink
-      IniWrite, %minManaToDrinkPot% , Config.ini, Config2, minManaToDrinkPot
-      IniWrite, %minLifePercentToSpam% , Config.ini, Config2, minLifePercentToSpam
-      IniWrite, %InstantFlaskDelay% , Config.ini, Config2, InstantFlaskDelay
-      IniWrite, %QuickSilverMovementTimer% , Config.ini, Config2, QuickSilverMovementTimer
-      IniWrite, %ResyncSpam% , Config.ini, Config2, ResyncSpam
-   }
-   else If ConfigChoice = 3
-   {
-      IniWrite, %minLifePercentToQuit% , Config.ini, Config3, minLifePercentToQuit
-      IniWrite, %minESPercentToQuit% , Config.ini, Config3, minESPercentToQuit
-      IniWrite, %minLifePercentToJade% , Config.ini, Config3, minLifePercentToJade
-      IniWrite, %minESPercentToJade% , Config.ini, Config3, minESPercentToJade
-      IniWrite, %minLifePercentToElementalResist% , Config.ini, Config3, minLifePercentToElementalResist
-      IniWrite, %minESPercentToElementalResist% , Config.ini, Config3, minESPercentToElementalResist
-      IniWrite, %minLifePercentToDrink% , Config.ini, Config3, minLifePercentToDrink
-      IniWrite, %minManaPercentToDrink% , Config.ini, Config3, minManaPercentToDrink
-      IniWrite, %minManaToDrinkPot% , Config.ini, Config3, minManaToDrinkPot
-      IniWrite, %minLifePercentToSpam% , Config.ini, Config3, minLifePercentToSpam
-      IniWrite, %InstantFlaskDelay% , Config.ini, Config3, InstantFlaskDelay
-      IniWrite, %QuickSilverMovementTimer% , Config.ini, Config3, QuickSilverMovementTimer
-      IniWrite, %ResyncSpam% , Config.ini, Config3, ResyncSpam
-   }
-   else If ConfigChoice = 4
-   {
-      IniWrite, %minLifePercentToQuit% , Config.ini, Config4, minLifePercentToQuit
-      IniWrite, %minESPercentToQuit% , Config.ini, Config4, minESPercentToQuit
-      IniWrite, %minLifePercentToJade% , Config.ini, Config4, minLifePercentToJade
-      IniWrite, %minESPercentToJade% , Config.ini, Config4, minESPercentToJade
-      IniWrite, %minLifePercentToElementalResist% , Config.ini, Config4, minLifePercentToElementalResist
-      IniWrite, %minESPercentToElementalResist% , Config.ini, Config4, minESPercentToElementalResist
-      IniWrite, %minLifePercentToDrink% , Config.ini, Config4, minLifePercentToDrink
-      IniWrite, %minManaPercentToDrink% , Config.ini, Config4, minManaPercentToDrink
-      IniWrite, %minManaToDrinkPot% , Config.ini, Config4, minManaToDrinkPot
-      IniWrite, %minLifePercentToSpam% , Config.ini, Config4, minLifePercentToSpam
-      IniWrite, %InstantFlaskDelay% , Config.ini, Config4, InstantFlaskDelay
-      IniWrite, %QuickSilverMovementTimer% , Config.ini, Config4, QuickSilverMovementTimer
-      IniWrite, %ResyncSpam% , Config.ini, Config4, ResyncSpam
-   }   
-   else If ConfigChoice = 5
-   {
-      IniWrite, %minLifePercentToQuit% , Config.ini, Config5, minLifePercentToQuit
-      IniWrite, %minESPercentToQuit% , Config.ini, Config5, minESPercentToQuit
-      IniWrite, %minLifePercentToJade% , Config.ini, Config5, minLifePercentToJade
-      IniWrite, %minESPercentToJade% , Config.ini, Config5, minESPercentToJade
-      IniWrite, %minLifePercentToElementalResist% , Config.ini, Config5, minLifePercentToElementalResist
-      IniWrite, %minESPercentToElementalResist% , Config.ini, Config5, minESPercentToElementalResist
-      IniWrite, %minLifePercentToDrink% , Config.ini, Config5, minLifePercentToDrink
-      IniWrite, %minManaPercentToDrink% , Config.ini, Config5, minManaPercentToDrink
-      IniWrite, %minManaToDrinkPot% , Config.ini, Config5, minManaToDrinkPot
-      IniWrite, %minLifePercentToSpam% , Config.ini, Config5, minLifePercentToSpam
-      IniWrite, %InstantFlaskDelay% , Config.ini, Config5, InstantFlaskDelay
-      IniWrite, %QuickSilverMovementTimer% , Config.ini, Config5, QuickSilverMovementTimer
-      IniWrite, %ResyncSpam% , Config.ini, Config5, ResyncSpam
-   }
-   
-   IniWrite, %InstantFlaskDelay% , Config.ini, Config, InstantFlaskDelay
-   IFDelay:= InstantFlaskDelay
-
-   PlayerConfig["Default"]:={QuickSilverTimer:QuickSilverMovementTimer*100,minLifeRatioToInstant: minLifePercentToSpam/100, IFlaskDelay: InstantFlaskDelay,minLifeRatioToDrink: minLifePercentToDrink/100, minManaRatioToDrink: minManaPercentToDrink/100, minManaToDrink: minManaToDrinkPot, minLifeRatioToPopElementalResist: minLifePercentToElementalResist/100, minLifeRatioToPopJade: minLifePercentToJade/100, minLifeRatioToQuit: minLifePercentToQuit/100, minNShieldRatioToQuit: minESPercentToQuit/100, minNShieldRatioToPopElementalResist: minESPercentToElementalResist/100, minNShieldRatioToPopJade: minESPercentToJade/100}
-   PlayerConfig["Default"].FlaskConfig:=[]
-
-   PlayerConfig["Default"].FlaskConfig[1]:={Hotkey:"{1 Down 1 UP}"} ; ,OverrideFlaskDuration: 70, instantRecoveryOnLowLife:true, } ;specify override recovery time in deciseconds, e.g. 7 seconds = 70
-   PlayerConfig["Default"].FlaskConfig[2]:={Hotkey:"{2 Down 2 UP}"}
-   PlayerConfig["Default"].FlaskConfig[3]:={Hotkey:"{3 Down 3 UP}"}
-   PlayerConfig["Default"].FlaskConfig[4]:={Hotkey:"{4 Down 4 UP}"}
-   PlayerConfig["Default"].FlaskConfig[5]:={Hotkey:"{5 Down 5 UP}"}
-return
-
-Default:
-   Gui, Submit, NoHide
-   GuiControl, , minLifePercentToQuit, 35
-   GuiControl, , minLifePercentToQuitUpdate, 35
-   minLifePercentToQuit := 35
-   GuiControl, , minESPercentToQuit, 0
-   GuiControl, , minESPercentToQuitUpdate, 0
-   minESPercentToQuit := 0
-   GuiControl, , minLifePercentToJade, 70
-   GuiControl, , minLifePercentToJadeUpdate, 70
-   minLifePercentToJade := 70
-   GuiControl, , minESPercentToJade, 0
-   GuiControl, , minESPercentToJadeUpdate, 0
-   minESPercentToJade := 0
-   GuiControl, , minLifePercentToElementalResist, 70
-   GuiControl, , minLifePercentToElementalResistUpdate, 70
-   minLifePercentToElementalResist := 70
-   GuiControl, , minESPercentToElementalResist, 0
-   GuiControl, , minESPercentToElementalResistUpdate, 0
-   minESPercentToElementalResist := 0
-   GuiControl, , minLifePercentToDrink, 55
-   GuiControl, , minLifePercentToDrinkUpdate, 55
-   minLifePercentToDrink := 55
-   GuiControl, , minManaPercentToDrink, 25
-   GuiControl, , minManaPercentToDrinkUpdate, 25
-   minManaPercentToDrink := 25
-   GuiControl, , minManaToDrinkPot, 15
-   GuiControl, , minManaToDrinkPotUpdate, 15
-   minManaToDrinkPot := 15
-   GuiControl, , InstantFlaskDelay, 0
-   GuiControl, , InstantFlaskDelayUpdate, 0.00
-   InstantFlaskDelay := 0
-   GuiControl, , minLifePercentToSpam, 35
-   GuiControl, , minLifePercentToSpamUpdate, 35
-   minLifePercentToSpam := 35
-   GuiControl, , ResyncSpam, 0
-   GuiControl, , ResyncSpamUpdate, 0
-   ResyncSpam := 0
-   GuiControl, , QuickSilverMovementTimer, 15
-   GuiControl, , QuickSilverMovementTimerUpdate, 1.5
-   QuickSilverMovementTimer := 15
-   IniWrite, %InstantFlaskDelay% , Config.ini, Config, InstantFlaskDelay
-
-
-   GuiControl, , TradeSpam, 0
-   GuiControl, , TradeSpamUpdate, 0
-   IniWrite, 0 , Config.ini, Config, TradeSpam
-
-   If ConfigChoice = 1
-   {
-      IniWrite, %minLifePercentToQuit% , Config.ini, Config1, minLifePercentToQuit
-      IniWrite, %minESPercentToQuit% , Config.ini, Config1, minESPercentToQuit
-      IniWrite, %minLifePercentToJade% , Config.ini, Config1, minLifePercentToJade
-      IniWrite, %minESPercentToJade% , Config.ini, Config1, minESPercentToJade
-      IniWrite, %minLifePercentToElementalResist% , Config.ini, Config1, minLifePercentToElementalResist
-      IniWrite, %minESPercentToElementalResist% , Config.ini, Config1, minESPercentToElementalResist
-      IniWrite, %minLifePercentToDrink% , Config.ini, Config1, minLifePercentToDrink
-      IniWrite, %minManaPercentToDrink% , Config.ini, Config1, minManaPercentToDrink
-      IniWrite, %minManaToDrinkPot% , Config.ini, Config1, minManaToDrinkPot
-      IniWrite, %minLifePercentToSpam% , Config.ini, Config1, minLifePercentToSpam
-      IniWrite, %QuickSilverMovementTimer% , Config.ini, Config1, QuickSilverMovementTimer
-   }
-   else If ConfigChoice = 2
-   {
-      IniWrite, %minLifePercentToQuit% , Config.ini, Config2, minLifePercentToQuit
-      IniWrite, %minESPercentToQuit% , Config.ini, Config2, minESPercentToQuit
-      IniWrite, %minLifePercentToJade% , Config.ini, Config2, minLifePercentToJade
-      IniWrite, %minESPercentToJade% , Config.ini, Config2, minESPercentToJade
-      IniWrite, %minLifePercentToElementalResist% , Config.ini, Config2, minLifePercentToElementalResist
-      IniWrite, %minESPercentToElementalResist% , Config.ini, Config2, minESPercentToElementalResist
-      IniWrite, %minLifePercentToDrink% , Config.ini, Config2, minLifePercentToDrink
-      IniWrite, %minManaPercentToDrink% , Config.ini, Config2, minManaPercentToDrink
-      IniWrite, %minManaToDrinkPot% , Config.ini, Config2, minManaToDrinkPot
-      IniWrite, %minLifePercentToSpam% , Config.ini, Config2, minLifePercentToSpam
-      IniWrite, %QuickSilverMovementTimer% , Config.ini, Config2, QuickSilverMovementTimer
-   }
-   else If ConfigChoice = 3
-   {
-      IniWrite, %minLifePercentToQuit% , Config.ini, Config3, minLifePercentToQuit
-      IniWrite, %minESPercentToQuit% , Config.ini, Config3, minESPercentToQuit
-      IniWrite, %minLifePercentToJade% , Config.ini, Config3, minLifePercentToJade
-      IniWrite, %minESPercentToJade% , Config.ini, Config3, minESPercentToJade
-      IniWrite, %minLifePercentToElementalResist% , Config.ini, Config3, minLifePercentToElementalResist
-      IniWrite, %minESPercentToElementalResist% , Config.ini, Config3, minESPercentToElementalResist
-      IniWrite, %minLifePercentToDrink% , Config.ini, Config3, minLifePercentToDrink
-      IniWrite, %minManaPercentToDrink% , Config.ini, Config3, minManaPercentToDrink
-      IniWrite, %minManaToDrinkPot% , Config.ini, Config3, minManaToDrinkPot
-      IniWrite, %minLifePercentToSpam% , Config.ini, Config3, minLifePercentToSpam
-      IniWrite, %QuickSilverMovementTimer% , Config.ini, Config3, QuickSilverMovementTimer
-   }
-   else If ConfigChoice = 4
-   {
-      IniWrite, %minLifePercentToQuit% , Config.ini, Config4, minLifePercentToQuit
-      IniWrite, %minESPercentToQuit% , Config.ini, Config4, minESPercentToQuit
-      IniWrite, %minLifePercentToJade% , Config.ini, Config4, minLifePercentToJade
-      IniWrite, %minESPercentToJade% , Config.ini, Config4, minESPercentToJade
-      IniWrite, %minLifePercentToElementalResist% , Config.ini, Config4, minLifePercentToElementalResist
-      IniWrite, %minESPercentToElementalResist% , Config.ini, Config4, minESPercentToElementalResist
-      IniWrite, %minLifePercentToDrink% , Config.ini, Config4, minLifePercentToDrink
-      IniWrite, %minManaPercentToDrink% , Config.ini, Config4, minManaPercentToDrink
-      IniWrite, %minManaToDrinkPot% , Config.ini, Config4, minManaToDrinkPot
-      IniWrite, %minLifePercentToSpam% , Config.ini, Config4, minLifePercentToSpam
-      IniWrite, %QuickSilverMovementTimer% , Config.ini, Config4, QuickSilverMovementTimer
-   }   
-   else If ConfigChoice = 5
-   {
-      IniWrite, %minLifePercentToQuit% , Config.ini, Config5, minLifePercentToQuit
-      IniWrite, %minESPercentToQuit% , Config.ini, Config5, minESPercentToQuit
-      IniWrite, %minLifePercentToJade% , Config.ini, Config5, minLifePercentToJade
-      IniWrite, %minESPercentToJade% , Config.ini, Config5, minESPercentToJade
-      IniWrite, %minLifePercentToElementalResist% , Config.ini, Config5, minLifePercentToElementalResist
-      IniWrite, %minESPercentToElementalResist% , Config.ini, Config5, minESPercentToElementalResist
-      IniWrite, %minLifePercentToDrink% , Config.ini, Config5, minLifePercentToDrink
-      IniWrite, %minManaPercentToDrink% , Config.ini, Config5, minManaPercentToDrink
-      IniWrite, %minManaToDrinkPot% , Config.ini, Config5, minManaToDrinkPot
-      IniWrite, %minLifePercentToSpam% , Config.ini, Config5, minLifePercentToSpam
-      IniWrite, %QuickSilverMovementTimer% , Config.ini, Config5, QuickSilverMovementTimer
-   }
-   
-   PlayerConfig["Default"]:={QuickSilverTimer:QuickSilverMovementTimer*100,minLifeRatioToInstant: minLifePercentToSpam/100, IFlaskDelay: InstantFlaskDelay,minLifeRatioToDrink: minLifePercentToDrink/100, minManaRatioToDrink: minManaPercentToDrink/100, minManaToDrink: minManaToDrinkPot, minLifeRatioToPopElementalResist: minLifePercentToElementalResist/100, minLifeRatioToPopJade: minLifePercentToJade/100, minLifeRatioToQuit: minLifePercentToQuit/100, minNShieldRatioToQuit: minESPercentToQuit/100, minNShieldRatioToPopElementalResist: minESPercentToElementalResist/100, minNShieldRatioToPopJade: minESPercentToJade/100}
-   PlayerConfig["Default"].FlaskConfig:=[]
-
-   PlayerConfig["Default"].FlaskConfig[1]:={Hotkey:"{1 Down 1 UP}"} ; ,OverrideFlaskDuration: 70, instantRecoveryOnLowLife:true, } ;specify override recovery time in deciseconds, e.g. 7 seconds = 70
-   PlayerConfig["Default"].FlaskConfig[2]:={Hotkey:"{2 Down 2 UP}"}
-   PlayerConfig["Default"].FlaskConfig[3]:={Hotkey:"{3 Down 3 UP}"}
-   PlayerConfig["Default"].FlaskConfig[4]:={Hotkey:"{4 Down 4 UP}"}
-   PlayerConfig["Default"].FlaskConfig[5]:={Hotkey:"{5 Down 5 UP}"}
-return
-
-AutoQuitList:
-   Gui, Submit, NoHide
-   If AutoQuitChoice = 1
-   autoQuitMode:=1
-   If AutoQuitChoice = 2
-   autoQuitMode:=0
-   If AutoQuitChoice = 3
-   {
-      MsgBox, This is still beta. This is only for testing.`nDont use in Harcore`nWorks Better on Bigger Resolutions`nPut the Portal Scroll on the Top-Left of your Inventory`n`nTest With [Ctrl+F4] First`n`nUse Ctrl+Alt+Del to unstuck.
-      autoQuitMode:=3
-   }
-   If AutoQuitChoice = 4
-   {
-      autoQuitMode:=4
-   }
-
-   IniWrite, %AutoQuitChoice% , Config.ini, Config, AutoQuitMethod
-return
-
-ConfigList:
-   Gui, Submit, NoHide
-   If ConfigChoice = 1
-   {
-      IniRead, minLifePercentToQuit , Config.ini, Config1, minLifePercentToQuit, 35
-      IniRead, minESPercentToQuit , Config.ini, Config1, minESPercentToQuit, 0
-      IniRead, minLifePercentToJade , Config.ini, Config1, minLifePercentToJade, 70
-      IniRead, minLifePercentToJade , Config.ini, Config1, minLifePercentToJade, 70
-      IniRead, minESPercentToJade , Config.ini, Config1, minESPercentToJade, 0
-      IniRead, minLifePercentToElementalResist , Config.ini, Config1, minLifePercentToElementalResist, 70
-      IniRead, minESPercentToElementalResist , Config.ini, Config1, minESPercentToElementalResist, 0
-      IniRead, minLifePercentToDrink , Config.ini, Config1, minLifePercentToDrink, 55
-      IniRead, minManaPercentToDrink , Config.ini, Config1, minManaPercentToDrink, 25
-      IniRead, minManaToDrinkPot , Config.ini, Config1, minManaToDrinkPot, 15
-      IniRead, minLifePercentToSpam, Config.ini, Config1, minLifePercentToSpam, 35
-      IniRead, ResyncSpam, Config.ini, Config1, ResyncSpam, 0
-      IniRead, InstantFlaskDelay, Config.ini, Config1, InstantFlaskDelay, 0
-      IniRead, QuickSilverMovementTimer , Config.ini, Config1, QuickSilverMovementTimer, 15
-      IniWrite, 1, Config.ini, Config, ConfigNumber
-   }
-   else If ConfigChoice = 2
-   {
-      IniRead, minLifePercentToQuit , Config.ini, Config2, minLifePercentToQuit, 35
-      IniRead, minESPercentToQuit , Config.ini, Config2, minESPercentToQuit, 0
-      IniRead, minLifePercentToJade , Config.ini, Config2, minLifePercentToJade, 70
-      IniRead, minLifePercentToJade , Config.ini, Config2, minLifePercentToJade, 70
-      IniRead, minESPercentToJade , Config.ini, Config2, minESPercentToJade, 0
-      IniRead, minLifePercentToElementalResist , Config.ini, Config2, minLifePercentToElementalResist, 70
-      IniRead, minESPercentToElementalResist , Config.ini, Config2, minESPercentToElementalResist, 0
-      IniRead, minLifePercentToDrink , Config.ini, Config2, minLifePercentToDrink, 55
-      IniRead, minManaPercentToDrink , Config.ini, Config2, minManaPercentToDrink, 25
-      IniRead, minManaToDrinkPot , Config.ini, Config2, minManaToDrinkPot, 15
-      IniRead, minLifePercentToSpam, Config.ini, Config2, minLifePercentToSpam, 35
-      IniRead, ResyncSpam, Config.ini, Config2, ResyncSpam, 0
-      IniRead, InstantFlaskDelay, Config.ini, Config2, InstantFlaskDelay, 0
-      IniRead, QuickSilverMovementTimer , Config.ini, Config2, QuickSilverMovementTimer, 15
-      IniWrite, 2, Config.ini, Config, ConfigNumber
-   }
-   else If ConfigChoice = 3
-   {
-      IniRead, minLifePercentToQuit , Config.ini, Config3, minLifePercentToQuit, 35
-      IniRead, minESPercentToQuit , Config.ini, Config3, minESPercentToQuit, 0
-      IniRead, minLifePercentToJade , Config.ini, Config3, minLifePercentToJade, 70
-      IniRead, minLifePercentToJade , Config.ini, Config3, minLifePercentToJade, 70
-      IniRead, minESPercentToJade , Config.ini, Config3, minESPercentToJade, 0
-      IniRead, minLifePercentToElementalResist , Config.ini, Config3, minLifePercentToElementalResist, 70
-      IniRead, minESPercentToElementalResist , Config.ini, Config3, minESPercentToElementalResist, 0
-      IniRead, minLifePercentToDrink , Config.ini, Config3, minLifePercentToDrink, 55
-      IniRead, minManaPercentToDrink , Config.ini, Config3, minManaPercentToDrink, 25
-      IniRead, minManaToDrinkPot , Config.ini, Config3, minManaToDrinkPot, 15
-      IniRead, minLifePercentToSpam, Config.ini, Config3, minLifePercentToSpam, 35
-      IniRead, ResyncSpam, Config.ini, Config3, ResyncSpam, 0
-      IniRead, InstantFlaskDelay, Config.ini, Config3, InstantFlaskDelay, 0
-      IniRead, QuickSilverMovementTimer , Config.ini, Config3, QuickSilverMovementTimer, 15
-      IniWrite, 3, Config.ini, Config, ConfigNumber
-   }
-   else If ConfigChoice = 4
-   {
-      IniRead, minLifePercentToQuit , Config.ini, Config4, minLifePercentToQuit, 35
-      IniRead, minESPercentToQuit , Config.ini, Config4, minESPercentToQuit, 0
-      IniRead, minLifePercentToJade , Config.ini, Config4, minLifePercentToJade, 70
-      IniRead, minLifePercentToJade , Config.ini, Config4, minLifePercentToJade, 70
-      IniRead, minESPercentToJade , Config.ini, Config4, minESPercentToJade, 0
-      IniRead, minLifePercentToElementalResist , Config.ini, Config4, minLifePercentToElementalResist, 70
-      IniRead, minESPercentToElementalResist , Config.ini, Config4, minESPercentToElementalResist, 0
-      IniRead, minLifePercentToDrink , Config.ini, Config4, minLifePercentToDrink, 55
-      IniRead, minManaPercentToDrink , Config.ini, Config4, minManaPercentToDrink, 25
-      IniRead, minManaToDrinkPot , Config.ini, Config4, minManaToDrinkPot, 15
-      IniRead, minLifePercentToSpam, Config.ini, Config4, minLifePercentToSpam, 35
-      IniRead, ResyncSpam, Config.ini, Config4, ResyncSpam, 0
-      IniRead, InstantFlaskDelay, Config.ini, Config4, InstantFlaskDelay, 0
-      IniRead, QuickSilverMovementTimer , Config.ini, Config4, QuickSilverMovementTimer, 15
-      IniWrite, 4, Config.ini, Config, ConfigNumber
-   }
-   else If ConfigChoice = 5
-   {
-      IniRead, minLifePercentToQuit , Config.ini, Config5, minLifePercentToQuit, 35
-      IniRead, minESPercentToQuit , Config.ini, Config5, minESPercentToQuit, 0
-      IniRead, minLifePercentToJade , Config.ini, Config5, minLifePercentToJade, 70
-      IniRead, minLifePercentToJade , Config.ini, Config5, minLifePercentToJade, 70
-      IniRead, minESPercentToJade , Config.ini, Config5, minESPercentToJade, 0
-      IniRead, minLifePercentToElementalResist , Config.ini, Config5, minLifePercentToElementalResist, 70
-      IniRead, minESPercentToElementalResist , Config.ini, Config5, minESPercentToElementalResist, 0
-      IniRead, minLifePercentToDrink , Config.ini, Config5, minLifePercentToDrink, 55
-      IniRead, minManaPercentToDrink , Config.ini, Config5, minManaPercentToDrink, 25
-      IniRead, minManaToDrinkPot , Config.ini, Config5, minManaToDrinkPot, 15
-      IniRead, minLifePercentToSpam, Config.ini, Config5, minLifePercentToSpam, 35
-      IniRead, ResyncSpam, Config.ini, Config5, ResyncSpam, 0
-      IniRead, InstantFlaskDelay, Config.ini, Config5, InstantFlaskDelay, 0
-      IniRead, QuickSilverMovementTimer , Config.ini, Config5, QuickSilverMovementTimer, 15
-      IniWrite, 5, Config.ini, Config, ConfigNumber
-   }
-
-   GuiControl, , minLifePercentToQuit, %minLifePercentToQuit%
-   GuiControl, , minLifePercentToQuitUpdate, %minLifePercentToQuit%
-   GuiControl, , minESPercentToQuit, %minESPercentToQuit%
-   GuiControl, , minESPercentToQuitUpdate, %minESPercentToQuit%
-   GuiControl, , minLifePercentToJade, %minLifePercentToJade%
-   GuiControl, , minLifePercentToJadeUpdate, %minLifePercentToJade%
-   GuiControl, , minESPercentToJade, %minESPercentToJade%
-   GuiControl, , minESPercentToJadeUpdate, %minESPercentToJade%
-   GuiControl, , minLifePercentToElementalResist, %minLifePercentToElementalResist%
-   GuiControl, , minLifePercentToElementalResistUpdate, %minLifePercentToElementalResist%
-   GuiControl, , minESPercentToElementalResist, %minESPercentToElementalResist%
-   GuiControl, , minESPercentToElementalResistUpdate, %minESPercentToElementalResist%
-   GuiControl, , minLifePercentToDrink, %minLifePercentToDrink%
-   GuiControl, , minLifePercentToDrinkUpdate, %minLifePercentToDrink%
-   GuiControl, , minManaPercentToDrink, %minManaPercentToDrink%
-   GuiControl, , minManaPercentToDrinkUpdate, %minManaPercentToDrink%
-   GuiControl, , minManaToDrinkPot, %minManaToDrinkPot%
-   GuiControl, , minManaToDrinkPotUpdate, %minManaToDrinkPot%
-   GuiControl, , minLifePercentToSpam, %minLifePercentToSpam%
-   GuiControl, , minLifePercentToSpamUpdate, %minLifePercentToSpam%
-   GuiControl, , ResyncSpam, %ResyncSpam%
-   GuiControl, , ResyncSpamUpdate, %ResyncSpam%
-   GuiControl, , InstantFlaskDelay, %InstantFlaskDelay%
-   GuiControl, , InstantFlaskDelayUpdate,  % Round(InstantFlaskDelay/100,2)
-   GuiControl, , QuickSilverMovementTimer, %QuickSilverMovementTimer%
-   GuiControl, , QuickSilverMovementTimerUpdate, % Round(QuickSilverMovementTimer/10,1)
-
-   PlayerConfig["Default"]:={QuickSilverTimer:QuickSilverMovementTimer*100,minLifeRatioToInstant: minLifePercentToSpam/100, IFlaskDelay: InstantFlaskDelay,minLifeRatioToDrink: minLifePercentToDrink/100, minManaRatioToDrink: minManaPercentToDrink/100, minManaToDrink: minManaToDrinkPot, minLifeRatioToPopElementalResist: minLifePercentToElementalResist/100, minLifeRatioToPopJade: minLifePercentToJade/100, minLifeRatioToQuit: minLifePercentToQuit/100, minNShieldRatioToQuit: minESPercentToQuit/100, minNShieldRatioToPopElementalResist: minESPercentToElementalResist/100, minNShieldRatioToPopJade: minESPercentToJade/100}
-   PlayerConfig["Default"].FlaskConfig:=[]
-
-   PlayerConfig["Default"].FlaskConfig[1]:={Hotkey:"{1 Down 1 UP}"}
-   PlayerConfig["Default"].FlaskConfig[2]:={Hotkey:"{2 Down 2 UP}"}
-   PlayerConfig["Default"].FlaskConfig[3]:={Hotkey:"{3 Down 3 UP}"}
-   PlayerConfig["Default"].FlaskConfig[4]:={Hotkey:"{4 Down 4 UP}"}
-   PlayerConfig["Default"].FlaskConfig[5]:={Hotkey:"{5 Down 5 UP}"}
-return
-
-TrayNotificationsCheck:
-   Gui, Submit, NoHide
-   If TrayCheckBox = 0
-   {
-      TrayNotificationsCheck = 0
-      trayNotifications:=true
-   }
-   If TrayCheckBox = 1
-   {
-      TrayNotificationsCheck = 1
-      trayNotifications:=false
-   }
-   IniWrite, %TrayNotificationsCheck% , Config.ini, Config, TrayNotificationsCheck
-return   
-
-QuickSilverCheck:
-   Gui, Submit, NoHide
-   If QuickSilverCheckBox = 0
-   {
-      QuickSilverCheck = 0
-      IniWrite, 0 , Config.ini, Config, QuickSilverCheck
-   }
-   If QuickSilverCheckBox = 1
-   {
-      QuickSilverCheck = 1
-      IniWrite, 1 , Config.ini, Config, QuickSilverCheck
-   }
-   IniWrite, %QuickSilverCheck% , Config.ini, Config, QuickSilverCheck
-return 
-
-QuickSilverCheck2:
-   Gui, Submit, NoHide
-   If QuickSilverCheckBox2 = 0
-   {
-      QuickSilverCheck2 = 0
-      IniWrite, 0 , Config.ini, Config, QuickSilverCheck2
-   }
-   If QuickSilverCheckBox2 = 1
-   {
-      QuickSilverCheck2 = 1
-      IniWrite, 1 , Config.ini, Config, QuickSilverCheck2
-   }
-   IniWrite, %QuickSilverCheck2% , Config.ini, Config, QuickSilverCheck2
-return 
-
-AutoShiftCheck:
-   Gui, Submit, NoHide
-   If AutoShiftCheckBox = 0
-   {
-      AutoShiftCheck = 0
-      IniWrite, 0 , Config.ini, Config, AutoShiftCheck
-   }
-   If AutoShiftCheckBox = 1
-   {
-      AutoShiftCheck = 1
-      IniWrite, 1 , Config.ini, Config, AutoShiftCheck
-   }
-   IniWrite, %AutoShiftCheck% , Config.ini, Config, AutoShiftCheck
-return
-
-SteamCheck:
-   Gui, Submit, NoHide
-   If SteamCheckBox = 0
-   {
-      IniWrite, 0 , Config.ini, Config, baseMgrPtr
-      IniWrite, 0 , Config.ini, Config, SteamCheck
-      MsgBox, The Base Pointer Has Been Erased,`nNext Time You Open the Script, `nIt Will Search for it Again `n`nThe Script Will now Close.
-
-   }
-   If SteamCheckBox = 1
-   {
-      IniWrite, 0 , Config.ini, Config, baseMgrPtr
-      IniWrite, 1 , Config.ini, Config, SteamCheck
-      MsgBox, The Base Pointer Has Been Erased,`nNext Time You Open the Script, `nIt Will Search for it Again `n`nThe Script Will now Close.
-   }
-ExitApp   
-
-DPSCheck:
-   Gui, Submit, NoHide
-   If DPSCheckBox = 0
-   {
-      IniWrite, 0 , Config.ini, Config, DPSCheck
-   }
-   If DPSCheckBox = 1
-   {
-      IniWrite, 1 , Config.ini, Config, DPSCheck
-   }
-Return
-
-showgui:
-   Gui, Show, x760 y198 h525 w474,
-Return
-
-DisableSlot:
-   Gui, Submit, NoHide
-   If DisableSlot1 = 0
-   {
-      IniWrite, 0 , Config.ini, DisableSlot, DisableSlot1
-   }
-   else If DisableSlot1 = 1
-   {
-      IniWrite, 1 , Config.ini, DisableSlot, DisableSlot1
-   }
-      If DisableSlot2 = 0
-   {
-      IniWrite, 0 , Config.ini, DisableSlot, DisableSlot2
-   }
-   else If DisableSlot2 = 1
-   {
-      IniWrite, 1 , Config.ini, DisableSlot, DisableSlot2
-   }
-      If DisableSlot3 = 0
-   {
-      IniWrite, 0 , Config.ini, DisableSlot, DisableSlot3
-   }
-   else If DisableSlot3 = 1
-   {
-      IniWrite, 1 , Config.ini, DisableSlot, DisableSlot3
-   }
-      If DisableSlot4 = 0
-   {
-      IniWrite, 0 , Config.ini, DisableSlot, DisableSlot4
-   }
-   else If DisableSlot4 = 1
-   {
-      IniWrite, 1 , Config.ini, DisableSlot, DisableSlot4
-   }
-      If DisableSlot5 = 0
-   {
-      IniWrite, 0 , Config.ini, DisableSlot, DisableSlot5
-   }
-   else If DisableSlot5 = 1
-   {
-      IniWrite, 1 , Config.ini, DisableSlot, DisableSlot5
-   }
-return
-
-Find:
-   Gui, Submit, NoHide  
-   IniWrite, 0 , Config.ini, Config, baseMgrPtr
-   MsgBox, The Base Pointer Has Been Erased,`nNext Time You Open the Script, `nIt Will Search for it Again `n`nThe Script Will now Close.
-ExitApp
-
-ReadMe:
-   MsgBox, ------------------------------HOTKEYS------------------------------`n`n[F1] --- Use Resync Command`n[F2] --- Use Remaining Command`n[F3] --- Over an Item for DPSCalc`n[Ctrl+F3] --- Over an Item for More info on the Internet`n[F4] --- Test Exit to Log In Screen`n[Ctrl+F4] -- Test Use Portal`n[F10] -- Send Last Chat Message to Trade Channels 1-10`n[Alt + W] - Change Window to Bordeless, and locks mouse on window.`n`n------------------------------CREDITS------------------------------`n`n Base Script Created by Wrongusername.`n`n GUI and Improvements by Gurud.`n`n DPSCalc By Nipper`n`n----------------------------MORE INFO----------------------------`n`nFor more Info and Updates Go to:`n`n http://www.ownedcore.com/forums`n/mmo/path-of-exile/poe-bots-programs`n/451206-poe-autoflask-autoscript-improvements-updates.html`n`nThe link has been coppied to the clipboard.
-   clipboard = http://www.ownedcore.com/forums/mmo/path-of-exile/poe-bots-programs/451206-poe-autoflask-autoscript-improvements-updates.html
-return
-
-Donate:
-   Run "https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=gurud.exe@gmail.com&lc=BR&item_name=MultiScript Support&currency_code=USD&bn=PP-DonationsBF:btn_donateCC_LG.gif:NonHosted"
-return
-
-GuiClose:
-   Gui, Submit
-   if (trayNotifications)
-   {
-      TrayTip, Script is Still Running in the Background, %A_Space% , 2
-   }
-return
-
-
 PortalInvCheck()
 {
 IfWinActive Path of Exile ahk_class Direct3DWindowClass
@@ -2717,6 +2235,310 @@ IfWinActive Path of Exile ahk_class Direct3DWindowClass
    }
 return false
 }
+
+;-------TEST FUNCTIONS-----------------TEST FUNCTIONS-----------------TEST FUNCTIONS-----------------
+
+;-------HOTKEYS-----------------HOTKEYS-----------------HOTKEYS-----------------HOTKEYS--------------
+
+
+F1::
+   desync:=1
+return
+
+F2::
+   remaining:=1
+return
+
+F3::
+   DPSCalc()
+return
+
+^F3::
+   Webgrab()
+return
+
+F4::
+   QuitToLoginScreen(WinActive("A"))
+return
+
+^F4::
+   UsePortal()
+return
+
+F10::
+   tradechat:=1
+return
+
+
+!w::
+   WinGet, window, ID, A   ; Use the ID of the active window.
+   Toggle_Window(window)
+return
+
+;-------HOTKEYS-----------------HOTKEYS-----------------HOTKEYS-----------------HOTKEYS--------------
+
+;-------GUI UPDATE FUNCTIONS--------------GUI UPDATE FUNCTIONS--------------GUI UPDATE FUNCTIONS-----
+
+GuiUpdate:
+   Gui, Submit, NoHide
+   GuiControl, , minLifePercentToQuitUpdate, %minLifePercentToQuit%
+   GuiControl, , minESPercentToQuitUpdate, %minESPercentToQuit%
+   GuiControl, , minLifePercentToJadeUpdate, %minLifePercentToJade%
+   GuiControl, , minESPercentToJadeUpdate, %minESPercentToJade%
+   GuiControl, , minLifePercentToElementalResistUpdate, %minLifePercentToElementalResist%
+   GuiControl, , minESPercentToElementalResistUpdate, %minESPercentToElementalResist%
+   GuiControl, , minLifePercentToDrinkUpdate, %minLifePercentToDrink%
+   GuiControl, , minManaPercentToDrinkUpdate, %minManaPercentToDrink%
+   GuiControl, , minManaToDrinkPotUpdate, %minManaToDrinkPot%
+   GuiControl, , InstantFlaskDelayUpdate,  % Round(InstantFlaskDelay/100,2)
+   GuiControl, , minLifePercentToSpamUpdate, %minLifePercentToSpam%
+   GuiControl, , QuickSilverMovementTimerUpdate, % Round(QuickSilverMovementTimer/10,1)
+   GuiControl, , TradeSpamUpdate, %TradeSpam%
+   GuiControl, , ResyncSpamUpdate, %ResyncSpam%
+
+   Loop, 5
+   {
+		If ConfigChoice = %A_Index%
+		{
+			IniWrite, %minLifePercentToQuit% , Config.ini, Config%A_Index%, minLifePercentToQuit
+			IniWrite, %minESPercentToQuit% , Config.ini, Config%A_Index%, minESPercentToQuit
+			IniWrite, %minLifePercentToJade% , Config.ini, Config%A_Index%, minLifePercentToJade
+			IniWrite, %minESPercentToJade% , Config.ini, Config%A_Index%, minESPercentToJade
+			IniWrite, %minLifePercentToElementalResist% , Config.ini, Config%A_Index%, minLifePercentToElementalResist
+			IniWrite, %minESPercentToElementalResist% , Config.ini, Config%A_Index%, minESPercentToElementalResist
+			IniWrite, %minLifePercentToDrink% , Config.ini, Config%A_Index%, minLifePercentToDrink
+			IniWrite, %minManaPercentToDrink% , Config.ini, Config%A_Index%, minManaPercentToDrink
+			IniWrite, %minManaToDrinkPot% , Config.ini, Config%A_Index%, minManaToDrinkPot
+			IniWrite, %minLifePercentToSpam% , Config.ini, Config%A_Index%, minLifePercentToSpam
+			IniWrite, %InstantFlaskDelay% , Config.ini, Config%A_Index%, InstantFlaskDelay
+			IniWrite, %QuickSilverMovementTimer% , Config.ini, Config%A_Index%, QuickSilverMovementTimer
+			IniWrite, %ResyncSpam% , Config.ini, Config%A_Index%, ResyncSpam
+		}
+   }
+
+   
+   IniWrite, %InstantFlaskDelay% , Config.ini, Config, InstantFlaskDelay
+   IFDelay:= InstantFlaskDelay
+
+   PlayerConfig["Default"]:={QuickSilverTimer:QuickSilverMovementTimer*100,minLifeRatioToInstant: minLifePercentToSpam/100, IFlaskDelay: InstantFlaskDelay,minLifeRatioToDrink: minLifePercentToDrink/100, minManaRatioToDrink: minManaPercentToDrink/100, minManaToDrink: minManaToDrinkPot, minLifeRatioToPopElementalResist: minLifePercentToElementalResist/100, minLifeRatioToPopJade: minLifePercentToJade/100, minLifeRatioToQuit: minLifePercentToQuit/100, minNShieldRatioToQuit: minESPercentToQuit/100, minNShieldRatioToPopElementalResist: minESPercentToElementalResist/100, minNShieldRatioToPopJade: minESPercentToJade/100}
+
+
+return
+
+ExitSub:
+if A_ExitReason not in Logoff,Shutdown  ; Avoid spaces around the comma in this line.
+{
+    IniWrite, %TabChoice%, Config.ini, Config, LastTab
+}
+ExitApp
+
+TabFunc:
+Gui, Submit, NoHide
+return
+
+Default:
+   Gui, Submit, NoHide
+
+    Loop, 5
+    {
+	   If ConfigChoice = %A_Index%
+	   {
+	   	  IniDelete, Config.ini, Config%A_Index%
+	   }
+	}
+   
+   Reload
+   Sleep, 2000
+   MsgBox,0,, An error ocurred, closing script.
+ExitApp
+
+AutoQuitList:
+   Gui, Submit, NoHide
+   If AutoQuitChoice = 1
+   autoQuitMode:=1
+   If AutoQuitChoice = 2
+   autoQuitMode:=0
+   If AutoQuitChoice = 3
+   {
+      MsgBox, This is still beta. This is only for testing.`nDont use in Harcore`nWorks Better on Bigger Resolutions`nPut the Portal Scroll on the Top-Left of your Inventory`n`nTest With [Ctrl+F4] First`n`nUse Ctrl+Alt+Del to unstuck.
+      autoQuitMode:=3
+   }
+   If AutoQuitChoice = 4
+   autoQuitMode:=4
+   
+   IniWrite, %AutoQuitChoice% , Config.ini, Config, AutoQuitMethod
+return
+
+ConfigList:
+   Gui, Submit, NoHide
+
+
+   Loop, 5
+   {
+		If ConfigChoice = %A_Index%
+		{
+			IniRead, minLifePercentToQuit , Config.ini, Config%A_Index%, minLifePercentToQuit, 35
+			IniRead, minESPercentToQuit , Config.ini, Config%A_Index%, minESPercentToQuit, 0
+			IniRead, minLifePercentToJade , Config.ini, Config%A_Index%, minLifePercentToJade, 70
+			IniRead, minLifePercentToJade , Config.ini, Config%A_Index%, minLifePercentToJade, 70
+			IniRead, minESPercentToJade , Config.ini, Config%A_Index%, minESPercentToJade, 0
+			IniRead, minLifePercentToElementalResist , Config.ini, Config%A_Index%, minLifePercentToElementalResist, 70
+			IniRead, minESPercentToElementalResist , Config.ini, Config%A_Index%, minESPercentToElementalResist, 0
+			IniRead, minLifePercentToDrink , Config.ini, Config%A_Index%, minLifePercentToDrink, 55
+			IniRead, minManaPercentToDrink , Config.ini, Config%A_Index%, minManaPercentToDrink, 25
+			IniRead, minManaToDrinkPot , Config.ini, Config%A_Index%, minManaToDrinkPot, 15
+			IniRead, minLifePercentToSpam, Config.ini, Config%A_Index%, minLifePercentToSpam, 35
+			IniRead, ResyncSpam, Config.ini, Config%A_Index%, ResyncSpam, 0
+			IniRead, InstantFlaskDelay, Config.ini, Config%A_Index%, InstantFlaskDelay, 0
+			IniRead, QuickSilverMovementTimer , Config.ini, Config%A_Index%, QuickSilverMovementTimer, 15
+			IniWrite, %A_Index%, Config.ini, Config, ConfigNumber
+		}
+	}
+
+
+   GuiControl, , minLifePercentToQuit, %minLifePercentToQuit%
+   GuiControl, , minLifePercentToQuitUpdate, %minLifePercentToQuit%
+   GuiControl, , minESPercentToQuit, %minESPercentToQuit%
+   GuiControl, , minESPercentToQuitUpdate, %minESPercentToQuit%
+   GuiControl, , minLifePercentToJade, %minLifePercentToJade%
+   GuiControl, , minLifePercentToJadeUpdate, %minLifePercentToJade%
+   GuiControl, , minESPercentToJade, %minESPercentToJade%
+   GuiControl, , minESPercentToJadeUpdate, %minESPercentToJade%
+   GuiControl, , minLifePercentToElementalResist, %minLifePercentToElementalResist%
+   GuiControl, , minLifePercentToElementalResistUpdate, %minLifePercentToElementalResist%
+   GuiControl, , minESPercentToElementalResist, %minESPercentToElementalResist%
+   GuiControl, , minESPercentToElementalResistUpdate, %minESPercentToElementalResist%
+   GuiControl, , minLifePercentToDrink, %minLifePercentToDrink%
+   GuiControl, , minLifePercentToDrinkUpdate, %minLifePercentToDrink%
+   GuiControl, , minManaPercentToDrink, %minManaPercentToDrink%
+   GuiControl, , minManaPercentToDrinkUpdate, %minManaPercentToDrink%
+   GuiControl, , minManaToDrinkPot, %minManaToDrinkPot%
+   GuiControl, , minManaToDrinkPotUpdate, %minManaToDrinkPot%
+   GuiControl, , minLifePercentToSpam, %minLifePercentToSpam%
+   GuiControl, , minLifePercentToSpamUpdate, %minLifePercentToSpam%
+   GuiControl, , ResyncSpam, %ResyncSpam%
+   GuiControl, , ResyncSpamUpdate, %ResyncSpam%
+   GuiControl, , InstantFlaskDelay, %InstantFlaskDelay%
+   GuiControl, , InstantFlaskDelayUpdate,  % Round(InstantFlaskDelay/100,2)
+   GuiControl, , QuickSilverMovementTimer, %QuickSilverMovementTimer%
+   GuiControl, , QuickSilverMovementTimerUpdate, % Round(QuickSilverMovementTimer/10,1)
+
+   PlayerConfig["Default"]:={QuickSilverTimer:QuickSilverMovementTimer*100,minLifeRatioToInstant: minLifePercentToSpam/100, IFlaskDelay: InstantFlaskDelay,minLifeRatioToDrink: minLifePercentToDrink/100, minManaRatioToDrink: minManaPercentToDrink/100, minManaToDrink: minManaToDrinkPot, minLifeRatioToPopElementalResist: minLifePercentToElementalResist/100, minLifeRatioToPopJade: minLifePercentToJade/100, minLifeRatioToQuit: minLifePercentToQuit/100, minNShieldRatioToQuit: minESPercentToQuit/100, minNShieldRatioToPopElementalResist: minESPercentToElementalResist/100, minNShieldRatioToPopJade: minESPercentToJade/100}
+   
+return
+
+TrayNotificationsCheck:
+   Gui, Submit, NoHide
+   If TrayCheckBox = 0
+   {
+      TrayNotificationsCheck = 0
+      trayNotifications:=true
+   }
+   If TrayCheckBox = 1
+   {
+      TrayNotificationsCheck = 1
+      trayNotifications:=false
+   }
+   IniWrite, %TrayNotificationsCheck% , Config.ini, Config, TrayNotificationsCheck
+return   
+
+QuickSilverCheck:
+   Gui, Submit, NoHide
+   If QuickSilverCheckBox = 0
+   {
+      QuickSilverCheck = 0
+      IniWrite, 0 , Config.ini, Config, QuickSilverCheck
+   }
+   If QuickSilverCheckBox = 1
+   {
+      QuickSilverCheck = 1
+      IniWrite, 1 , Config.ini, Config, QuickSilverCheck
+   }
+   IniWrite, %QuickSilverCheck% , Config.ini, Config, QuickSilverCheck
+return 
+
+QuickSilverCheck2:
+   Gui, Submit, NoHide
+   If QuickSilverCheckBox2 = 0
+   {
+      QuickSilverCheck2 = 0
+      IniWrite, 0 , Config.ini, Config, QuickSilverCheck2
+   }
+   If QuickSilverCheckBox2 = 1
+   {
+      QuickSilverCheck2 = 1
+      IniWrite, 1 , Config.ini, Config, QuickSilverCheck2
+   }
+   IniWrite, %QuickSilverCheck2% , Config.ini, Config, QuickSilverCheck2
+return 
+
+AutoShiftCheck:
+   Gui, Submit, NoHide
+   If AutoShiftCheckBox = 0
+   {
+      AutoShiftCheck = 0
+      IniWrite, 0 , Config.ini, Config, AutoShiftCheck
+   }
+   If AutoShiftCheckBox = 1
+   {
+      AutoShiftCheck = 1
+      IniWrite, 1 , Config.ini, Config, AutoShiftCheck
+   }
+   IniWrite, %AutoShiftCheck% , Config.ini, Config, AutoShiftCheck
+return
+
+
+DPSCheck:
+   Gui, Submit, NoHide
+   If DPSCheckBox = 0
+   {
+      IniWrite, 0 , Config.ini, Config, DPSCheck
+   }
+   If DPSCheckBox = 1
+   {
+      IniWrite, 1 , Config.ini, Config, DPSCheck
+   }
+Return
+
+showgui:
+   Gui, Show, x760 y198 h525 w474,
+Return
+
+DisableSlot:
+   Gui, Submit, NoHide
+   Loop, 5
+   {
+		If DisableSlot%A_Index% = 0
+		{
+			IniWrite, 0 , Config.ini, DisableSlot, DisableSlot%A_Index%
+		}
+		else If DisableSlot%A_Index% = 1
+		{
+			IniWrite, 1 , Config.ini, DisableSlot, DisableSlot%A_Index%
+		}
+   }
+return
+
+ReadMe:
+   MsgBox, ------------------------------HOTKEYS------------------------------`n`n[F1] --- Use Resync Command`n[F2] --- Use Remaining Command`n[F3] --- Over an Item for DPSCalc`n[Ctrl+F3] --- Over an Item for More info on the Internet`n[F4] --- Test Exit to Log In Screen`n[Ctrl+F4] -- Test Use Portal`n[F10] -- Send Last Chat Message to Trade Channels 1-10`n[Alt + W] - Change Window to Bordeless, and locks mouse on window.`n`n------------------------------CREDITS------------------------------`n`n Base Script Created by Wrongusername.`n`n GUI and Improvements by Gurud.`n`n DPSCalc By Nipper`n`n----------------------------MORE INFO----------------------------`n`nFor more Info and Updates Go to:`n`n http://www.ownedcore.com/forums`n/mmo/path-of-exile/poe-bots-programs`n/451206-poe-autoflask-autoscript-improvements-updates.html`n`nThe link has been coppied to the clipboard.
+   clipboard = http://www.ownedcore.com/forums/mmo/path-of-exile/poe-bots-programs/451206-poe-autoflask-autoscript-improvements-updates.html
+return
+
+Donate:
+   Run "https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=gurud.exe@gmail.com&lc=BR&item_name=MultiScript Support&currency_code=USD&bn=PP-DonationsBF:btn_donateCC_LG.gif:NonHosted"
+return
+
+GuiClose:
+   Gui, Submit
+   if (trayNotifications)
+   {
+      TrayTip, Script is Still Running in the Background, %A_Space% , 2
+   }
+return
+
+;-------GUI UPDATE FUNCTIONS--------------GUI UPDATE FUNCTIONS--------------GUI UPDATE FUNCTIONS-----
+
+;-------NOT MY FUNCTIONS--------------NOT MY FUNCTIONS--------------NOT MY FUNCTIONS-----------------
  
 ; DPS Calculator Script
 ; This script can be found here:
@@ -2969,3 +2791,7 @@ If (MouseMoved or ToolTipTimeout >= 50)
    ToolTip
 }
 return
+
+;-------NOT MY FUNCTIONS--------------NOT MY FUNCTIONS--------------NOT MY FUNCTIONS-----------------
+
+;-------END--------------END--------------END--------------END--------------END----------------------
