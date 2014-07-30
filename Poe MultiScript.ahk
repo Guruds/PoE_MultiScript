@@ -282,7 +282,7 @@ Menu, Tray, Add, Configuration Window, showgui
 
 Gui, Submit
 
-Gui, Show, x760 y198 h525 w474, PoE MultiScript v07.27.2014
+Gui, Show, x760 y198 h525 w474, PoE MultiScript v07.30.2014
 
 
 ;-------GUI-----------------GUI-----------------GUI-----------------GUI-----------------GUI----------
@@ -1362,7 +1362,7 @@ Main()
 
       if (PlayerStats.PlayerActionID!="" && PlayerStats.PlayerActionID!=80 && PlayerStats.PlayerActionID!=90)
       {
-         MovementTimer:= A_TickCounti
+         MovementTimer:= A_TickCount
       }
       ;TODO MovementTimer%A_Index%
 
