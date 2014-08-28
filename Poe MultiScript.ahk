@@ -61,6 +61,8 @@ Loop, 5
 	{
 		IniRead, minLifePercentToQuit , Config.ini, Config%A_Index%, minLifePercentToQuit, 35
 		IniRead, minESPercentToQuit , Config.ini, Config%A_Index%, minESPercentToQuit, 0
+		IniRead, maxLifePercentPerHitToQuit , Config.ini, Config%A_Index%, maxLifePercentPerHitToQuit, 50
+		IniRead, maxESPercentPerHitToQuit , Config.ini, Config%A_Index%, maxESPercentPerHitToQuit, 0
 		IniRead, minLifePercentToJade , Config.ini, Config%A_Index%, minLifePercentToJade, 70
 		IniRead, minLifePercentToJade , Config.ini, Config%A_Index%, minLifePercentToJade, 70
 		IniRead, minESPercentToJade , Config.ini, Config%A_Index%, minESPercentToJade, 0
@@ -167,26 +169,26 @@ If QuickSilverCheck2 = 1
 
 Gui, Tab, AutoQuit
 
-Gui, Add, GroupBox, x12 y110 w220 h60, Auto Quit Method
+Gui, Add, GroupBox, x12 y180 w220 h60, Auto Quit Method
 IniRead, AutoQuitMethod , Config.ini, Config, AutoQuitMethod, 1
 If AutoQuitMethod = 1
 {
-   Gui, Add, DropDownList, x22 y130 w200 h21 AltSubmit gAutoQuitList vAutoQuitChoice R5, Exit to Login Screen (Fastest)||Kill Process|Use a Portal (On Testing)|Disabled
+   Gui, Add, DropDownList, x22 y200 w200 h21 AltSubmit gAutoQuitList vAutoQuitChoice R5, Exit to Login Screen (Fastest)||Kill Process|Use a Portal (On Testing)|Disabled
    autoQuitMode:=1
 }
 else If AutoQuitMethod = 2
 {
-   Gui, Add, DropDownList, x22 y130 w200 h21 AltSubmit gAutoQuitList vAutoQuitChoice R5, Exit to Login Screen (Fastest)|Kill Process||Use a Portal (On Testing)|Disabled
+   Gui, Add, DropDownList, x22 y200 w200 h21 AltSubmit gAutoQuitList vAutoQuitChoice R5, Exit to Login Screen (Fastest)|Kill Process||Use a Portal (On Testing)|Disabled
    autoQuitMode:=0
 }
 else If AutoQuitMethod = 3
 {
-   Gui, Add, DropDownList, x22 y130 w200 h21 AltSubmit gAutoQuitList vAutoQuitChoice R5, Exit to Login Screen (Fastest)|Kill Process|Use a Portal (On Testing)||Disabled
+   Gui, Add, DropDownList, x22 y200 w200 h21 AltSubmit gAutoQuitList vAutoQuitChoice R5, Exit to Login Screen (Fastest)|Kill Process|Use a Portal (On Testing)||Disabled
    autoQuitMode:=3
 }
 else If AutoQuitMethod = 4
 {
-   Gui, Add, DropDownList, x22 y130 w200 h21 AltSubmit gAutoQuitList vAutoQuitChoice R5, Exit to Login Screen (Fastest)|Kill Process|Use a Portal (On Testing)|Disabled||
+   Gui, Add, DropDownList, x22 y200 w200 h21 AltSubmit gAutoQuitList vAutoQuitChoice R5, Exit to Login Screen (Fastest)|Kill Process|Use a Portal (On Testing)|Disabled||
    autoQuitMode:=4
 }
 
@@ -199,6 +201,16 @@ Gui, Add, GroupBox, x242 y40 w220 h60 , Min Energy Shield `% to Quit
 Gui, Add, Slider, x252 y60 w170 h30 gGuiUpdate vminESPercentToQuit +ToolTip TickInterval25, %minESPercentToQuit%
 Gui, Add, Text, x422 y60 w20 h30 vminESPercentToQuitUpdate, %minESPercentToQuit%
 Gui, Add, Text, x442 y60 w10 h30 , `%
+
+Gui, Add, GroupBox, x12 y110 w220 h60 , Max Life `% Per Hit to Quit
+Gui, Add, Slider, x22 y130 w170 h30 gGuiUpdate vmaxLifePercentPerHitToQuit +ToolTip TickInterval25, %maxLifePercentPerHitToQuit%
+Gui, Add, Text, x192 y130 w20 h30 vmaxLifePercentPerHitToQuitUpdate, %maxLifePercentPerHitToQuit%
+Gui, Add, Text, x212 y130 w10 h30 , `%
+
+Gui, Add, GroupBox, x242 y110 w220 h60 , Max Energy Shield `% Per Hit to Quit
+Gui, Add, Slider, x252 y130 w170 h30 gGuiUpdate vmaxESPercentPerHitToQuit +ToolTip TickInterval25, %maxESPercentPerHitToQuit%
+Gui, Add, Text, x422 y130 w20 h30 vmaxESPercentPerHitToQuitUpdate, %maxESPercentPerHitToQuit%
+Gui, Add, Text, x442 y130 w10 h30 , `%
 
 Gui, Tab, Settings
 
@@ -282,7 +294,7 @@ Menu, Tray, Add, Configuration Window, showgui
 
 Gui, Submit
 
-Gui, Show, x760 y198 h525 w474, PoE MultiScript v08.27.2014
+Gui, Show, x760 y198 h525 w474, PoE MultiScript v08.28.2014
 
 ;---------------------START DYNAMIC HOTKEYS---------------------
 
@@ -352,23 +364,17 @@ ChatCheckTimer:= 1
 10secsTimer:=A_TickCount-10000
 20secsTimer:=A_TickCount-20000
 PanickedTimer:=40
+LastHP:=0
+LastES:=0
 
 autoQuitPauseBeforeClick:=100
 autoQuitSoftToleranceBeforeKill:=2000 ; try to quit to loginscreen at most milliseconds before killing game window(in case we can't quit by clicking menu option for some reason)
 
 PlayerConfig:={}
 
-PlayerConfig["Default"]:={QuickSilverTimer:QuickSilverMovementTimer*100,minLifeRatioToInstant: minLifePercentToSpam/100, IFlaskDelay: InstantFlaskDelay,minLifeRatioToDrink: minLifePercentToDrink/100, minManaRatioToDrink: minManaPercentToDrink/100, minManaToDrink: minManaToDrinkPot, minLifeRatioToPopElementalResist: minLifePercentToElementalResist/100, minLifeRatioToPopJade: minLifePercentToJade/100, minLifeRatioToQuit: minLifePercentToQuit/100, minNShieldRatioToQuit: minESPercentToQuit/100, minNShieldRatioToPopElementalResist: minESPercentToElementalResist/100, minNShieldRatioToPopJade: minESPercentToJade/100}
+PlayerConfig["Default"]:={QuickSilverTimer:QuickSilverMovementTimer*100, minLifeRatioToInstant: minLifePercentToSpam/100, IFlaskDelay: InstantFlaskDelay,minLifeRatioToDrink: minLifePercentToDrink/100, minManaRatioToDrink: minManaPercentToDrink/100, minManaToDrink: minManaToDrinkPot, minLifeRatioToPopElementalResist: minLifePercentToElementalResist/100,minLifeRatioToPopJade: minLifePercentToJade/100, minLifeRatioToQuit: minLifePercentToQuit/100,maxLifeRatioPerHitToQuit: maxLifePercentPerHitToQuit/100,maxNShieldRatioPerHitToQuit: maxESPercentPerHitToQuit/100,minNShieldRatioToQuit: minESPercentToQuit/100, minNShieldRatioToPopElementalResist: minESPercentToElementalResist/100, minNShieldRatioToPopJade: minESPercentToJade/100}
 
 PlayerConfig["Default"].FlaskConfig:=[]
-
-/*
-PlayerConfig["Default"].FlaskConfig[1]:={Hotkey:"{1 Down 1 UP}"} ; ,OverrideFlaskDuration: 70, instantRecoveryOnLowLife:true, } ;specify override recovery time in deciseconds, e.g. 7 seconds = 70
-PlayerConfig["Default"].FlaskConfig[2]:={Hotkey:"{2 Down 2 UP}"}
-PlayerConfig["Default"].FlaskConfig[3]:={Hotkey:"{3 Down 3 UP}"}
-PlayerConfig["Default"].FlaskConfig[4]:={Hotkey:"{4 Down 4 UP}"}
-PlayerConfig["Default"].FlaskConfig[5]:={Hotkey:"{5 Down 5 UP}"}
-*/
 
 attachedtext=:false
 
@@ -623,10 +629,10 @@ ReadPlayerStats(hwnd, byRef PlayerStats)
 
    InCityOffset:=GetMultilevelPointer(pH,[CheckBase+0x11C,0x788,0x200])
    PlayerStats.InCity:=ReadMemUInt(pH,InCityOffset+0x860)
-   EntityNamePtr:=GetMultilevelPointer(ph,[CheckBase+0x184,0x978,0xC10])
+   EntityNamePtr:=GetMultilevelPointer(ph,[CheckBase+0x184,0x978,0xC14])
    EntityName:=ReadMemStr(ph,EntityNamePtr,70,"UTF-16")
    PlayerStats.EntityName:=EntityName
-   EntityNamePtr2:=GetMultilevelPointer(ph,[CheckBase+0x184,0x978,0xB90])
+   EntityNamePtr2:=GetMultilevelPointer(ph,[CheckBase+0x184,0x978,0xB94])
    EntityName2:=ReadMemStr(ph,EntityNamePtr2+0x32,70,"UTF-16")
    PlayerStats.EntityName2:=EntityName2
 }
@@ -829,9 +835,9 @@ ReadHeroPos(hwnd,ByRef x, ByRef y)
       FrameBase:=GetFrameBase(hwnd)
 
       if (Steam) 
-   	  PlayerPosBase:=GetMultilevelPointer(pH,[FrameBase+0x158,0x5A0,24])
+   	  PlayerPosBase:=GetMultilevelPointer(pH,[FrameBase+0x158,0x5A0,0x24])
       else 
-      PlayerPosBase:=GetMultilevelPointer(pH,[FrameBase+0x13C,0x5A0,24])
+      PlayerPosBase:=GetMultilevelPointer(pH,[FrameBase+0x13C,0x5A0,0x24])
 
       x:=ReadMemFloat(pH,PlayerPosBase+0x2c)
       y:=ReadMemFloat(pH,PlayerPosBase+0x30)
@@ -1043,6 +1049,8 @@ Main()
    global FLaskHotkey3
    global FLaskHotkey4
    global FLaskHotkey5
+   global LastHP
+   global LastES
 
    WinGet, WinID, List, %cliname%
    
@@ -1108,13 +1116,15 @@ Main()
       if PlayerStats.MaxNShield>0
       {
          currNShieldRatio:=PlayerStats.CurrNShield/PlayerStats.MaxNShield
+         LastNShieldRatio:=LastES/PlayerStats.MaxNShield
       }
       else 
       currNShieldRatio:= 1
       
       if (PlayerStats.MaxHP>1)
       {
-         currLifeRatio:=PlayerStats.CurrHP/(PlayerStats.MaxHP-PlayerStats.ReservedHPFlat-PlayerStats.MaxHP*PlayerStats.ReservedHPPercent/100)
+        currLifeRatio:=PlayerStats.CurrHP/(PlayerStats.MaxHP-PlayerStats.ReservedHPFlat-PlayerStats.MaxHP*PlayerStats.ReservedHPPercent/100)
+      	LastLifeRatio:=LastHP/(PlayerStats.MaxHP-PlayerStats.ReservedHPFlat-PlayerStats.MaxHP*PlayerStats.ReservedHPPercent/100)	
       }
       else 
       currLifeRatio:= 1
@@ -1124,8 +1134,7 @@ Main()
          currManaRatio:=PlayerStats.CurrMana/(PlayerStats.MaxMana-PlayerStats.ReservedManaFlat-PlayerStats.MaxMana*PlayerStats.ReservedManaPercent/100)
       }
       
-
-      if (currLifeRatio<CurrentConfig.minLifeRatioToQuit || currNShieldRatio<CurrentConfig.minNShieldRatioToQuit)
+      if (currLifeRatio<CurrentConfig.minLifeRatioToQuit || currNShieldRatio<CurrentConfig.minNShieldRatioToQuit || (currLifeRatio<LastLifeRatio And ((LastLifeRatio-currLifeRatio)>CurrentConfig.maxLifeRatioPerHitToQuit)) || (CurrentConfig.maxNShieldRatioPerHitToQuit>0 And currNShieldRatio<LastNShieldRatio And ((LastNShieldRatio-currNShieldRatio)>CurrentConfig.maxNShieldRatioPerHitToQuit)))
       {
          if (autoQuitMode=0)
          {
@@ -1148,6 +1157,17 @@ Main()
 
          }
       }
+
+      if (PlayerStats.CurrHP>0)
+      {
+	      LastHP:=PlayerStats.CurrHP
+	      LastES:=PlayerStats.CurrNShield
+  	  }
+  	  Else
+  	  {
+  	  	  LastHP:=0
+	      LastES:=0
+	  }
       
       FlasksData:=[]
       ReadFlasksData(WinID%A_Index%,FlasksData)
@@ -2411,6 +2431,8 @@ GuiUpdate:
    Gui, Submit, NoHide
    GuiControl, , minLifePercentToQuitUpdate, %minLifePercentToQuit%
    GuiControl, , minESPercentToQuitUpdate, %minESPercentToQuit%
+   GuiControl, , maxLifePercentPerHitToQuitUpdate, %maxLifePercentPerHitToQuit%
+   GuiControl, , maxESPercentPerHitToQuitUpdate, %maxESPercentPerHitToQuit%
    GuiControl, , minLifePercentToJadeUpdate, %minLifePercentToJade%
    GuiControl, , minESPercentToJadeUpdate, %minESPercentToJade%
    GuiControl, , minLifePercentToElementalResistUpdate, %minLifePercentToElementalResist%
@@ -2430,6 +2452,8 @@ GuiUpdate:
 		{
 			IniWrite, %minLifePercentToQuit% , Config.ini, Config%A_Index%, minLifePercentToQuit
 			IniWrite, %minESPercentToQuit% , Config.ini, Config%A_Index%, minESPercentToQuit
+			IniWrite, %maxLifePercentPerHitToQuit% , Config.ini, Config%A_Index%, maxLifePercentPerHitToQuit
+			IniWrite, %maxESPercentPerHitToQuit% , Config.ini, Config%A_Index%, maxESPercentPerHitToQuit
 			IniWrite, %minLifePercentToJade% , Config.ini, Config%A_Index%, minLifePercentToJade
 			IniWrite, %minESPercentToJade% , Config.ini, Config%A_Index%, minESPercentToJade
 			IniWrite, %minLifePercentToElementalResist% , Config.ini, Config%A_Index%, minLifePercentToElementalResist
@@ -2448,7 +2472,7 @@ GuiUpdate:
    IniWrite, %InstantFlaskDelay% , Config.ini, Config, InstantFlaskDelay
    IFDelay:= InstantFlaskDelay
 
-   PlayerConfig["Default"]:={QuickSilverTimer:QuickSilverMovementTimer*100,minLifeRatioToInstant: minLifePercentToSpam/100, IFlaskDelay: InstantFlaskDelay,minLifeRatioToDrink: minLifePercentToDrink/100, minManaRatioToDrink: minManaPercentToDrink/100, minManaToDrink: minManaToDrinkPot, minLifeRatioToPopElementalResist: minLifePercentToElementalResist/100, minLifeRatioToPopJade: minLifePercentToJade/100, minLifeRatioToQuit: minLifePercentToQuit/100, minNShieldRatioToQuit: minESPercentToQuit/100, minNShieldRatioToPopElementalResist: minESPercentToElementalResist/100, minNShieldRatioToPopJade: minESPercentToJade/100}
+   PlayerConfig["Default"]:={QuickSilverTimer:QuickSilverMovementTimer*100, minLifeRatioToInstant: minLifePercentToSpam/100, IFlaskDelay: InstantFlaskDelay,minLifeRatioToDrink: minLifePercentToDrink/100, minManaRatioToDrink: minManaPercentToDrink/100, minManaToDrink: minManaToDrinkPot, minLifeRatioToPopElementalResist: minLifePercentToElementalResist/100,minLifeRatioToPopJade: minLifePercentToJade/100, minLifeRatioToQuit: minLifePercentToQuit/100,maxLifeRatioPerHitToQuit: maxLifePercentPerHitToQuit/100,maxNShieldRatioPerHitToQuit: maxESPercentPerHitToQuit/100,minNShieldRatioToQuit: minESPercentToQuit/100, minNShieldRatioToPopElementalResist: minESPercentToElementalResist/100, minNShieldRatioToPopJade: minESPercentToJade/100}
 
 
 return
@@ -2507,6 +2531,8 @@ ConfigList:
 		{
 			IniRead, minLifePercentToQuit , Config.ini, Config%A_Index%, minLifePercentToQuit, 35
 			IniRead, minESPercentToQuit , Config.ini, Config%A_Index%, minESPercentToQuit, 0
+			IniRead, maxLifePercentPerHitToQuit , Config.ini, Config%A_Index%, maxLifePercentPerHitToQuit, 50
+			IniRead, maxESPercentPerHitToQuit , Config.ini, Config%A_Index%, maxESPercentPerHitToQuit, 0
 			IniRead, minLifePercentToJade , Config.ini, Config%A_Index%, minLifePercentToJade, 70
 			IniRead, minLifePercentToJade , Config.ini, Config%A_Index%, minLifePercentToJade, 70
 			IniRead, minESPercentToJade , Config.ini, Config%A_Index%, minESPercentToJade, 0
@@ -2526,6 +2552,10 @@ ConfigList:
 
    GuiControl, , minLifePercentToQuit, %minLifePercentToQuit%
    GuiControl, , minLifePercentToQuitUpdate, %minLifePercentToQuit%
+   GuiControl, , maxLifePercentPerHitToQuit, %maxLifePercentPerHitToQuit%
+   GuiControl, , maxLifePercentPerHitToQuitUpdate, %maxLifePercentPerHitToQuit%
+   GuiControl, , maxESPercentPerHitToQuit, %maxESPercentPerHitToQuit%
+   GuiControl, , maxESPercentPerHitToQuitUpdate, %maxESPercentPerHitToQuit%
    GuiControl, , minESPercentToQuit, %minESPercentToQuit%
    GuiControl, , minESPercentToQuitUpdate, %minESPercentToQuit%
    GuiControl, , minLifePercentToJade, %minLifePercentToJade%
@@ -2551,7 +2581,7 @@ ConfigList:
    GuiControl, , QuickSilverMovementTimer, %QuickSilverMovementTimer%
    GuiControl, , QuickSilverMovementTimerUpdate, % Round(QuickSilverMovementTimer/10,1)
 
-   PlayerConfig["Default"]:={QuickSilverTimer:QuickSilverMovementTimer*100,minLifeRatioToInstant: minLifePercentToSpam/100, IFlaskDelay: InstantFlaskDelay,minLifeRatioToDrink: minLifePercentToDrink/100, minManaRatioToDrink: minManaPercentToDrink/100, minManaToDrink: minManaToDrinkPot, minLifeRatioToPopElementalResist: minLifePercentToElementalResist/100, minLifeRatioToPopJade: minLifePercentToJade/100, minLifeRatioToQuit: minLifePercentToQuit/100, minNShieldRatioToQuit: minESPercentToQuit/100, minNShieldRatioToPopElementalResist: minESPercentToElementalResist/100, minNShieldRatioToPopJade: minESPercentToJade/100}
+   PlayerConfig["Default"]:={QuickSilverTimer:QuickSilverMovementTimer*100, minLifeRatioToInstant: minLifePercentToSpam/100, IFlaskDelay: InstantFlaskDelay,minLifeRatioToDrink: minLifePercentToDrink/100, minManaRatioToDrink: minManaPercentToDrink/100, minManaToDrink: minManaToDrinkPot, minLifeRatioToPopElementalResist: minLifePercentToElementalResist/100,minLifeRatioToPopJade: minLifePercentToJade/100, minLifeRatioToQuit: minLifePercentToQuit/100,maxLifeRatioPerHitToQuit: maxLifePercentPerHitToQuit/100,maxNShieldRatioPerHitToQuit: maxESPercentPerHitToQuit/100,minNShieldRatioToQuit: minESPercentToQuit/100, minNShieldRatioToPopElementalResist: minESPercentToElementalResist/100, minNShieldRatioToPopJade: minESPercentToJade/100}
    
 return
 
