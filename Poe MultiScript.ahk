@@ -282,8 +282,38 @@ Menu, Tray, Add, Configuration Window, showgui
 
 Gui, Submit
 
-Gui, Show, x760 y198 h525 w474, PoE MultiScript v07.30.2014
+Gui, Show, x760 y198 h525 w474, PoE MultiScript v08.27.2014
 
+;---------------------START DYNAMIC HOTKEYS---------------------
+
+ IniRead, savedHK1, Config.ini, Hotkeys, 1, F1
+ IniRead, savedHK2, Config.ini, Hotkeys, 2, ~F2
+ IniRead, savedHK3, Config.ini, Hotkeys, 3, ~F3
+ IniRead, savedHK4, Config.ini, Hotkeys, 4, ~^F3
+ IniRead, savedHK5, Config.ini, Hotkeys, 5, ~F4
+ IniRead, savedHK6, Config.ini, Hotkeys, 6, ~^F4
+ IniRead, savedHK7, Config.ini, Hotkeys, 7, ~F10
+ IniRead, savedHK8, Config.ini, Hotkeys, 8, ~!w
+ loop, 8
+ {
+ 	 Gui, 2:Add, Text, xm, Enter Hotkey #%A_Index%:
+	 If savedHK%A_Index%                                       ;Check for saved hotkeys in INI file.
+	 Hotkey,% savedHK%A_Index%, Label%A_Index%                 ;Activate saved hotkeys if found.
+	 StringReplace, noMods, savedHK%A_Index%, ~                  ;Remove tilde (~) and Win (#) modifiers...
+	 StringReplace, noMods, noMods, #,,UseErrorLevel              ;They are incompatible with hotkey controls (cannot be shown).
+	 Gui, 2:Add, Hotkey, x+5 vHK%A_Index% gGuiLabel, %noMods%        ;Add hotkey controls and show saved hotkeys.
+	 Gui, 2:Add, CheckBox, x+5 vCB%A_Index% Checked%ErrorLevel%, Win  ;Add checkboxes to allow the Windows key (#) as a modifier...
+ }
+Menu, Tray, Add, Configure Hotkeys, showgui2                                                      ;Check the box if Win modifier is used.
+Gui, 2:Submit, Hide
+
+Menu Tray, NoStandard
+
+Menu Tray, Standard
+
+Menu Tray,Check, Configure Hotkeys
+Menu Tray,Check, Configuration Window
+;---------------------END DYNAMIC HOTKEYS---------------------
 
 ;-------GUI-----------------GUI-----------------GUI-----------------GUI-----------------GUI----------
 
@@ -291,6 +321,12 @@ Gui, Show, x760 y198 h525 w474, PoE MultiScript v07.30.2014
 
 SetBatchLines, -1
 DetectHiddenWindows, On
+
+if not A_IsAdmin
+{
+	DllCall("shell32\ShellExecuteA", uint, 0, str, "RunAs", str, A_ScriptFullPath, str, """" . PARAM1 . """", str, A_WorkingDir, int, 1) ; Last parameter: SW_SHOWNORMAL = 1
+	ExitApp
+}
 
 cliname=Path of Exile
 
@@ -500,10 +536,10 @@ GetUiBase(hwnd)
       return
    if (Steam)
    {
-      uiBase:=GetMultilevelPointer(pH,[FrameBase+0xd8,0xA8,0x4C])
+      uiBase:=GetMultilevelPointer(pH,[FrameBase+0x15c,0x220,0x4C])
    }
    else
-   uiBase:=GetMultilevelPointer(pH,[FrameBase+0xBC,0xA8,0x4C])
+   uiBase:=GetMultilevelPointer(pH,[FrameBase+0x140,0x220,0x4C])
    return uiBase
 }
 
@@ -517,13 +553,13 @@ ReadClientResolution(hwnd, ByRef w, ByRef h)
       FrameBase:=GetFrameBase(hwnd)
       if (Steam)
       {
-         w:=ReadMemUInt(pH,FrameBase+0x1470)
-         h:=ReadMemUInt(pH,FrameBase+0x1474)
+         w:=ReadMemUInt(pH,FrameBase+0x15D0)
+         h:=ReadMemUInt(pH,FrameBase+0x15D4)
       }
       else
       {
-         w:=ReadMemUInt(pH,FrameBase+0x1458)
-         h:=ReadMemUInt(pH,FrameBase+0x145C)
+         w:=ReadMemUInt(pH,FrameBase+0x15B8)
+         h:=ReadMemUInt(pH,FrameBase+0x15BC)
       }
       return true
    }   
@@ -539,16 +575,12 @@ ReadPlayerStats(hwnd, byRef PlayerStats)
    GetWindowBasics(hwnd, mBase, pH)
    fBase:=GetFrameBase(hwnd)
    BaseMgr:=ReadMemUInt(pH,mBase+baseMgrPtr)
-   if (Steam)
-   {
-      PlayerStats.ConfigPath:=ReadMemStr(ph,BaseMgr+0x5e18,255,"UTF-16")
-      PlayerBase:=GetMultilevelPointer(pH,[fBase+0xD8,0x5A0])
-   }
-   else
-   {
-      PlayerStats.ConfigPath:=ReadMemStr(ph,BaseMgr+0x39e8,255,"UTF-16")
-      PlayerBase:=GetMultilevelPointer(pH,[fBase+0xBC,0x5A0])
-   }
+   if (Steam) 
+   PlayerBase:=GetMultilevelPointer(pH,[fBase+0x158,0x5A0])
+   else 
+   PlayerBase:=GetMultilevelPointer(pH,[fBase+0x13C,0x5A0])
+   Config:=GetMultilevelPointer(pH,[BaseMgr+0x180,0x108,0x8c])
+   PlayerStats.ConfigPath:=ReadMemStr(ph,Config+0xa4,255,"UTF-16")
    PlayerMain:=ReadMemUInt(pH,PlayerBase+4)
    PlayerStatsOffset:=ReadMemUInt(pH,PlayerMain+0xC)
    PlayerStats.MaxHP:=ReadMemUInt(pH,PlayerStatsOffset+0x50)
@@ -571,30 +603,30 @@ ReadPlayerStats(hwnd, byRef PlayerStats)
    PlayerStats.PlayerActionID:=PlayerActionID2
    if (Steam)
    {
-      CheckBase:=GetMultilevelPointer(pH,[fBase+0xD8,0xA8])
+      CheckBase:=GetMultilevelPointer(pH,[fBase+0x15c,0x220])
    }
    else
-   CheckBase:=GetMultilevelPointer(pH,[fBase+0xBC,0xA8])
-   ChatStatusOffset:=GetMultilevelPointer(pH,[CheckBase+0xc4,0x808,0x0])
+   CheckBase:=GetMultilevelPointer(pH,[fBase+0x140,0x220])
+   ChatStatusOffset:=GetMultilevelPointer(pH,[CheckBase+0xd8,0x808,0x0])
    PlayerStats.ChatStatus:=ReadMemUInt(pH,ChatStatusOffset+0x860)
-   MouseOnMonsterOffset:=ReadMemUInt(pH,CheckBase+0x164)
+   MouseOnMonsterOffset:=ReadMemUInt(pH,CheckBase+0x184)
    PlayerStats.MouseOnMonsterStatus:=ReadMemUInt(pH,MouseOnMonsterOffset+0x860)
 
-   PanelWaypointOffset:=ReadMemUInt(pH,CheckBase+0xFC)
+   PanelWaypointOffset:=ReadMemUInt(pH,CheckBase+0x118)
    PlayerStats.PanelWaypoint:=ReadMemUInt(pH,PanelWaypointOffset+0x860)
-   PanelInventoryOffset:=ReadMemUInt(pH,CheckBase+0xDC)
+   PanelInventoryOffset:=ReadMemUInt(pH,CheckBase+0xF4)
    PlayerStats.PanelInventory:=ReadMemUInt(pH,PanelInventoryOffset+0x860)
-   PanelSkillTreeOffset:=ReadMemUInt(pH,CheckBase+0xEC)
+   PanelSkillTreeOffset:=ReadMemUInt(pH,CheckBase+0x108)
    PlayerStats.PanelSkillTree:=ReadMemUInt(pH,PanelSkillTreeOffset+0x860)
-   PanelSocialOffset:=ReadMemUInt(pH,CheckBase+0xE8)
+   PanelSocialOffset:=ReadMemUInt(pH,CheckBase+0x104)
    PlayerStats.PanelSocial:=ReadMemUInt(pH,PanelSocialOffset+0x860)
 
-   InCityOffset:=GetMultilevelPointer(pH,[CheckBase+0x100,0x788,0x200])
+   InCityOffset:=GetMultilevelPointer(pH,[CheckBase+0x11C,0x788,0x200])
    PlayerStats.InCity:=ReadMemUInt(pH,InCityOffset+0x860)
-   EntityNamePtr:=GetMultilevelPointer(ph,[CheckBase+0x164,0x978,0xBD8])
+   EntityNamePtr:=GetMultilevelPointer(ph,[CheckBase+0x184,0x978,0xC10])
    EntityName:=ReadMemStr(ph,EntityNamePtr,70,"UTF-16")
    PlayerStats.EntityName:=EntityName
-   EntityNamePtr2:=GetMultilevelPointer(ph,[CheckBase+0x164,0x978,0xBBC])
+   EntityNamePtr2:=GetMultilevelPointer(ph,[CheckBase+0x184,0x978,0xB90])
    EntityName2:=ReadMemStr(ph,EntityNamePtr2+0x32,70,"UTF-16")
    PlayerStats.EntityName2:=EntityName2
 }
@@ -654,11 +686,11 @@ ReadFlasksData(hwnd, byRef FlasksData)
          FlasksData[A_Index].ChargesCurrent:=ReadMemUInt(pH,FlaskChargesPtr+0xC)
          FlasksData[A_Index].ChargesPerUse:=ReadMemUInt(pH,ReadMemUInt(pH,FlaskChargesPtr+8)+0xC)
 
-         FlaskMod1Ptr:=GetMultilevelPointer(ph,[currFlaskPtr,4,0x1C,4,4,0x10,0x44,0x14,0x50])
+         FlaskMod1Ptr:=GetMultilevelPointer(ph,[currFlaskPtr,4,0x1C,4,4,0x10,0x44,0x14,0x30])
          FlaskMod1Str:=ReadMemStr(ph,FlaskMod1Ptr,70,"UTF-16")
          FlasksData[A_Index].mod1:=FlaskMod1Str
 
-         FlaskMod2Ptr:=GetMultilevelPointer(ph,[currFlaskPtr,4,0x1C,4,4,0x10,0x44,0x2c,0x50])
+         FlaskMod2Ptr:=GetMultilevelPointer(ph,[currFlaskPtr,4,0x1C,4,4,0x10,0x44,0x2c,0x30])
          FlaskMod2Str:=ReadMemStr(ph,FlaskMod2Ptr,70,"UTF-16")
          FlasksData[A_Index].mod2:=FlaskMod2Str
 
@@ -744,6 +776,7 @@ ReadFlasksData(hwnd, byRef FlasksData)
 
 IsInGame(hwnd)
 {
+	global Steam
    if (hwnd=0 || hwnd="")
       return false
    GetWindowBasics(hwnd,mBase,pH)
@@ -752,7 +785,12 @@ IsInGame(hwnd)
    fBase:=GetFrameBase(hwnd)
    if (fBase="" || fBase=0)
       return false
-   localConnection:=ReadMemUInt(pH,fBase+0xc0)
+   if (Steam)
+   {
+      localConnection:=ReadMemUInt(pH,fBase+0x15c)
+   }
+   else
+   localConnection:=ReadMemUInt(pH,fBase+0x140)
    if (localConnection=0 || localConnection="")
       return false
    else
@@ -772,13 +810,13 @@ SetGameStateMenu(hwnd)
       return false
    if (Steam)
    {
-      localConnection:=GetMultilevelPointer(pH,[fBase+0xd8,0x59C])
+      localConnection:=ReadMemUInt(pH,fBase+0x15c)
    }
    else
-   localConnection:=ReadMemUInt(pH,fBase+0xc0)
+   localConnection:=ReadMemUInt(pH,fBase+0x140)
    if (localConnection!="" && localConnection!=0)
    {
-      WriteMemUInt(pH,localConnection+0x26f8,1)
+      WriteMemUInt(pH,localConnection+0x2A78,1)
    }
 }
 
@@ -789,16 +827,15 @@ ReadHeroPos(hwnd,ByRef x, ByRef y)
    if (mBase!=0 && pH && pH!=-1)
    {
       FrameBase:=GetFrameBase(hwnd)
-      if (Steam)
-      {
-      x:=ReadMemFloat(pH,FrameBase+0x16c4)
-      y:=ReadMemFloat(pH,FrameBase+0x16c8)
-      }
-      else
-      {
-      x:=ReadMemFloat(pH,FrameBase+0x16ac)
-      y:=ReadMemFloat(pH,FrameBase+0x16b0)
-      }
+
+      if (Steam) 
+   	  PlayerPosBase:=GetMultilevelPointer(pH,[FrameBase+0x158,0x5A0,24])
+      else 
+      PlayerPosBase:=GetMultilevelPointer(pH,[FrameBase+0x13C,0x5A0,24])
+
+      x:=ReadMemFloat(pH,PlayerPosBase+0x2c)
+      y:=ReadMemFloat(pH,PlayerPosBase+0x30)
+
       return true
    }   
 }
@@ -2241,38 +2278,129 @@ return false
 ;-------HOTKEYS-----------------HOTKEYS-----------------HOTKEYS-----------------HOTKEYS--------------
 
 
-F1::
-   desync:=1
+showgui2:
+   Gui, 2:Show,,Dynamic Hotkeys
+Return
+
+GuiLabel:
+ If %A_GuiControl% in +,^,!,+^,+!,^!,+^!    ;If the hotkey contains only modifiers, return to wait for a key.
+  return
+ If InStr(%A_GuiControl%,"vk07")            ;vk07 = MenuMaskKey (see below)
+  GuiControl,,%A_GuiControl%, % lastHK      ;Reshow the hotkey, because MenuMaskKey clears it.
+ Else
+  validateHK(A_GuiControl)
 return
 
-F2::
-   remaining:=1
+validateHK(GuiControl) {
+ global lastHK
+ Gui, 2:Submit, NoHide
+ lastHK := %GuiControl%                     ;Backup the hotkey, in case it needs to be reshown.
+ num := SubStr(GuiControl,3)                ;Get the index number of the hotkey control.
+ If (HK%num% != "") {                       ;If the hotkey is not blank...
+  StringReplace, HK%num%, HK%num%, SC15D, AppsKey      ;Use friendlier names,
+  StringReplace, HK%num%, HK%num%, SC154, PrintScreen  ;  instead of these scan codes.
+  If CB%num%                                ;  If the 'Win' box is checked, then add its modifier (#).
+   HK%num% := "#" HK%num%
+  If !RegExMatch(HK%num%,"[#!\^\+]")        ;  If the new hotkey has no modifiers, add the (~) modifier.
+   HK%num% := "~" HK%num%                   ;    This prevents any key from being blocked.
+  checkDuplicateHK(num)
+ }
+ If (savedHK%num% || HK%num%)               ;Unless both are empty,
+  setHK(num, savedHK%num%, HK%num%)         ;  update INI/GUI
+}
+
+checkDuplicateHK(num) {
+ global #ctrls
+ Loop,% #ctrls
+  If (HK%num% = savedHK%A_Index%) {
+   dup := A_Index
+   Loop,6 {
+    GuiControl,% "Disable" b:=!b, HK%dup%   ;Flash the original hotkey to alert the user.
+    Sleep,200
+   }
+   GuiControl,,HK%num%,% HK%num% :=""       ;Delete the hotkey and clear the control.
+   break
+  }
+}
+
+setHK(num,INI,GUI) {
+ If INI                           ;If previous hotkey exists,
+  Hotkey, %INI%, Label%num%, Off  ;  disable it.
+ If GUI                           ;If new hotkey exists,
+  Hotkey, %GUI%, Label%num%, On   ;  enable it.
+ IniWrite,% GUI ? GUI:null, Config.ini, Hotkeys, %num%
+ savedHK%num%  := HK%num%
+ if (trayNotifications)
+ TrayTip, Label%num%,% !INI ? GUI " ON":!GUI ? INI " OFF":GUI " ON`n" INI " OFF"
+}
+
+#MenuMaskKey vk07                 ;Requires AHK_L 38+
+#If ctrl := HotkeyCtrlHasFocus()
+ *AppsKey::                       ;Add support for these special keys,
+ *BackSpace::                     ;  which the hotkey control does not normally allow.
+ *Delete::
+ *Enter::
+ *Escape::
+ *Pause::
+ *PrintScreen::
+ *Space::
+ *Tab::
+  modifier := ""
+  If GetKeyState("Shift","P")
+   modifier .= "+"
+  If GetKeyState("Ctrl","P")
+   modifier .= "^"
+  If GetKeyState("Alt","P")
+   modifier .= "!"
+  Gui, Submit, NoHide             ;If BackSpace is the first key press, Gui has never been submitted.
+  If (A_ThisHotkey == "*BackSpace" && %ctrl% && !modifier)   ;If the control has text but no modifiers held,
+   GuiControl,,%ctrl%                                       ;  allow BackSpace to clear that text.
+  Else                                                     ;Otherwise,
+   GuiControl,,%ctrl%, % modifier SubStr(A_ThisHotkey,2)  ;  show the hotkey.
+  validateHK(ctrl)
+ return
+#If
+
+HotkeyCtrlHasFocus() {
+ GuiControlGet, ctrl, Focus       ;ClassNN
+ If InStr(ctrl,"hotkey") {
+  GuiControlGet, ctrl, FocusV     ;Associated variable
+  Return, ctrl
+ }
+}
+
+;These labels may contain any commands for their respective hotkeys to perform.
+Label1:
+	desync:=1
 return
 
-F3::
-   DPSCalc()
+Label2:
+	remaining:=1
 return
 
-^F3::
-   Webgrab()
+Label3:
+	DPSCalc()
 return
 
-F4::
-   QuitToLoginScreen(WinActive("A"))
+Label4:
+	Webgrab()
 return
 
-^F4::
-   UsePortal()
+Label5:
+	QuitToLoginScreen(WinActive("A"))
 return
 
-F10::
-   tradechat:=1
+Label6:
+	UsePortal()
 return
 
+Label7:
+	tradechat:=1
+return
 
-!w::
-   WinGet, window, ID, A   ; Use the ID of the active window.
-   Toggle_Window(window)
+Label8:
+	WinGet, window, ID, A   ; Use the ID of the active window.
+	Toggle_Window(window)
 return
 
 ;-------HOTKEYS-----------------HOTKEYS-----------------HOTKEYS-----------------HOTKEYS--------------
