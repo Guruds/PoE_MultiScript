@@ -1,4 +1,4 @@
-﻿;██████╗ ██╗   ██╗     ██████╗ ██╗   ██╗██████╗ ██╗   ██╗██████╗ 
+;██████╗ ██╗   ██╗     ██████╗ ██╗   ██╗██████╗ ██╗   ██╗██████╗ 
 ;██╔══██╗╚██╗ ██╔╝    ██╔════╝ ██║   ██║██╔══██╗██║   ██║██╔══██╗
 ;██████╔╝ ╚████╔╝     ██║  ███╗██║   ██║██████╔╝██║   ██║██║  ██║
 ;██╔══██╗  ╚██╔╝      ██║   ██║██║   ██║██╔══██╗██║   ██║██║  ██║
@@ -75,6 +75,7 @@ Loop, 5
 		IniRead, ResyncSpam, Config.ini, Config%A_Index%, ResyncSpam, 0
 		IniRead, InstantFlaskDelay, Config.ini, Config%A_Index%, InstantFlaskDelay, 0
 		IniRead, QuickSilverMovementTimer , Config.ini, Config%A_Index%, QuickSilverMovementTimer, 15
+		IniRead, RemoveAilmentsTimer , Config.ini, Config%A_Index%, RemoveAilmentsTimer, 10
 	}	
 }
 
@@ -82,7 +83,13 @@ IniRead, QuickSilverCheck , Config.ini, Config, QuickSilverCheck, 0
 
 IniRead, QuickSilverCheck2 , Config.ini, Config, QuickSilverCheck2, 0
 
-IniRead, AutoShiftCheck , Config.ini, Config, AutoShiftCheck, 0
+IniRead, FlaskOnFrozenCheck , Config.ini, Config, FlaskOnFrozenCheck, 0
+
+IniRead, FlaskOnShockedCheck , Config.ini, Config, FlaskOnShockedCheck, 0
+
+IniRead, FlaskOnIgnitedCheck , Config.ini, Config, FlaskOnIgnitedCheck, 0
+
+IniRead, AttackInPlaceCheck , Config.ini, Config, AttackInPlaceCheck, 0
 
 Gui, Tab, AutoFlask
 
@@ -136,6 +143,11 @@ Gui, Add, Slider, x22 y410 w170 h30 Range0-100 gGuiUpdate vQuickSilverMovementTi
 Gui, Add, Text, x192 y410 w22 h30 vQuickSilverMovementTimerUpdate, % Round(QuickSilverMovementTimer/10,1)
 Gui, Add, Text, x214 y410 w10 h30 , s
 
+Gui, Add, GroupBox, x12 y460 w220 h60 , Only Remove Ailments if They Are Over
+Gui, Add, Slider, x22 y480 w170 h30 Range0-50 gGuiUpdate vRemoveAilmentsTimer +ToolTip TickInterval10, %RemoveAilmentsTimer%
+Gui, Add, Text, x192 y480 w22 h30 vRemoveAilmentsTimerUpdate, % Round(RemoveAilmentsTimer/10,1)
+Gui, Add, Text, x214 y480 w10 h30 , s
+
 Gui, Add, GroupBox, x12 y110 w220 h60 , Disable AutoFlask on Slot ;x12 y359 w220 h60
 
 Loop, 5
@@ -160,12 +172,40 @@ If QuickSilverCheck = 1
 
 If QuickSilverCheck2 = 0
 {
-   Gui, Add, CheckBox, x242 y415 w220 h30 vQuickSilverCheckBox2 gQuickSilverCheck2, Use QuickSilver Flask When 20+ Charges
+   Gui, Add, CheckBox, x242 y410 w220 h30 vQuickSilverCheckBox2 gQuickSilverCheck2, Use QuickSilver Flask When 20+ Charges
 }
 If QuickSilverCheck2 = 1
 {
-   Gui, Add, CheckBox, x242 y415 w220 h30  vQuickSilverCheckBox2 gQuickSilverCheck2 Checked, Use QuickSilver Flask When 20+ Charges
+   Gui, Add, CheckBox, x242 y410 w220 h30  vQuickSilverCheckBox2 gQuickSilverCheck2 Checked, Use QuickSilver Flask When 20+ Charges
 }
+
+If FlaskOnFrozenCheck = 0
+{
+   Gui, Add, CheckBox, x242 y435 w220 h30 vFlaskOnFrozenCheckBox gFlaskOnFrozenCheck, Use Flask to Remove Frozen Ailment
+}
+If FlaskOnFrozenCheck = 1
+{
+   Gui, Add, CheckBox, x242 y435 w220 h30  vFlaskOnFrozenCheckBox gFlaskOnFrozenCheck Checked, Use Flask to Remove Frozen Ailment
+}
+
+If FlaskOnShockedCheck = 0
+{
+   Gui, Add, CheckBox, x242 y460 w220 h30 vFlaskOnShockedCheckBox gFlaskOnShockedCheck, Use Flask to Remove Shocked Ailment
+}
+If FlaskOnShockedCheck = 1
+{
+   Gui, Add, CheckBox, x242 y460 w220 h30  vFlaskOnShockedCheckBox gFlaskOnShockedCheck Checked, Use Flask to Remove Shocked Ailment
+}
+
+If FlaskOnIgnitedCheck = 0
+{
+   Gui, Add, CheckBox, x242 y485 w220 h30 vFlaskOnIgnitedCheckBox gFlaskOnIgnitedCheck, Use Flask to Remove Burning Ailment
+}
+If FlaskOnIgnitedCheck = 1
+{
+   Gui, Add, CheckBox, x242 y485 w220 h30  vFlaskOnIgnitedCheckBox gFlaskOnIgnitedCheck Checked, Use Flask to Remove Burning Ailment
+}
+
 
 Gui, Tab, AutoQuit
 
@@ -244,6 +284,8 @@ Gui, Add, Text, x92 y60 w130 h30, Will Automatically Find Itself On New Client/P
 IniRead, baseMgrPtr , Config.ini, Config, baseMgrPtr, 0
 Gui, Add, Text, x22 y70 w70 h20 vbasePtrText , %baseMgrPtr%
 
+Gui, Add, Button, x262 y120 w180 h40 gshowgui2, Configure Hotkeys
+
 
 Gui, Tab, Others
 
@@ -260,41 +302,41 @@ Gui, Add, Slider, x252 y60 w170 h30 gGuiUpdate vResyncSpam +ToolTip TickInterval
 Gui, Add, Text, x422 y60 w20 h30 vResyncSpamUpdate, %ResyncSpam%
 Gui, Add, Text, x442 y60 w10 h30 , s
 
-If AutoShiftCheck = 0
+If AttackInPlaceCheck = 0
 {
-   Gui, Add, CheckBox, x22 y110 w170 h30 vAutoShiftCheckBox gAutoShiftCheck, Auto Hold Shift When Attacking
+   Gui, Add, CheckBox, x22 y110 w170 h30 vAttackInPlaceCheckBox gAttackInPlaceCheck, Auto Hold Shift When Attacking
 }
-If AutoShiftCheck = 1
+If AttackInPlaceCheck = 1
 {
-   Gui, Add, CheckBox, x22 y110 w170 h30  vAutoShiftCheckBox gAutoShiftCheck Checked, Auto Hold Shift When Attacking
+   Gui, Add, CheckBox, x22 y110 w170 h30  vAttackInPlaceCheckBox gAttackInPlaceCheck Checked, Auto Hold Shift When Attacking
 }
 
 
 Gui, Tab
 
-Gui, Add, Button, x22 y469 w130 h40 gDefault, Reset Profile
-Gui, Add, Button, x182 y469 w120 h40 gReadMe, ReadMe
-Gui, Add, Button, x332 y469 w120 h40 gDonate, Donate
+Gui, Add, Button, x22 y539 w130 h40 gDefault, Reset Profile
+Gui, Add, Button, x182 y539 w120 h40 gReadMe, ReadMe
+Gui, Add, Button, x332 y539 w120 h40 gDonate, Donate
 
 Gui, Add, Text, x380 y1 w110 h18 vguicontroled, Created by Gurud.
 
-Gui, Add, GroupBox, x0 y450 w472 h74 ,
-Gui, Add, GroupBox, x1 y451 w470 h72 ,
-Gui, Add, GroupBox, x2 y452 w468 h70 ,
-Gui, Add, GroupBox, x3 y453 w466 h68 ,
-Gui, Add, GroupBox, x4 y454 w464 h66 ,
+Gui, Add, GroupBox, x0 y520 w472 h74 ,
+Gui, Add, GroupBox, x1 y521 w470 h72 ,
+Gui, Add, GroupBox, x2 y522 w468 h70 ,
+Gui, Add, GroupBox, x3 y523 w466 h68 ,
+Gui, Add, GroupBox, x4 y524 w464 h66 ,
 
-Gui, Add, GroupBox, x0 y21 w472 h435 ,
-Gui, Add, GroupBox, x1 y22 w470 h434 ,
-Gui, Add, GroupBox, x2 y23 w468 h433 ,
-Gui, Add, GroupBox, x3 y24 w466 h432 ,
-Gui, Add, GroupBox, x4 y25 w464 h431 ,
+Gui, Add, GroupBox, x0 y21 w472 h505 ,
+Gui, Add, GroupBox, x1 y22 w470 h504 ,
+Gui, Add, GroupBox, x2 y23 w468 h503 ,
+Gui, Add, GroupBox, x3 y24 w466 h502 ,
+Gui, Add, GroupBox, x4 y25 w464 h501 ,
 
 Menu, Tray, Add, Configuration Window, showgui
 
 Gui, Submit
 
-Gui, Show, x760 y198 h525 w474, PoE MultiScript v08.28.2014
+Gui, Show, x760 y198 h595 w474, PoE MultiScript v09.12.2014
 
 ;---------------------START DYNAMIC HOTKEYS---------------------
 
@@ -323,9 +365,8 @@ Menu Tray, NoStandard
 
 Menu Tray, Standard
 
-Menu Tray,Check, Configuration Window
 Menu Tray,Check, Configure Hotkeys
-
+Menu Tray,Check, Configuration Window
 ;---------------------END DYNAMIC HOTKEYS---------------------
 
 ;-------GUI-----------------GUI-----------------GUI-----------------GUI-----------------GUI----------
@@ -367,13 +408,16 @@ ChatCheckTimer:= 1
 PanickedTimer:=40
 LastHP:=0
 LastES:=0
+FlaskOnFrozen:=1
+FlaskOnShocked:=1
+FlaskOnIgnited:=1
 
 autoQuitPauseBeforeClick:=100
 autoQuitSoftToleranceBeforeKill:=2000 ; try to quit to loginscreen at most milliseconds before killing game window(in case we can't quit by clicking menu option for some reason)
 
 PlayerConfig:={}
 
-PlayerConfig["Default"]:={QuickSilverTimer:QuickSilverMovementTimer*100, minLifeRatioToInstant: minLifePercentToSpam/100, IFlaskDelay: InstantFlaskDelay,minLifeRatioToDrink: minLifePercentToDrink/100, minManaRatioToDrink: minManaPercentToDrink/100, minManaToDrink: minManaToDrinkPot, minLifeRatioToPopElementalResist: minLifePercentToElementalResist/100,minLifeRatioToPopJade: minLifePercentToJade/100, minLifeRatioToQuit: minLifePercentToQuit/100,maxLifeRatioPerHitToQuit: maxLifePercentPerHitToQuit/100,maxNShieldRatioPerHitToQuit: maxESPercentPerHitToQuit/100,minNShieldRatioToQuit: minESPercentToQuit/100, minNShieldRatioToPopElementalResist: minESPercentToElementalResist/100, minNShieldRatioToPopJade: minESPercentToJade/100}
+PlayerConfig["Default"]:={RemAilmentsTimer:RemoveAilmentsTimer,QuickSilverTimer:QuickSilverMovementTimer*100, minLifeRatioToInstant: minLifePercentToSpam/100, IFlaskDelay: InstantFlaskDelay,minLifeRatioToDrink: minLifePercentToDrink/100, minManaRatioToDrink: minManaPercentToDrink/100, minManaToDrink: minManaToDrinkPot, minLifeRatioToPopElementalResist: minLifePercentToElementalResist/100,minLifeRatioToPopJade: minLifePercentToJade/100, minLifeRatioToQuit: minLifePercentToQuit/100,maxLifeRatioPerHitToQuit: maxLifePercentPerHitToQuit/100,maxNShieldRatioPerHitToQuit: maxESPercentPerHitToQuit/100,minNShieldRatioToQuit: minESPercentToQuit/100, minNShieldRatioToPopElementalResist: minESPercentToElementalResist/100, minNShieldRatioToPopJade: minESPercentToJade/100}
 
 PlayerConfig["Default"].FlaskConfig:=[]
 
@@ -576,66 +620,88 @@ ReadClientResolution(hwnd, ByRef w, ByRef h)
 
 ReadPlayerStats(hwnd, byRef PlayerStats)
 {
-   global baseMgrPtr
-   global Steam
+	global baseMgrPtr
+	global Steam
 
-   GetWindowBasics(hwnd, mBase, pH)
-   fBase:=GetFrameBase(hwnd)
-   BaseMgr:=ReadMemUInt(pH,mBase+baseMgrPtr)
-   if (Steam) 
-   PlayerBase:=GetMultilevelPointer(pH,[fBase+0x158,0x5A0])
-   else 
-   PlayerBase:=GetMultilevelPointer(pH,[fBase+0x13C,0x5A0])
-   Config:=GetMultilevelPointer(pH,[BaseMgr+0x180,0x108,0x8c])
-   PlayerStats.ConfigPath:=ReadMemStr(ph,Config+0xa4,255,"UTF-16")
-   PlayerMain:=ReadMemUInt(pH,PlayerBase+4)
-   PlayerStatsOffset:=ReadMemUInt(pH,PlayerMain+0xC)
-   PlayerStats.MaxHP:=ReadMemUInt(pH,PlayerStatsOffset+0x50)
-   PlayerStats.CurrHP:=ReadMemUInt(pH,PlayerStatsOffset+0x54)  
-   PlayerStats.ReservedHPFlat:=ReadMemUInt(pH,PlayerStatsOffset+0x5C)
-   PlayerStats.ReservedHPPercent:=ReadMemUInt(pH,PlayerStatsOffset+0x60)
-   PlayerStats.MaxMana:=ReadMemUInt(pH,PlayerStatsOffset+0x74)
-   PlayerStats.ReservedManaFlat:=ReadMemUInt(pH,PlayerStatsOffset+0x80)
-   PlayerStats.ReservedManaPercent:=ReadMemUInt(pH,PlayerStatsOffset+0x84)
-   PlayerStats.CurrMana:=ReadMemUInt(pH,PlayerStatsOffset+0x78)
-   PlayerStats.MaxNShield:=ReadMemUInt(pH,PlayerStatsOffset+0x98)
-   PlayerStats.CurrNShield:=ReadMemUInt(pH,PlayerStatsOffset+0x9C)
-   PlayerActionIDOffset:=ReadMemUInt(pH,PlayerMain+0x1C)
-   PlayerActionID:=ReadMemUInt(pH,PlayerActionIDOffset+0x9C)
-   SetFormat, IntegerFast, hex
-   PlayerActionID += 0
-   PlayerActionID .= ""
-   StringRight, PlayerActionID2, PlayerActionID, 2
-   SetFormat, IntegerFast, d
-   PlayerStats.PlayerActionID:=PlayerActionID2
-   if (Steam)
-   {
-      CheckBase:=GetMultilevelPointer(pH,[fBase+0x15c,0x220])
-   }
-   else
-   CheckBase:=GetMultilevelPointer(pH,[fBase+0x140,0x220])
-   ChatStatusOffset:=GetMultilevelPointer(pH,[CheckBase+0xd8,0x808,0x0])
-   PlayerStats.ChatStatus:=ReadMemUInt(pH,ChatStatusOffset+0x860)
-   MouseOnMonsterOffset:=ReadMemUInt(pH,CheckBase+0x184)
-   PlayerStats.MouseOnMonsterStatus:=ReadMemUInt(pH,MouseOnMonsterOffset+0x860)
+	GetWindowBasics(hwnd, mBase, pH)
+	fBase:=GetFrameBase(hwnd)
+	BaseMgr:=ReadMemUInt(pH,mBase+baseMgrPtr)
+	if (Steam) 
+	{
+		PlayerBase:=GetMultilevelPointer(pH,[fBase+0x158,0x5A0])
+	}
+	else
+	{
+		PlayerBase:=GetMultilevelPointer(pH,[fBase+0x13C,0x5A0])
+	}
+	Config:=GetMultilevelPointer(pH,[BaseMgr+0x180,0x108,0x8c])
+	PlayerStats.ConfigPath:=ReadMemStr(ph,Config+0xa4,255,"UTF-16")
+	PlayerMain:=ReadMemUInt(pH,PlayerBase+4)
+	PlayerStatsOffset:=ReadMemUInt(pH,PlayerMain+0xC)
+	PlayerStats.MaxHP:=ReadMemUInt(pH,PlayerStatsOffset+0x50)
+	PlayerStats.CurrHP:=ReadMemUInt(pH,PlayerStatsOffset+0x54)  
+	PlayerStats.ReservedHPFlat:=ReadMemUInt(pH,PlayerStatsOffset+0x5C)
+	PlayerStats.ReservedHPPercent:=ReadMemUInt(pH,PlayerStatsOffset+0x60)
+	PlayerStats.MaxMana:=ReadMemUInt(pH,PlayerStatsOffset+0x74)
+	PlayerStats.ReservedManaFlat:=ReadMemUInt(pH,PlayerStatsOffset+0x80)
+	PlayerStats.ReservedManaPercent:=ReadMemUInt(pH,PlayerStatsOffset+0x84)
+	PlayerStats.CurrMana:=ReadMemUInt(pH,PlayerStatsOffset+0x78)
+	PlayerStats.MaxNShield:=ReadMemUInt(pH,PlayerStatsOffset+0x98)
+	PlayerStats.CurrNShield:=ReadMemUInt(pH,PlayerStatsOffset+0x9C)
+	PlayerActionIDOffset:=ReadMemUInt(pH,PlayerMain+0x1C)
+	PlayerActionID:=ReadMemUInt(pH,PlayerActionIDOffset+0x9C)
+	SetFormat, IntegerFast, hex
+	PlayerActionID += 0
+	PlayerActionID .= ""
+	StringRight, PlayerActionID2, PlayerActionID, 2
+	SetFormat, IntegerFast, d
+	PlayerStats.PlayerActionID:=PlayerActionID2
 
-   PanelWaypointOffset:=ReadMemUInt(pH,CheckBase+0x118)
-   PlayerStats.PanelWaypoint:=ReadMemUInt(pH,PanelWaypointOffset+0x860)
-   PanelInventoryOffset:=ReadMemUInt(pH,CheckBase+0xF4)
-   PlayerStats.PanelInventory:=ReadMemUInt(pH,PanelInventoryOffset+0x860)
-   PanelSkillTreeOffset:=ReadMemUInt(pH,CheckBase+0x108)
-   PlayerStats.PanelSkillTree:=ReadMemUInt(pH,PanelSkillTreeOffset+0x860)
-   PanelSocialOffset:=ReadMemUInt(pH,CheckBase+0x104)
-   PlayerStats.PanelSocial:=ReadMemUInt(pH,PanelSocialOffset+0x860)
+	BuffListStart:=ReadMemUInt(pH,PlayerStatsOffset+0xB8)
+	BuffListEnd:=ReadMemUInt(pH,PlayerStatsOffset+0xBC)
+	BuffAmount:=((BuffListEnd-BuffListStart)/4)
+	PlayerStats.BuffAmount:=((BuffListEnd-BuffListStart)/4)
+	Loop, %BuffAmount%
+	{
+		BuffBasePtr:=GetMultilevelPointer(ph,[BuffListStart+((A_Index-1)*4),4])
+		BuffNamePtr:=GetMultilevelPointer(ph,[BuffBasePtr+4,0])
+		BuffNameStr:=ReadMemStr(ph,BuffNamePtr,70,"UTF-16")
+		PlayerStats.BuffName[A_Index]:=BuffNameStr
+		BuffCharges:=ReadMemUInt(pH,BuffBasePtr+0x1C)
+		PlayerStats.BuffCharges[A_Index]:=BuffCharges
+		BuffTimer:=ReadMemFloat(pH,BuffBasePtr+0xC)
+		PlayerStats.BuffTimer[A_Index]:=BuffTimer
+	}
 
-   InCityOffset:=GetMultilevelPointer(pH,[CheckBase+0x11C,0x788,0x200])
-   PlayerStats.InCity:=ReadMemUInt(pH,InCityOffset+0x860)
-   EntityNamePtr:=GetMultilevelPointer(ph,[CheckBase+0x184,0x978,0xC14])
-   EntityName:=ReadMemStr(ph,EntityNamePtr,70,"UTF-16")
-   PlayerStats.EntityName:=EntityName
-   EntityNamePtr2:=GetMultilevelPointer(ph,[CheckBase+0x184,0x978,0xB94])
-   EntityName2:=ReadMemStr(ph,EntityNamePtr2+0x32,70,"UTF-16")
-   PlayerStats.EntityName2:=EntityName2
+
+	if (Steam)
+	{
+		CheckBase:=GetMultilevelPointer(pH,[fBase+0x15c,0x220])
+	}
+	else
+	CheckBase:=GetMultilevelPointer(pH,[fBase+0x140,0x220])
+	ChatStatusOffset:=GetMultilevelPointer(pH,[CheckBase+0xd8,0x808,0x0])
+	PlayerStats.ChatStatus:=ReadMemUInt(pH,ChatStatusOffset+0x860)
+	MouseOnMonsterOffset:=ReadMemUInt(pH,CheckBase+0x184)
+	PlayerStats.MouseOnMonsterStatus:=ReadMemUInt(pH,MouseOnMonsterOffset+0x860)
+
+	PanelWaypointOffset:=ReadMemUInt(pH,CheckBase+0x118)
+	PlayerStats.PanelWaypoint:=ReadMemUInt(pH,PanelWaypointOffset+0x860)
+	PanelInventoryOffset:=ReadMemUInt(pH,CheckBase+0xF4)
+	PlayerStats.PanelInventory:=ReadMemUInt(pH,PanelInventoryOffset+0x860)
+	PanelSkillTreeOffset:=ReadMemUInt(pH,CheckBase+0x108)
+	PlayerStats.PanelSkillTree:=ReadMemUInt(pH,PanelSkillTreeOffset+0x860)
+	PanelSocialOffset:=ReadMemUInt(pH,CheckBase+0x104)
+	PlayerStats.PanelSocial:=ReadMemUInt(pH,PanelSocialOffset+0x860)
+
+	InCityOffset:=GetMultilevelPointer(pH,[CheckBase+0x11C,0x788,0x200])
+	PlayerStats.InCity:=ReadMemUInt(pH,InCityOffset+0x860)
+	EntityNamePtr:=GetMultilevelPointer(ph,[CheckBase+0x184,0x978,0xC14])
+	EntityName:=ReadMemStr(ph,EntityNamePtr,70,"UTF-16")
+	PlayerStats.EntityName:=EntityName
+	EntityNamePtr2:=GetMultilevelPointer(ph,[CheckBase+0x184,0x978,0xB94])
+	EntityName2:=ReadMemStr(ph,EntityNamePtr2+0x32,70,"UTF-16")
+	PlayerStats.EntityName2:=EntityName2
 }
 
 ReadFlasksData(hwnd, byRef FlasksData)
@@ -647,7 +713,7 @@ ReadFlasksData(hwnd, byRef FlasksData)
    if (!UiBase) ;not InGame
       return
    
-   FlaskInvBase:=GetMultilevelPointer(pH,[UiBase+0x968,0x980,0x20])
+   FlaskInvBase:=GetMultilevelPointer(pH,[UiBase+0x968,0x984,0x20])
 
    Loop, 5
    {
@@ -881,7 +947,22 @@ GetMaxChargesFlaskOfType(ByRef FlasksData,TypeStr)
    Loop, 5
       if (InStr(FlasksData[A_Index].type,TypeStr))
       {
-         if FlasksData[A_Index].ChargesCurrent>currMaxCharges
+         if ((FlasksData[A_Index].ChargesCurrent>currMaxCharges) && (FlasksData[A_Index].ChargesCurrent>=FlasksData[A_Index].ChargesPerUse))
+         {
+            currMaxI:=A_Index
+            currMaxCharges:=FlasksData[A_Index].ChargesCurrent
+         }
+      }
+   return currMaxI
+}
+
+GetMaxChargesFlaskOfMod(ByRef FlasksData,ModStr)
+{
+   currMaxCharges:=0
+   Loop, 5
+      if ((InStr(FlasksData[A_Index].mod1,ModStr)) || (InStr(FlasksData[A_Index].mod2,ModStr)))
+      {
+         if ((FlasksData[A_Index].ChargesCurrent>currMaxCharges) && (FlasksData[A_Index].ChargesCurrent>=FlasksData[A_Index].ChargesPerUse))
          {
             currMaxI:=A_Index
             currMaxCharges:=FlasksData[A_Index].ChargesCurrent
@@ -1014,54 +1095,63 @@ FileMD5( sFile="", cSz=4 )
 
 Main()
 {
-   global AutoFlaskWatchdogPeriod
-   global lagCompensation
-   global PlayerConfig
-   global WindowQueuedFlaskEffects
-   global cliname
-   global cliexe
-   global cliexesteam
-   global trayNotifications
-   global autoQuitMode
-   global desync
-   global remaining
-   global tradechat
-   global borderless
-   global ResyncTimer
-   global ResyncSpam
-   global tradechat
-   global TradeSpam
-   global TradeSpamTimer
-   global TradeTimer
-   global TradeChannel
-   global TradeStep
-   global PanickedTimer
-   global QuickSilverCheck
-   global QuickSilverCheck2
-   global AutoShiftCheck
-   global ShiftDownOn
-   global ChatStatusTimer
-   global ChatCheckTimer
-   global Steam
-   global MovementTimer
-   global 20secsTimer
-   global FLaskHotkey1
-   global FLaskHotkey2
-   global FLaskHotkey3
-   global FLaskHotkey4
-   global FLaskHotkey5
-   global LastHP
-   global LastES
+	global AutoFlaskWatchdogPeriod
+	global lagCompensation
+	global PlayerConfig
+	global WindowQueuedFlaskEffects
+	global cliname
+	global cliexe
+	global cliexesteam
+	global trayNotifications
+	global autoQuitMode
+	global desync
+	global remaining
+	global tradechat
+	global borderless
+	global ResyncTimer
+	global ResyncSpam
+	global tradechat
+	global TradeSpam
+	global TradeSpamTimer
+	global TradeTimer
+	global TradeChannel
+	global TradeStep
+	global PanickedTimer
+	global QuickSilverCheck
+	global QuickSilverCheck2
+	global AttackInPlaceCheck
+	global AttackInPlaceKeyUp
+	global ChatStatusTimer
+	global ChatCheckTimer
+	global Steam
+	global MovementTimer
+	global 20secsTimer
+	global FLaskHotkey1
+	global FLaskHotkey2
+	global FLaskHotkey3
+	global FLaskHotkey4
+	global FLaskHotkey5
+	global LastHP
+	global LastES
+	global LastMaxHP
+	global LastMaxES
+	global AttackInPlaceKey
+	global FlaskOnFrozenCheck
+	global FlaskOnShockedCheck
+	global FlaskOnIgnitedCheck
+	global QuicksilverBuff
 
-   WinGet, WinID, List, %cliname%
-   
-   Loop, %WinID%
-   {
+	WinGet, WinID, List, %cliname%
+
+	Loop, %WinID%
+	{
       
-      WinGet, ProcModuleName, ProcessName,  % "ahk_id" WinID%A_Index%
+		WinGet, ProcModuleName, ProcessName,  % "ahk_id" WinID%A_Index%
 
-      If (ProcModuleName!="PathOfExile.exe") And (ProcModuleName!="PathOfExileSteam.exe") ; got a window with title "Path of Exile" but exe is not Client.exe, perhaps we have browser window open with PoE site, ignore it
-         continue
+		If (ProcModuleName!="PathOfExile.exe") And (ProcModuleName!="PathOfExileSteam.exe") ; got a window with title "Path of Exile" but exe is not Client.exe, perhaps we have browser window open with PoE site, ignore it
+        {
+        	continue
+        }
 
 		If (ProcModuleName="PathOfExileSteam.exe")
 		{
@@ -1075,567 +1165,687 @@ Main()
 		}
 
 
-      if (!IsInGame(WinID%A_Index%)) ;not ingame
-         continue
+      	if (!IsInGame(WinID%A_Index%))
+		{
+			LastHP:=0
+			LastES:=0
+			LastMaxHP:=0
+			LastMaxES:=0
+			continue
+		}
+         
        
-      if (WinID%A_Index%=WinActive("A"))
-      ThisID:=WinActive("A")
+		if (WinID%A_Index%=WinActive("A"))
+		ThisID:=WinActive("A")
 
-      PlayerStats:={}
-      ReadPlayerStats(WinID%A_Index%, PlayerStats)
-      if (PlayerStats.MaxHP<1 || PlayerStats.CurrHP=0) ;dead, don't bother
-         continue
+		PlayerStats:={}
+		ReadPlayerStats(WinID%A_Index%, PlayerStats)
+		if (PlayerStats.MaxHP<1 || PlayerStats.CurrHP=0) ;dead, don't bother
+		{
+			continue
+		}
 
-      CurrentConfig:=PlayerConfig["Default"]
+		CurrentConfig:=PlayerConfig["Default"]
 
-      If (A_TickCount>=20secsTimer+20000)
-      {
-         Loop, 5
-         {
-            ConfigPath:= PlayerStats.ConfigPath
-            if (InStr(PlayerStats.ConfigPath,".ini"))
-            {
-               IniRead, HotkeyFlask%A_Index%, %ConfigPath%, ACTION_KEYS, use_flask_in_slot%A_Index%, %A_Index%
-               vk:=HotkeyFlask%A_Index%
-               SetFormat, IntegerFast, hex
-               vk += 0
-               vk .= ""
-               SetFormat, IntegerFast, d
-               FlaskHotkey%A_Index%={vk%vk% Down vk%vk% UP}
-            }
-            Else
-            {
-               FlaskHotkey%A_Index%={%A_Index% Down %A_Index% UP}
-            }
-         }
-         20secsTimer:=A_TickCount
-      }
+		If (A_TickCount>=20secsTimer+20000)
+		{
+			ConfigPath:= PlayerStats.ConfigPath
+			Loop, 5
+			{
+				if (InStr(PlayerStats.ConfigPath,".ini"))
+				{
+					IniRead, HotkeyFlask%A_Index%, %ConfigPath%, ACTION_KEYS, use_flask_in_slot%A_Index%, %A_Index%
+					vk:=HotkeyFlask%A_Index%
+					SetFormat, IntegerFast, hex
+					vk += 0
+					vk .= ""
+					SetFormat, IntegerFast, d
+					FlaskHotkey%A_Index%={vk%vk% Down vk%vk% UP}
+					If (A_Index=1)
+					{
+						IniRead, AttackInPlaceKey, %ConfigPath%, ACTION_KEYS, attack_in_place, %A_Index%
+						vk:=AttackInPlaceKey
+						SetFormat, IntegerFast, hex
+						vk += 0
+						vk .= ""
+						SetFormat, IntegerFast, d
+						AttackInPlaceKey=vk%vk%
+					}
+				}
+				Else
+				{
+				   FlaskHotkey%A_Index%={%A_Index% Down %A_Index% UP}
+				}
+			}
+			20secsTimer:=A_TickCount
+		}
       
+		if PlayerStats.MaxNShield>0
+		{
+			currNShieldRatio:=PlayerStats.CurrNShield/PlayerStats.MaxNShield
+			LastNShieldRatio:=LastES/PlayerStats.MaxNShield
+			If (LastMaxES!=PlayerStats.MaxNShield)
+			{
+				LastNShieldRatio:=0
+			}
+		}
+		else 
+		{
+			currNShieldRatio:= 1
+		}
+
+		if (PlayerStats.MaxHP>1)
+		{
+			currLifeRatio:=PlayerStats.CurrHP/(PlayerStats.MaxHP-PlayerStats.ReservedHPFlat-PlayerStats.MaxHP*PlayerStats.ReservedHPPercent/100)
+			LastLifeRatio:=LastHP/(PlayerStats.MaxHP-PlayerStats.ReservedHPFlat-PlayerStats.MaxHP*PlayerStats.ReservedHPPercent/100)	
+			If (LastMaxHP!=PlayerStats.MaxHP)
+			{
+				LastLifeRatio:=0
+			}
+		}
+		else
+		{
+			currLifeRatio:= 1
+		}
       
-
+		if (PlayerStats.MaxMana>0)
+		{
+			currManaRatio:=PlayerStats.CurrMana/(PlayerStats.MaxMana-PlayerStats.ReservedManaFlat-PlayerStats.MaxMana*PlayerStats.ReservedManaPercent/100)
+		}
       
-      if PlayerStats.MaxNShield>0
-      {
-         currNShieldRatio:=PlayerStats.CurrNShield/PlayerStats.MaxNShield
-         LastNShieldRatio:=LastES/PlayerStats.MaxNShield
-      }
-      else 
-      currNShieldRatio:= 1
+		if (currLifeRatio<CurrentConfig.minLifeRatioToQuit || currNShieldRatio<CurrentConfig.minNShieldRatioToQuit || (currLifeRatio<LastLifeRatio And ((LastLifeRatio-currLifeRatio)>CurrentConfig.maxLifeRatioPerHitToQuit)) || (CurrentConfig.maxNShieldRatioPerHitToQuit>0 And currNShieldRatio<LastNShieldRatio And ((LastNShieldRatio-currNShieldRatio)>CurrentConfig.maxNShieldRatioPerHitToQuit)))
+		{
+			if (autoQuitMode=0)
+			{
+				TrayTip, PoE AutoQuit by Killing the Process, Specified min life reached, %A_Space% , 2
+				WinKill, % "ahk_id" WinID%A_Index%
+				continue
+			}
+			else if (autoQuitMode=1)
+			{
+				QuitToLoginScreen(WinID%A_Index%)
+				continue
+			}
+			else if (autoQuitMode=3)
+			{
+				UsePortal()
+				continue
+			}
+			else if (autoQuitMode=4)
+			{
+
+			}
+		}
+
+		if (PlayerStats.CurrHP>0)
+		{
+			LastHP:=PlayerStats.CurrHP
+			LastES:=PlayerStats.CurrNShield
+			LastMaxHP:=PlayerStats.MaxHP
+			LastMaxES:=PlayerStats.MaxNShield
+		}
+		Else
+		{
+			LastHP:=0
+			LastES:=0
+			LastMaxHP:=0
+			LastMaxES:=0
+		}
       
-      if (PlayerStats.MaxHP>1)
-      {
-        currLifeRatio:=PlayerStats.CurrHP/(PlayerStats.MaxHP-PlayerStats.ReservedHPFlat-PlayerStats.MaxHP*PlayerStats.ReservedHPPercent/100)
-      	LastLifeRatio:=LastHP/(PlayerStats.MaxHP-PlayerStats.ReservedHPFlat-PlayerStats.MaxHP*PlayerStats.ReservedHPPercent/100)	
-      }
-      else 
-      currLifeRatio:= 1
+		FlasksData:=[]
+		ReadFlasksData(WinID%A_Index%,FlasksData)
+
+		WinGet, CurrPID, PID,  % "ahk_id" WinID%A_Index%
+		hwnd:=WinID%A_Index%
+		k="%hwnd%%CurrPid%"
+
+		if (!WindowQueuedFlaskEffects.HasKey(k))
+		{
+			WindowQueuedFlaskEffects[k]:={}
+		}
+
+		if (currLifeRatio>=1)
+		{
+			WindowQueuedFlaskEffects[k].hpQueueEndtime:=A_TickCount
+		}
+
+		if (currLifeRatio>=1)
+		{
+			WindowQueuedFlaskEffects[k].InstantQueueEndtime:=A_TickCount
+		}
+
+		if (currManaRatio>=1)
+		{
+			WindowQueuedFlaskEffects[k].ManaQueueEndtime:=A_TickCount
+		}
+
+		If (PlayerStats.BuffAmount>100)
+		{
+			BuffAmount:=0
+		}
+		Else
+		{
+			BuffAmount:=PlayerStats.BuffAmount
+		}
+
+		QuicksilverBuff:=0
+
+		RemAilmentsTimer:=Round(CurrentConfig.RemAilmentsTimer/10,1)
+
+		loop, %BuffAmount%
+		{
+			BuffTimer:=PlayerStats.BuffTimer[A_Index]
+
+			if InStr(playerstats.BuffName[A_Index], "aura")
+			{
+				continue
+			}
+
+			else if InStr(playerstats.BuffName[A_Index], "flask_utility_sprint")
+			{
+				QuicksilverBuff:=1
+				If (BuffTimer<0.25)
+				{
+					QuicksilverBuff:=0
+					BuffTimer:=0
+				}
+				continue
+			}
+
+
+			else if InStr(playerstats.BuffName[A_Index], "frozen")
+			{
+				if ((FlaskOnFrozenCheck) && (BuffTimer>=RemAilmentsTimer))
+				{
+					If ((!WindowQueuedFlaskEffects[k].HasKey("FrozenQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].FrozenQueueEndtime-lagCompensation)))
+					{
+						flaskNum:=GetMaxChargesFlaskOfMod(FlasksData,"of Heat")
+						if (flaskNum!="")
+						{  
+							WindowQueuedFlaskEffects[k].FrozenQueueEndtime:=A_TickCount+300
+							
+							if (trayNotifications)
+							{
+								TrayTip, PoE AutoFlask Using "of Heat" flask %flaskNum%, %A_Space% , 2
+							}
+							hKey:=FlaskHotkey%flaskNum%
+							ControlSend,,%hkey%, % "ahk_id" hwnd
+						}
+					}
+				}
+				continue
+			}
+
+			else if InStr(playerstats.BuffName[A_Index], "shocked")
+			{
+				if ((FlaskOnShockedCheck) && (BuffTimer>=RemAilmentsTimer))
+				{
+					If ((!WindowQueuedFlaskEffects[k].HasKey("ShockedQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].ShockedQueueEndtime-lagCompensation)))
+					{
+						flaskNum:=GetMaxChargesFlaskOfMod(FlasksData,"of Grounding")
+						if (flaskNum!="")
+						{  
+							WindowQueuedFlaskEffects[k].ShockedQueueEndtime:=A_TickCount+300
+							
+							if (trayNotifications)
+							{
+								TrayTip, PoE AutoFlask Using "of Grounding" flask %flaskNum%, %A_Space% , 2
+							}
+							hKey:=FlaskHotkey%flaskNum%
+							ControlSend,,%hkey%, % "ahk_id" hwnd
+						}
+					}
+				}
+				continue
+			}
+
+			else if InStr(playerstats.BuffName[A_Index], "ignited")
+			{
+				if ((FlaskOnIgnitedCheck) && (BuffTimer>=RemAilmentsTimer))
+				{
+					If ((!WindowQueuedFlaskEffects[k].HasKey("IgnitedQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].IgnitedQueueEndtime-lagCompensation)))
+					{
+						flaskNum:=GetMaxChargesFlaskOfMod(FlasksData,"of Dousing")
+						if (flaskNum!="")
+						{  
+							WindowQueuedFlaskEffects[k].IgnitedQueueEndtime:=A_TickCount+300
+							
+							if (trayNotifications)
+							{
+								TrayTip, PoE AutoFlask Using "of Dousing" flask %flaskNum%, %A_Space% , 2
+							}
+							hKey:=FlaskHotkey%flaskNum%
+							ControlSend,,%hkey%, % "ahk_id" hwnd
+						}
+					}
+				}
+				continue
+			}
+
+			/* ;Others
+			else if InStr(playerstats.BuffName[A_Index], "chilled")
+			{
+				TrayTip, test , THIS BUFF IS CHILLED!!! buff%A_Index%
+				continue
+			}
+
+			else if InStr(playerstats.BuffName[A_Index], "curse")
+			{
+				continue
+			}
+
+			else if InStr(playerstats.BuffName[A_Index], "puncture")
+			{
+				TrayTip, test, THIS BUFF IS PUNCTURE!!! buff%A_Index%
+				continue
+			}
+
+			else if InStr(playerstats.BuffName[A_Index], "endurance_charge")
+			{
+				BuffCharges:=PlayerStats.BuffCharges[A_Index]
+				TrayTip, test, Endurance Charge has %BuffCharges% charges  ;charges test
+				continue
+			}
+			*/
+		}
+
+		if (currLifeRatio<CurrentConfig.minLifeRatioToDrink)
+		{
+			if ((!WindowQueuedFlaskEffects[k].HasKey("hpQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].hpQueueEndtime-lagCompensation)))
+			{
+				tflaskNum2:=GetMaxChargesFlaskOfType(FlasksData,"FlaskLife")
+				tflaskNum1:=GetMaxChargesFlaskOfType(FlasksData,"FlaskHybrid")
+				if ((tflaskNum1!=) && (tflaskNum2!=))
+				{
+					flaskNum:=(FlasksData[tflaskNum1].ChargesCurrent>FlasksData[tflaskNum2].ChargesCurrent) ? tflaskNum1 : tflaskNum2
+				}
+				else
+				{
+					if (tflaskNum1!="")
+					{
+						flaskNum:=tflaskNum1
+					}
+					if (tflaskNum2!="")
+					{
+						flaskNum:=tflaskNum2
+					}
+				}
+				if (flaskNum!="")
+				{  
+					EffectDuration:=FlasksData[flaskNum].EffectDuration
+					if (InStr(FlasksData[flaskNum].mod1,"Seething"))
+					{
+						WindowQueuedFlaskEffects[k].hpQueueEndtime:=A_TickCount+500
+					}
+					else if (InStr(FlasksData[flaskNum].mod2,"Seething"))
+					{
+						WindowQueuedFlaskEffects[k].hpQueueEndtime:=A_TickCount+500
+					}
+					else if ((InStr(FlasksData[flaskNum].mod1,"Panicked")) And ((PlayerStats.CurrHP/PlayerStats.MaxHP)<=0.35)) ; "Low life" can be caused by auras hp reservation from blood magic
+					{
+						WindowQueuedFlaskEffects[k].hpQueueEndtime:=A_TickCount+500
+					}
+					else if ((InStr(FlasksData[flaskNum].mod2,"Panicked")) And ((PlayerStats.CurrHP/PlayerStats.MaxHP)<=0.35)) ; "Low life" can be caused by auras hp reservation from blood magic
+					{
+						WindowQueuedFlaskEffects[k].hpQueueEndtime:=A_TickCount+500
+					}
+					else
+					{
+						WindowQueuedFlaskEffects[k].hpQueueEndtime:=A_TickCount+EffectDuration*100
+					}
+					if (trayNotifications)
+					{
+						TrayTip, PoE AutoFlask Using HP flask %flaskNum%, %A_Space% , 2
+					}
+					hKey:=FlaskHotkey%flaskNum%
+					ControlSend,,%hkey%, % "ahk_id" hwnd
+					Break
+				}
+			}
+		}
+
+		if (currLifeRatio<CurrentConfig.minLifeRatioToInstant)
+		{
+			if ((!WindowQueuedFlaskEffects[k].HasKey("InstantQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].InstantQueueEndtime)))
+			{
+				tflaskNum2:=GetMaxChargesOfInstantFlask(FlasksData,"FlaskLife")
+				if (tflaskNum2!="")
+				{
+					flaskNum:=tflaskNum2
+				}
+				if (flaskNum!="")
+				{  
+					IFDelay:= (CurrentConfig.IFlaskDelay*10)
+					WindowQueuedFlaskEffects[k].InstantQueueEndtime:=A_TickCount+IFDelay
+					if (trayNotifications)
+					{
+						TrayTip, PoE AutoFlask Using HP Flask %flaskNum%, %A_Space% , 2
+					}
+					hKey:=FlaskHotkey%flaskNum%
+					ControlSend,,%hkey%, % "ahk_id" hwnd
+					break
+				}
+			}
+		}
+
+		if (currLifeRatio<CurrentConfig.minLifeRatioToPopJade || currNShieldRatio<CurrentConfig.minNShieldRatioToPopJade)
+		{
+			if ((!WindowQueuedFlaskEffects[k].HasKey("jadeQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].jadeQueueEndtime-lagCompensation)))
+			{
+				flaskNum:=GetMaxChargesFlaskOfType(FlasksData,"FlaskUtility9") ; Jade Flask
+				if (flaskNum!="")
+				{
+				   EffectDuration:=FlasksData[flaskNum].EffectDuration
+				   WindowQueuedFlaskEffects[k].jadeQueueEndtime:=A_TickCount+EffectDuration*100
+				   if (trayNotifications)
+				   {
+				      TrayTip, PoE AutoFlask Using Jade Flask %flaskNum%, %A_Space% , 2
+				   }
+				   hKey:=FlaskHotkey%flaskNum%
+				   ControlSend,,%hkey%, % "ahk_id" hwnd
+				   break
+				}
+			}
+			if ((!WindowQueuedFlaskEffects[k].HasKey("GraniteQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].GraniteQueueEndtime-lagCompensation)))
+			{
+				flaskNum:=GetMaxChargesFlaskOfType(FlasksData,"FlaskUtility5") ; Granite Flask
+				if (flaskNum!="")
+				{
+					EffectDuration:=FlasksData[flaskNum].EffectDuration
+					WindowQueuedFlaskEffects[k].GraniteQueueEndtime:=A_TickCount+EffectDuration*100
+					if (trayNotifications)
+					{
+						TrayTip, PoE AutoFlask Using Granite Flask %flaskNum%, %A_Space% , 2
+					}
+					hKey:=FlaskHotkey%flaskNum%
+					ControlSend,,%hkey%, % "ahk_id" hwnd
+					break
+				}
+			}
+		}
+
+		if (currLifeRatio<CurrentConfig.minLifeRatioToPopElementalResist || currNShieldRatio<CurrentConfig.minNShieldRatioToPopElementalResist)
+		{
+			if ((!WindowQueuedFlaskEffects[k].HasKey("RubyQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].RubyQueueEndtime-lagCompensation)))
+			{
+				flaskNum:=GetMaxChargesFlaskOfType(FlasksData,"FlaskUtility2") ; Ruby flask
+				if (flaskNum!="")
+				{
+					EffectDuration:=FlasksData[flaskNum].EffectDuration
+					WindowQueuedFlaskEffects[k].RubyQueueEndtime:=A_TickCount+EffectDuration*100
+					if (trayNotifications)
+					{
+						TrayTip, PoE AutoFlask Using Ruby Flask %flaskNum%, %A_Space% , 2
+					}
+					hKey:=FlaskHotkey%flaskNum%
+					ControlSend,,%hkey%, % "ahk_id" hwnd
+					break
+				}
+			}
+
+			if ((!WindowQueuedFlaskEffects[k].HasKey("TopazQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].TopazQueueEndtime-lagCompensation)))
+			{
+				flaskNum:=GetMaxChargesFlaskOfType(FlasksData,"FlaskUtility4") ; Topaz flask
+				if (flaskNum!="")
+				{
+					EffectDuration:=FlasksData[flaskNum].EffectDuration
+					WindowQueuedFlaskEffects[k].TopazQueueEndtime:=A_TickCount+EffectDuration*100
+					if (trayNotifications)
+					{
+						TrayTip, PoE AutoFlask Using Topaz Flask %flaskNum%, %A_Space% , 2
+					}
+					hKey:=FlaskHotkey%flaskNum%
+					ControlSend,,%hkey%, % "ahk_id" hwnd
+					break
+				}
+			}
+
+			if ((!WindowQueuedFlaskEffects[k].HasKey("SapphireQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].SapphireQueueEndtime-lagCompensation)))
+			{
+				flaskNum:=GetMaxChargesFlaskOfType(FlasksData,"FlaskUtility3") ; Sapphire flask
+				if (flaskNum!="")
+				{
+					EffectDuration:=FlasksData[flaskNum].EffectDuration
+					WindowQueuedFlaskEffects[k].SapphireQueueEndtime:=A_TickCount+EffectDuration*100
+					if (trayNotifications)
+					{
+						TrayTip, PoE AutoFlask Using Sapphire flask %flaskNum%, %A_Space% , 2
+					}
+					hKey:=FlaskHotkey%flaskNum%
+					ControlSend,,%hkey%, % "ahk_id" hwnd
+					break
+				}
+			}
+
+			if ((!WindowQueuedFlaskEffects[k].HasKey("AmethystQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].AmethystQueueEndtime-lagCompensation)))
+			{
+				flaskNum:=GetMaxChargesFlaskOfType(FlasksData,"FlaskUtility7") ; Amethyst flask
+				if (flaskNum!="")
+				{
+					EffectDuration:=FlasksData[flaskNum].EffectDuration
+					WindowQueuedFlaskEffects[k].AmethystQueueEndtime:=A_TickCount+EffectDuration*100
+					if (trayNotifications)
+					{
+						TrayTip, PoE AutoFlask Using Amethyst Flask %flaskNum%, %A_Space% , 2
+					}
+					hKey:=FlaskHotkey%flaskNum%
+					ControlSend,,%hkey%, % "ahk_id" hwnd
+					break
+				}
+			}
+		}
+
+		if (PlayerStats.MaxMana>0 && (currManaRatio<CurrentConfig.minManaRatioToDrink || PlayerStats.CurrMana<CurrentConfig.minManaToDrink))
+		{      
+			if ((!WindowQueuedFlaskEffects[k].HasKey("ManaQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].ManaQueueEndtime-lagCompensation)))
+			{
+				tflaskNum2:=GetMaxChargesFlaskOfType(FlasksData,"FlaskMana")
+				tflaskNum1:=GetMaxChargesFlaskOfType(FlasksData,"FlaskHybrid")
+				  
+				if ((tflaskNum1!=) && (tflaskNum2!=))
+				{
+					flaskNum:=(FlasksData[tflaskNum1].ChargesCurrent>FlasksData[tflaskNum2].ChargesCurrent) ? tflaskNum1 : tflaskNum2
+				}
+				else
+				{
+					if (tflaskNum1!="")
+					{
+						flaskNum:=tflaskNum1
+					}
+					if (tflaskNum2!="")
+					{
+						flaskNum:=tflaskNum2
+					}
+				}
+
+				if (flaskNum!="")
+				{
+					EffectDuration:=FlasksData[flaskNum].EffectDuration
+					if (InStr(FlasksData[flaskNum].mod1,"Seething"))
+					{
+						WindowQueuedFlaskEffects[k].ManaQueueEndtime:=A_TickCount+500
+					}
+					else if (InStr(FlasksData[flaskNum].mod2,"Seething"))
+					{
+						WindowQueuedFlaskEffects[k].ManaQueueEndtime:=A_TickCount+500
+					}
+					else if ((InStr(FlasksData[flaskNum].mod1,"Panicked")) And ((PlayerStats.CurrHP/PlayerStats.MaxHP)<=0.35)) ; "Low life" can be caused by auras hp reservation from blood magic
+					{
+						WindowQueuedFlaskEffects[k].ManaQueueEndtime:=A_TickCount+500
+					}
+					else if ((InStr(FlasksData[flaskNum].mod2,"Panicked")) And ((PlayerStats.CurrHP/PlayerStats.MaxHP)<=0.35)) ; "Low life" can be caused by auras hp reservation from blood magic
+					{
+						WindowQueuedFlaskEffects[k].ManaQueueEndtime:=A_TickCount+500
+					}
+					else
+					{
+						WindowQueuedFlaskEffects[k].ManaQueueEndtime:=A_TickCount+EffectDuration*100
+					}
+					if (trayNotifications)
+					{
+						TrayTip, PoE AutoFlask Using Mana Flask %flaskNum%, %A_Space% , 2
+					}
+					hKey:=FlaskHotkey%flaskNum%
+					ControlSend,,%hkey%, % "ahk_id" hwnd
+					Break
+				}
+			}
+		}
+
+		if (PlayerStats.PlayerActionID!="" && PlayerStats.PlayerActionID!=80 && PlayerStats.PlayerActionID!=90)
+		{
+			MovementTimer:= A_TickCount
+		}
+		;TODO MovementTimer%A_Index%
+
+		if(QuickSilverCheck && QuicksilverBuff=0)
+		{
+			if (PlayerStats.InCity!="" && PlayerStats.InCity=65537)
+			{
+				if (PlayerStats.PanelWaypoint=65536 && PlayerStats.PanelInventory=65536 && PlayerStats.PanelSkillTree=65536 && PlayerStats.PanelSocial=65536)
+				{
+					if (PlayerStats.ChatStatus!="" && PlayerStats.ChatStatus=65536)
+					{
+						if (PlayerStats.PlayerActionID!="" && (PlayerStats.PlayerActionID=80 || PlayerStats.PlayerActionID=90))
+						{
+							If (A_TickCount>=MovementTimer+CurrentConfig.QuickSilverTimer)
+							{
+								if ((!WindowQueuedFlaskEffects[k].HasKey("QuickQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].QuickQueueEndtime-lagCompensation)))
+								{
+									flaskNum:=GetMaxChargesFlaskQuickSilver(FlasksData,"FlaskUtility6") ; QuickSilver flask
+									if (flaskNum!="")
+									{
+										EffectDuration:=FlasksData[flaskNum].EffectDuration
+										WindowQueuedFlaskEffects[k].QuickQueueEndtime:=A_TickCount+EffectDuration*100
+										if (trayNotifications)
+										{
+											TrayTip, PoE AutoFlask Using QuickSilver Flask %flaskNum%, %A_Space% , 2
+										}
+										hKey:=FlaskHotkey%flaskNum%
+										ControlSend,,%hkey%, % "ahk_id" hwnd
+										break
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		if(QuickSilverCheck2 && QuicksilverBuff=0)
+		{
+			if (PlayerStats.InCity!="" && PlayerStats.InCity=65537)
+			{
+				if (PlayerStats.ChatStatus!="" && PlayerStats.ChatStatus=65536)
+				{
+					if (PlayerStats.PanelWaypoint=65536 && PlayerStats.PanelInventory=65536 && PlayerStats.PanelSkillTree=65536 && PlayerStats.PanelSocial=65536)
+					{
+						if (PlayerStats.PlayerActionID!="" && (PlayerStats.PlayerActionID=80 || PlayerStats.PlayerActionID=90))
+						{
+							If (A_TickCount>=MovementTimer+CurrentConfig.QuickSilverTimer)
+							{
+								if ((!WindowQueuedFlaskEffects[k].HasKey("QuickQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].QuickQueueEndtime-lagCompensation)))
+								{
+									flaskNum:=GetMaxChargesFlaskQuickSilver2(FlasksData,"FlaskUtility6") ; QuickSilver flask
+									if (flaskNum!="")
+									{
+										EffectDuration:=FlasksData[flaskNum].EffectDuration
+										WindowQueuedFlaskEffects[k].QuickQueueEndtime:=A_TickCount+EffectDuration*100
+										if (trayNotifications)
+										{
+											TrayTip, PoE AutoFlask Using QuickSilver flask %flaskNum%, %A_Space% , 2
+										}
+										hKey:=FlaskHotkey%flaskNum%
+										ControlSend,,%hkey%, % "ahk_id" hwnd
+										break
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
       
-      if (PlayerStats.MaxMana>0)
-      {
-         currManaRatio:=PlayerStats.CurrMana/(PlayerStats.MaxMana-PlayerStats.ReservedManaFlat-PlayerStats.MaxMana*PlayerStats.ReservedManaPercent/100)
-      }
-      
-      if (currLifeRatio<CurrentConfig.minLifeRatioToQuit || currNShieldRatio<CurrentConfig.minNShieldRatioToQuit || (currLifeRatio<LastLifeRatio And ((LastLifeRatio-currLifeRatio)>CurrentConfig.maxLifeRatioPerHitToQuit)) || (CurrentConfig.maxNShieldRatioPerHitToQuit>0 And currNShieldRatio<LastNShieldRatio And ((LastNShieldRatio-currNShieldRatio)>CurrentConfig.maxNShieldRatioPerHitToQuit)))
-      {
-         if (autoQuitMode=0)
-         {
-            TrayTip, PoE AutoQuit by Killing the Process, Specified min life reached, %A_Space% , 2
-            WinKill, % "ahk_id" WinID%A_Index%
-            continue
-         }
-         else if (autoQuitMode=1)
-         {
-            QuitToLoginScreen(WinID%A_Index%)
-            continue
-         }
-         else if (autoQuitMode=3)
-         {
-            UsePortal()
-            continue
-         }
-         else if (autoQuitMode=4)
-         {
+		if(AttackInPlaceCheck)
+		{
+			if (IsInGame(hwnd))
+			{
+				if (PlayerStats.InCity!="" && PlayerStats.InCity=65537)
+				{
+					if (PlayerStats.PanelWaypoint=65536 && PlayerStats.PanelInventory=65536 && PlayerStats.PanelSkillTree=65536 && PlayerStats.PanelSocial=65536)
+					{
+						if (PlayerStats.MouseOnMonsterStatus!="" && PlayerStats.MouseOnMonsterStatus=65537)
+						{
+							if (PlayerStats.ChatStatus!="" && PlayerStats.ChatStatus=65536)
+							{
+								if (PlayerStats.EntityName!="")
+								{
+									if (PlayerStats.EntityName2!="Oak}" && PlayerStats.EntityName2!="Alira}" && PlayerStats.EntityName2!="Kraityn}")
+									{
+										If (InStr(PlayerStats.EntityName2,"Shrine") || InStr(PlayerStats.EntityName2,"Level"))
+										{
+											AttackInPlaceKeyUp:=1
+										}
+										Else
+										{
+											IfWinActive Path of Exile ahk_class Direct3DWindowClass
+											{
+												Sendinput, {%AttackInPlaceKey% DOWN}
+												AttackInPlaceKeyUp:=0
+											} 
+											Else
+											{
+												AttackInPlaceKeyUp:=1
+											}
+										}
+									}
+									Else
+									{
+										AttackInPlaceKeyUp:=1
+									}
+								}
+								Else
+								{
+									AttackInPlaceKeyUp:=1
+								}
+							}
+							Else
+							{
+								AttackInPlaceKeyUp:=1
+							}
+						}
+						Else
+						{
+							AttackInPlaceKeyUp:=1
+						}
+					}
+					Else
+					{
+						AttackInPlaceKeyUp:=1
+					}
+				}
+				Else
+				{
+					AttackInPlaceKeyUp:=1
+				}
+			}
+			Else
+			{
+				AttackInPlaceKeyUp:=1
+			}
+			If AttackInPlaceKeyUp = 1
+		    {
+		       GetKeyState, stateSH, %AttackInPlaceKey%
+		       if stateSH = D
+		       {
+		          Sendinput, {%AttackInPlaceKey% UP}
+		       }
+		       AttackInPlaceKeyUp:=0
+		    }
+		}
 
-         }
-      }
-
-      if (PlayerStats.CurrHP>0)
-      {
-	      LastHP:=PlayerStats.CurrHP
-	      LastES:=PlayerStats.CurrNShield
-  	  }
-  	  Else
-  	  {
-  	  	  LastHP:=0
-	      LastES:=0
-	  }
-      
-      FlasksData:=[]
-      ReadFlasksData(WinID%A_Index%,FlasksData)
-      
-      WinGet, CurrPID, PID,  % "ahk_id" WinID%A_Index%
-      hwnd:=WinID%A_Index%
-      k="%hwnd%%CurrPid%"
-      if (!WindowQueuedFlaskEffects.HasKey(k))
-      {
-         WindowQueuedFlaskEffects[k]:={}
-      }
-      
-      if (currLifeRatio>=1)
-         WindowQueuedFlaskEffects[k].hpQueueEndtime:=A_TickCount
-
-      if (currLifeRatio>=1)
-         WindowQueuedFlaskEffects[k].InstantQueueEndtime:=A_TickCount
-
-      if (currManaRatio>=1)
-         WindowQueuedFlaskEffects[k].ManaQueueEndtime:=A_TickCount
-
-
-
-      
-      if (currLifeRatio<CurrentConfig.minLifeRatioToDrink)
-      {
-
-         if ((!WindowQueuedFlaskEffects[k].HasKey("hpQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].hpQueueEndtime-lagCompensation)))
-         {
-            tflaskNum2:=GetMaxChargesFlaskOfType(FlasksData,"FlaskLife")
-            tflaskNum1:=GetMaxChargesFlaskOfType(FlasksData,"FlaskHybrid")
-            if ((tflaskNum1!=) && (tflaskNum2!=))
-               flaskNum:=(FlasksData[tflaskNum1].ChargesCurrent>FlasksData[tflaskNum2].ChargesCurrent) ? tflaskNum1 : tflaskNum2
-            else
-            {
-               if (tflaskNum1!="")
-                  flaskNum:=tflaskNum1
-               if (tflaskNum2!="")
-                  flaskNum:=tflaskNum2
-            }
-            if (flaskNum!="")
-            {  
-               EffectDuration:=FlasksData[flaskNum].EffectDuration
-
-               if (InStr(FlasksData[flaskNum].mod1,"Seething"))
-                  WindowQueuedFlaskEffects[k].hpQueueEndtime:=A_TickCount+500
-
-               else if (InStr(FlasksData[flaskNum].mod2,"Seething"))
-                  WindowQueuedFlaskEffects[k].hpQueueEndtime:=A_TickCount+500
-
-               else if ((InStr(FlasksData[flaskNum].mod1,"Panicked")) And ((PlayerStats.CurrHP/PlayerStats.MaxHP)<=0.35)) ; "Low life" can be caused by auras hp reservation from blood magic
-                  WindowQueuedFlaskEffects[k].hpQueueEndtime:=A_TickCount+500
-
-               else if ((InStr(FlasksData[flaskNum].mod2,"Panicked")) And ((PlayerStats.CurrHP/PlayerStats.MaxHP)<=0.35)) ; "Low life" can be caused by auras hp reservation from blood magic
-                  WindowQueuedFlaskEffects[k].hpQueueEndtime:=A_TickCount+500
-
-               else
-               WindowQueuedFlaskEffects[k].hpQueueEndtime:=A_TickCount+EffectDuration*100
-
-
-               if (trayNotifications)
-               {
-                  TrayTip, PoE AutoFlask Using HP flask %flaskNum%, %A_Space% , 2
-               }
-               hKey:=FlaskHotkey%flaskNum%
-               ControlSend,,%hkey%, % "ahk_id" hwnd
-               Break
-            }
-         }
-      }
-
-      if (currLifeRatio<CurrentConfig.minLifeRatioToInstant)
-      {
-         if ((!WindowQueuedFlaskEffects[k].HasKey("InstantQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].InstantQueueEndtime)))
-         {
-            tflaskNum2:=GetMaxChargesOfInstantFlask(FlasksData,"FlaskLife") ;need to change this
-            if (tflaskNum2!="")
-               flaskNum:=tflaskNum2
-            if (flaskNum!="")
-            {  
-               IFDelay:= (CurrentConfig.IFlaskDelay*10)
-               WindowQueuedFlaskEffects[k].InstantQueueEndtime:=A_TickCount+IFDelay
-               if (trayNotifications)
-               {
-                  TrayTip, PoE AutoFlask Using HP Flask %flaskNum%, %A_Space% , 2
-               }
-               hKey:=FlaskHotkey%flaskNum%
-               ControlSend,,%hkey%, % "ahk_id" hwnd
-               break
-            }
-         }
-      }
-
-      if (currLifeRatio<CurrentConfig.minLifeRatioToPopJade || currNShieldRatio<CurrentConfig.minNShieldRatioToPopJade)
-      {
-         if ((!WindowQueuedFlaskEffects[k].HasKey("jadeQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].jadeQueueEndtime-lagCompensation)))
-         {
-            flaskNum:=GetMaxChargesFlaskOfType(FlasksData,"FlaskUtility9") ; Jade Flask
-            if (flaskNum!="")
-            {
-               EffectDuration:=FlasksData[flaskNum].EffectDuration
-               WindowQueuedFlaskEffects[k].jadeQueueEndtime:=A_TickCount+EffectDuration*100
-               if (trayNotifications)
-               {
-                  TrayTip, PoE AutoFlask Using Jade Flask %flaskNum%, %A_Space% , 2
-               }
-               hKey:=FlaskHotkey%flaskNum%
-               ControlSend,,%hkey%, % "ahk_id" hwnd
-               break
-            }
-         }
-
-         if ((!WindowQueuedFlaskEffects[k].HasKey("GraniteQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].GraniteQueueEndtime-lagCompensation)))
-         {
-            flaskNum:=GetMaxChargesFlaskOfType(FlasksData,"FlaskUtility5") ; Granite Flask
-            if (flaskNum!="")
-            {
-               EffectDuration:=FlasksData[flaskNum].EffectDuration
-               WindowQueuedFlaskEffects[k].GraniteQueueEndtime:=A_TickCount+EffectDuration*100
-               if (trayNotifications)
-               {
-                  TrayTip, PoE AutoFlask Using Granite Flask %flaskNum%, %A_Space% , 2
-               }
-               hKey:=FlaskHotkey%flaskNum%
-               ControlSend,,%hkey%, % "ahk_id" hwnd
-               break
-            }
-         }
-      }
-
-      if (currLifeRatio<CurrentConfig.minLifeRatioToPopElementalResist || currNShieldRatio<CurrentConfig.minNShieldRatioToPopElementalResist)
-      {
-         if ((!WindowQueuedFlaskEffects[k].HasKey("RubyQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].RubyQueueEndtime-lagCompensation)))
-         {
-            flaskNum:=GetMaxChargesFlaskOfType(FlasksData,"FlaskUtility2") ; Ruby flask
-            if (flaskNum!="")
-            {
-               EffectDuration:=FlasksData[flaskNum].EffectDuration
-               WindowQueuedFlaskEffects[k].RubyQueueEndtime:=A_TickCount+EffectDuration*100
-               if (trayNotifications)
-               {
-                  TrayTip, PoE AutoFlask Using Ruby Flask %flaskNum%, %A_Space% , 2
-               }
-               hKey:=FlaskHotkey%flaskNum%
-               ControlSend,,%hkey%, % "ahk_id" hwnd
-               break
-            }
-         }
-
-         if ((!WindowQueuedFlaskEffects[k].HasKey("TopazQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].TopazQueueEndtime-lagCompensation)))
-         {
-            flaskNum:=GetMaxChargesFlaskOfType(FlasksData,"FlaskUtility4") ; Topaz flask
-            if (flaskNum!="")
-            {
-               EffectDuration:=FlasksData[flaskNum].EffectDuration
-               WindowQueuedFlaskEffects[k].TopazQueueEndtime:=A_TickCount+EffectDuration*100
-               if (trayNotifications)
-               {
-                  TrayTip, PoE AutoFlask Using Topaz Flask %flaskNum%, %A_Space% , 2
-               }
-               hKey:=FlaskHotkey%flaskNum%
-               ControlSend,,%hkey%, % "ahk_id" hwnd
-               break
-            }
-         }
-
-         if ((!WindowQueuedFlaskEffects[k].HasKey("SapphireQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].SapphireQueueEndtime-lagCompensation)))
-         {
-            flaskNum:=GetMaxChargesFlaskOfType(FlasksData,"FlaskUtility3") ; Sapphire flask
-            if (flaskNum!="")
-            {
-               EffectDuration:=FlasksData[flaskNum].EffectDuration
-               WindowQueuedFlaskEffects[k].SapphireQueueEndtime:=A_TickCount+EffectDuration*100
-               if (trayNotifications)
-               {
-                  TrayTip, PoE AutoFlask Using Sapphire flask %flaskNum%, %A_Space% , 2
-               }
-               hKey:=FlaskHotkey%flaskNum%
-               ControlSend,,%hkey%, % "ahk_id" hwnd
-               break
-            }
-         }
-
-         if ((!WindowQueuedFlaskEffects[k].HasKey("AmethystQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].AmethystQueueEndtime-lagCompensation)))
-         {
-            flaskNum:=GetMaxChargesFlaskOfType(FlasksData,"FlaskUtility7") ; Amethyst flask
-            if (flaskNum!="")
-            {
-               EffectDuration:=FlasksData[flaskNum].EffectDuration
-               WindowQueuedFlaskEffects[k].AmethystQueueEndtime:=A_TickCount+EffectDuration*100
-               if (trayNotifications)
-               {
-                  TrayTip, PoE AutoFlask Using Amethyst Flask %flaskNum%, %A_Space% , 2
-               }
-               hKey:=FlaskHotkey%flaskNum%
-               ControlSend,,%hkey%, % "ahk_id" hwnd
-               break
-            }
-         }
-      }
-
-      if (PlayerStats.MaxMana>0 && (currManaRatio<CurrentConfig.minManaRatioToDrink || PlayerStats.CurrMana<CurrentConfig.minManaToDrink))
-      {      
-         if ((!WindowQueuedFlaskEffects[k].HasKey("ManaQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].ManaQueueEndtime-lagCompensation)))
-         {
-            tflaskNum2:=GetMaxChargesFlaskOfType(FlasksData,"FlaskMana")
-            tflaskNum1:=GetMaxChargesFlaskOfType(FlasksData,"FlaskHybrid")
-              
-            if ((tflaskNum1!=) && (tflaskNum2!=))
-               flaskNum:=(FlasksData[tflaskNum1].ChargesCurrent>FlasksData[tflaskNum2].ChargesCurrent) ? tflaskNum1 : tflaskNum2
-            else
-            {
-               if (tflaskNum1!="")
-                  flaskNum:=tflaskNum1
-               if (tflaskNum2!="")
-                  flaskNum:=tflaskNum2
-            }
-
-            if (flaskNum!="")
-            {
-
-               EffectDuration:=FlasksData[flaskNum].EffectDuration
-
-               if (InStr(FlasksData[flaskNum].mod1,"Seething"))
-                  WindowQueuedFlaskEffects[k].ManaQueueEndtime:=A_TickCount+500
-
-               else if (InStr(FlasksData[flaskNum].mod2,"Seething"))
-                  WindowQueuedFlaskEffects[k].ManaQueueEndtime:=A_TickCount+500
-
-               else if ((InStr(FlasksData[flaskNum].mod1,"Panicked")) And ((PlayerStats.CurrHP/PlayerStats.MaxHP)<=0.35)) ; "Low life" can be caused by auras hp reservation from blood magic
-                  WindowQueuedFlaskEffects[k].ManaQueueEndtime:=A_TickCount+500
-
-               else if ((InStr(FlasksData[flaskNum].mod2,"Panicked")) And ((PlayerStats.CurrHP/PlayerStats.MaxHP)<=0.35)) ; "Low life" can be caused by auras hp reservation from blood magic
-                  WindowQueuedFlaskEffects[k].ManaQueueEndtime:=A_TickCount+500
-
-               else
-               WindowQueuedFlaskEffects[k].ManaQueueEndtime:=A_TickCount+EffectDuration*100
-
-               if (trayNotifications)
-               {
-                  TrayTip, PoE AutoFlask Using Mana Flask %flaskNum%, %A_Space% , 2
-               }
-               hKey:=FlaskHotkey%flaskNum%
-               ControlSend,,%hkey%, % "ahk_id" hwnd
-               Break
-            }
-         }
-      }
-
-      if (PlayerStats.PlayerActionID!="" && PlayerStats.PlayerActionID!=80 && PlayerStats.PlayerActionID!=90)
-      {
-         MovementTimer:= A_TickCount
-      }
-      ;TODO MovementTimer%A_Index%
-
-      if(QuickSilverCheck)
-      {
-         if (PlayerStats.InCity!="" && PlayerStats.InCity=65537)
-         {
-            if (PlayerStats.PanelWaypoint=65536 && PlayerStats.PanelInventory=65536 && PlayerStats.PanelSkillTree=65536 && PlayerStats.PanelSocial=65536)
-            {
-               if (PlayerStats.ChatStatus!="" && PlayerStats.ChatStatus=65536)
-               {
-                  if (PlayerStats.PlayerActionID!="" && (PlayerStats.PlayerActionID=80 || PlayerStats.PlayerActionID=90))
-                  {
-                     If (A_TickCount>=MovementTimer+CurrentConfig.QuickSilverTimer)
-                     {
-                        if ((!WindowQueuedFlaskEffects[k].HasKey("QuickQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].QuickQueueEndtime-lagCompensation)))
-                        {
-                           flaskNum:=GetMaxChargesFlaskQuickSilver(FlasksData,"FlaskUtility6") ; QuickSilver flask
-                           if (flaskNum!="")
-                           {
-                              EffectDuration:=FlasksData[flaskNum].EffectDuration
-                              WindowQueuedFlaskEffects[k].QuickQueueEndtime:=A_TickCount+EffectDuration*100
-                              if (trayNotifications)
-                              {
-                                 TrayTip, PoE AutoFlask Using QuickSilver Flask %flaskNum%, %A_Space% , 2
-                              }
-                              hKey:=FlaskHotkey%flaskNum%
-                              ControlSend,,%hkey%, % "ahk_id" hwnd
-                              break
-                           }
-                        }
-                     }
-                  }
-               }
-            }
-         }
-      }
-
-      if(QuickSilverCheck2)
-      {
-         if (PlayerStats.InCity!="" && PlayerStats.InCity=65537)
-         {
-            if (PlayerStats.ChatStatus!="" && PlayerStats.ChatStatus=65536)
-            {
-               if (PlayerStats.PanelWaypoint=65536 && PlayerStats.PanelInventory=65536 && PlayerStats.PanelSkillTree=65536 && PlayerStats.PanelSocial=65536)
-               {
-                  if (PlayerStats.PlayerActionID!="" && (PlayerStats.PlayerActionID=80 || PlayerStats.PlayerActionID=90))
-                  {
-                     If (A_TickCount>=MovementTimer+CurrentConfig.QuickSilverTimer)
-                     {
-                        if ((!WindowQueuedFlaskEffects[k].HasKey("QuickQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].QuickQueueEndtime-lagCompensation)))
-                        {
-                           flaskNum:=GetMaxChargesFlaskQuickSilver2(FlasksData,"FlaskUtility6") ; QuickSilver flask
-                           if (flaskNum!="")
-                           {
-                              EffectDuration:=FlasksData[flaskNum].EffectDuration
-                              WindowQueuedFlaskEffects[k].QuickQueueEndtime:=A_TickCount+EffectDuration*100
-                              if (trayNotifications)
-                              {
-                                 TrayTip, PoE AutoFlask Using QuickSilver flask %flaskNum%, %A_Space% , 2
-                              }
-                              hKey:=FlaskHotkey%flaskNum%
-                              ControlSend,,%hkey%, % "ahk_id" hwnd
-                              break
-                           }
-                        }
-                     }
-                  }
-               }
-            }
-         }
-      }
-      
-      if(AutoShiftCheck)
-      {
-         if (IsInGame(hwnd))
-         {
-            if (PlayerStats.InCity!="" && PlayerStats.InCity=65537)
-            {
-               if (PlayerStats.PanelWaypoint=65536 && PlayerStats.PanelInventory=65536 && PlayerStats.PanelSkillTree=65536 && PlayerStats.PanelSocial=65536)
-               {
-                  if (PlayerStats.MouseOnMonsterStatus!="" && PlayerStats.MouseOnMonsterStatus=65537)
-                  {
-                     if (PlayerStats.ChatStatus!="" && PlayerStats.ChatStatus=65536)
-                     {
-                        if (PlayerStats.EntityName!="")
-                        {
-                           if (PlayerStats.EntityName2!="Oak}" && PlayerStats.EntityName2!="Alira}" && PlayerStats.EntityName2!="Kraityn}")
-                           {
-                              If (InStr(PlayerStats.EntityName2,"Shrine") || InStr(PlayerStats.EntityName2,"Level"))
-                              {
-                                 If ShiftDownOn = 1
-                                 {
-                                    GetKeyState, stateSH, SHIFT, P
-                                    if stateSH = D
-                                    {
-                                       Sendinput {SHIFT up}
-                                    }
-                                    ShiftDownOn:= 0
-                                 }
-                              }
-                              Else
-                              {
-                                 IfWinActive Path of Exile ahk_class Direct3DWindowClass
-                                 {
-                                    Sendinput {SHIFT Down}
-                                    ShiftDownOn:= 1
-                                 } 
-                                 Else
-                                 {
-                                    If ShiftDownOn = 1
-                                    {
-                                       GetKeyState, stateSH, SHIFT, P
-                                       if stateSH = D
-                                       {
-                                          Sendinput {SHIFT up}
-                                       }
-                                       ShiftDownOn:= 0
-                                    } 
-                                 }                                    
-                              }
-                           }
-                           Else
-                           {
-                              If ShiftDownOn = 1
-                              {
-                                 GetKeyState, stateSH, SHIFT, P
-                                 if stateSH = D
-                                 {
-                                    Sendinput {SHIFT up}
-                                 }
-                                 ShiftDownOn:= 0
-                              }
-                           } 
-                        }
-                        Else
-                        {
-                           If ShiftDownOn = 1
-                           {
-                              GetKeyState, stateSH, SHIFT, P
-                              if stateSH = D
-                              {
-                                 Sendinput {SHIFT up}
-                              }
-                              ShiftDownOn:= 0
-                           }
-                        }   
-                     }
-                     Else
-                     {
-                        If ShiftDownOn = 1
-                        {
-                           GetKeyState, stateSH, SHIFT, P
-                           if stateSH = D
-                           {
-                              Sendinput {SHIFT up}
-                           }
-                           ShiftDownOn:= 0
-                        }
-                     }
-                  }
-                  Else If (PlayerStats.MouseOnMonsterStatus!="" && PlayerStats.MouseOnMonsterStatus=65536)
-                  {
-                     If ShiftDownOn = 1
-                     {
-                        GetKeyState, stateSH, SHIFT, P
-                        if stateSH = D
-                        {
-                           Sendinput {SHIFT up}
-                        }
-                        ShiftDownOn:= 0
-                     }
-                  }
-               }
-               Else
-               {
-                  If ShiftDownOn = 1
-                  {
-                     GetKeyState, stateSH, SHIFT, P
-                     if stateSH = D
-                     {
-                        Sendinput {SHIFT up}
-                     }
-                     ShiftDownOn:= 0
-                  }
-               }
-            }
-            Else
-            {
-               If ShiftDownOn = 1
-               {
-                  GetKeyState, stateSH, SHIFT, P
-                  if stateSH = D
-                  {
-                     Sendinput {SHIFT up}
-                  }
-                  ShiftDownOn:= 0
-               }
-            }
-         }
-         Else
-         {
-            If ShiftDownOn = 1
-            {
-               GetKeyState, stateSH, SHIFT, P
-               if stateSH = D
-               {
-                  Sendinput {SHIFT up}
-               }
-               ShiftDownOn:= 0
-            }
-         }
-
-
-      }
       
    ;if (PlayerStats.PlayerActionID!="" && PlayerStats.PlayerActionID=2176)  ;2048 not
    ;if ((autoQuit=1) && (ThisID!="") && (ThisID!=WinActive("A")))
@@ -1875,9 +2085,9 @@ Main()
             ResyncTimer:= A_TickCount
          }
       }
-   }
+    }
 
-   Sleep, %AutoFlaskWatchdogPeriod%   
+	Sleep, %AutoFlaskWatchdogPeriod%   
 }
 
 ;-------MAIN FUNCTIONS-----------------MAIN FUNCTIONS-----------------MAIN FUNCTIONS-----------------
@@ -2366,6 +2576,8 @@ setHK(num,INI,GUI) {
  *PrintScreen::
  *Space::
  *Tab::
+ *XButton1::
+ *XButton2::
   modifier := ""
   If GetKeyState("Shift","P")
    modifier .= "+"
@@ -2444,6 +2656,7 @@ GuiUpdate:
    GuiControl, , InstantFlaskDelayUpdate,  % Round(InstantFlaskDelay/100,2)
    GuiControl, , minLifePercentToSpamUpdate, %minLifePercentToSpam%
    GuiControl, , QuickSilverMovementTimerUpdate, % Round(QuickSilverMovementTimer/10,1)
+   GuiControl, , RemoveAilmentsTimerUpdate, % Round(RemoveAilmentsTimer/10,1)
    GuiControl, , TradeSpamUpdate, %TradeSpam%
    GuiControl, , ResyncSpamUpdate, %ResyncSpam%
 
@@ -2465,6 +2678,7 @@ GuiUpdate:
 			IniWrite, %minLifePercentToSpam% , Config.ini, Config%A_Index%, minLifePercentToSpam
 			IniWrite, %InstantFlaskDelay% , Config.ini, Config%A_Index%, InstantFlaskDelay
 			IniWrite, %QuickSilverMovementTimer% , Config.ini, Config%A_Index%, QuickSilverMovementTimer
+			IniWrite, %RemoveAilmentsTimer% , Config.ini, Config%A_Index%, RemoveAilmentsTimer
 			IniWrite, %ResyncSpam% , Config.ini, Config%A_Index%, ResyncSpam
 		}
    }
@@ -2473,7 +2687,7 @@ GuiUpdate:
    IniWrite, %InstantFlaskDelay% , Config.ini, Config, InstantFlaskDelay
    IFDelay:= InstantFlaskDelay
 
-   PlayerConfig["Default"]:={QuickSilverTimer:QuickSilverMovementTimer*100, minLifeRatioToInstant: minLifePercentToSpam/100, IFlaskDelay: InstantFlaskDelay,minLifeRatioToDrink: minLifePercentToDrink/100, minManaRatioToDrink: minManaPercentToDrink/100, minManaToDrink: minManaToDrinkPot, minLifeRatioToPopElementalResist: minLifePercentToElementalResist/100,minLifeRatioToPopJade: minLifePercentToJade/100, minLifeRatioToQuit: minLifePercentToQuit/100,maxLifeRatioPerHitToQuit: maxLifePercentPerHitToQuit/100,maxNShieldRatioPerHitToQuit: maxESPercentPerHitToQuit/100,minNShieldRatioToQuit: minESPercentToQuit/100, minNShieldRatioToPopElementalResist: minESPercentToElementalResist/100, minNShieldRatioToPopJade: minESPercentToJade/100}
+   PlayerConfig["Default"]:={RemAilmentsTimer:RemoveAilmentsTimer,QuickSilverTimer:QuickSilverMovementTimer*100, minLifeRatioToInstant: minLifePercentToSpam/100, IFlaskDelay: InstantFlaskDelay,minLifeRatioToDrink: minLifePercentToDrink/100, minManaRatioToDrink: minManaPercentToDrink/100, minManaToDrink: minManaToDrinkPot, minLifeRatioToPopElementalResist: minLifePercentToElementalResist/100,minLifeRatioToPopJade: minLifePercentToJade/100, minLifeRatioToQuit: minLifePercentToQuit/100,maxLifeRatioPerHitToQuit: maxLifePercentPerHitToQuit/100,maxNShieldRatioPerHitToQuit: maxESPercentPerHitToQuit/100,minNShieldRatioToQuit: minESPercentToQuit/100, minNShieldRatioToPopElementalResist: minESPercentToElementalResist/100, minNShieldRatioToPopJade: minESPercentToJade/100}
 
 
 return
@@ -2581,8 +2795,10 @@ ConfigList:
    GuiControl, , InstantFlaskDelayUpdate,  % Round(InstantFlaskDelay/100,2)
    GuiControl, , QuickSilverMovementTimer, %QuickSilverMovementTimer%
    GuiControl, , QuickSilverMovementTimerUpdate, % Round(QuickSilverMovementTimer/10,1)
+   GuiControl, , RemoveAilmentsTimer, %RemoveAilmentsTimer%
+   GuiControl, , RemoveAilmentsTimerUpdate, % Round(RemoveAilmentsTimer/10,1)
 
-   PlayerConfig["Default"]:={QuickSilverTimer:QuickSilverMovementTimer*100, minLifeRatioToInstant: minLifePercentToSpam/100, IFlaskDelay: InstantFlaskDelay,minLifeRatioToDrink: minLifePercentToDrink/100, minManaRatioToDrink: minManaPercentToDrink/100, minManaToDrink: minManaToDrinkPot, minLifeRatioToPopElementalResist: minLifePercentToElementalResist/100,minLifeRatioToPopJade: minLifePercentToJade/100, minLifeRatioToQuit: minLifePercentToQuit/100,maxLifeRatioPerHitToQuit: maxLifePercentPerHitToQuit/100,maxNShieldRatioPerHitToQuit: maxESPercentPerHitToQuit/100,minNShieldRatioToQuit: minESPercentToQuit/100, minNShieldRatioToPopElementalResist: minESPercentToElementalResist/100, minNShieldRatioToPopJade: minESPercentToJade/100}
+   PlayerConfig["Default"]:={RemAilmentsTimer:RemoveAilmentsTimer, QuickSilverTimer:QuickSilverMovementTimer*100, minLifeRatioToInstant: minLifePercentToSpam/100, IFlaskDelay: InstantFlaskDelay,minLifeRatioToDrink: minLifePercentToDrink/100, minManaRatioToDrink: minManaPercentToDrink/100, minManaToDrink: minManaToDrinkPot, minLifeRatioToPopElementalResist: minLifePercentToElementalResist/100,minLifeRatioToPopJade: minLifePercentToJade/100, minLifeRatioToQuit: minLifePercentToQuit/100,maxLifeRatioPerHitToQuit: maxLifePercentPerHitToQuit/100,maxNShieldRatioPerHitToQuit: maxESPercentPerHitToQuit/100,minNShieldRatioToQuit: minESPercentToQuit/100, minNShieldRatioToPopElementalResist: minESPercentToElementalResist/100, minNShieldRatioToPopJade: minESPercentToJade/100}
    
 return
 
@@ -2631,19 +2847,65 @@ QuickSilverCheck2:
    IniWrite, %QuickSilverCheck2% , Config.ini, Config, QuickSilverCheck2
 return 
 
-AutoShiftCheck:
+FlaskOnFrozenCheck:
    Gui, Submit, NoHide
-   If AutoShiftCheckBox = 0
+   If FlaskOnFrozenCheckBox = 0
    {
-      AutoShiftCheck = 0
-      IniWrite, 0 , Config.ini, Config, AutoShiftCheck
+      FlaskOnFrozenCheck = 0
+      IniWrite, 0 , Config.ini, Config, FlaskOnFrozenCheck
    }
-   If AutoShiftCheckBox = 1
+   If FlaskOnFrozenCheckBox = 1
    {
-      AutoShiftCheck = 1
-      IniWrite, 1 , Config.ini, Config, AutoShiftCheck
+      FlaskOnFrozenCheck = 1
+      IniWrite, 1 , Config.ini, Config, FlaskOnFrozenCheck
    }
-   IniWrite, %AutoShiftCheck% , Config.ini, Config, AutoShiftCheck
+   IniWrite, %FlaskOnFrozenCheck% , Config.ini, Config, FlaskOnFrozenCheck
+return 
+
+FlaskOnShockedCheck:
+   Gui, Submit, NoHide
+   If FlaskOnShockedCheckBox = 0
+   {
+      FlaskOnShockedCheck = 0
+      IniWrite, 0 , Config.ini, Config, FlaskOnShockedCheck
+   }
+   If FlaskOnShockedCheckBox = 1
+   {
+      FlaskOnShockedCheck = 1
+      IniWrite, 1 , Config.ini, Config, FlaskOnShockedCheck
+   }
+   IniWrite, %FlaskOnShockedCheck% , Config.ini, Config, FlaskOnShockedCheck
+return 
+
+FlaskOnIgnitedCheck:
+   Gui, Submit, NoHide
+   If FlaskOnIgnitedCheckBox = 0
+   {
+      FlaskOnIgnitedCheck = 0
+      IniWrite, 0 , Config.ini, Config, FlaskOnIgnitedCheck
+   }
+   If FlaskOnIgnitedCheckBox = 1
+   {
+      FlaskOnIgnitedCheck = 1
+      IniWrite, 1 , Config.ini, Config, FlaskOnIgnitedCheck
+   }
+   IniWrite, %FlaskOnIgnitedCheck% , Config.ini, Config, FlaskOnIgnitedCheck
+return 
+
+
+AttackInPlaceCheck:
+   Gui, Submit, NoHide
+   If AttackInPlaceCheckBox = 0
+   {
+      AttackInPlaceCheck = 0
+      IniWrite, 0 , Config.ini, Config, AttackInPlaceCheck
+   }
+   If AttackInPlaceCheckBox = 1
+   {
+      AttackInPlaceCheck = 1
+      IniWrite, 1 , Config.ini, Config, AttackInPlaceCheck
+   }
+   IniWrite, %AttackInPlaceCheck% , Config.ini, Config, AttackInPlaceCheck
 return
 
 
