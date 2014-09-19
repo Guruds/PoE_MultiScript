@@ -13,19 +13,19 @@ IniRead, LastTab, Config.ini, Config, LastTab, Settings
 
 If LastTab = AutoFlask
 {
-   Gui,Add,Tab2, x0 y0 w474 h525 gTabFunc vTabChoice,AutoFlask||AutoQuit|Others|Settings|
+   Gui,Add,Tab2, x0 y0 w474 h595 gTabFunc vTabChoice,AutoFlask||AutoQuit|Others|Settings|
 }
 else If LastTab = AutoQuit
 {
-   Gui,Add,Tab2, x0 y0 w474 h525 gTabFunc vTabChoice,AutoFlask|AutoQuit||Others|Settings|
+   Gui,Add,Tab2, x0 y0 w474 h595 gTabFunc vTabChoice,AutoFlask|AutoQuit||Others|Settings|
 }
 else If LastTab = Others
 {
-   Gui,Add,Tab2, x0 y0 w474 h525 gTabFunc vTabChoice,AutoFlask|AutoQuit|Others||Settings|
+   Gui,Add,Tab2, x0 y0 w474 h595 gTabFunc vTabChoice,AutoFlask|AutoQuit|Others||Settings|
 }
 else If LastTab = Settings
 {
-   Gui,Add,Tab2, x0 y0 w474 h525 gTabFunc vTabChoice,AutoFlask|AutoQuit|Others|Settings||
+   Gui,Add,Tab2, x0 y0 w474 h595 gTabFunc vTabChoice,AutoFlask|AutoQuit|Others|Settings||
 }
 
 Gui, Tab, Settings
@@ -73,9 +73,11 @@ Loop, 5
 		IniRead, minManaToDrinkPot , Config.ini, Config%A_Index%, minManaToDrinkPot, 15
 		IniRead, minLifePercentToSpam, Config.ini, Config%A_Index%, minLifePercentToSpam, 35
 		IniRead, ResyncSpam, Config.ini, Config%A_Index%, ResyncSpam, 0
+      IniRead, RemainingSpam, Config.ini, Config%A_Index%, RemainingSpam, 0
 		IniRead, InstantFlaskDelay, Config.ini, Config%A_Index%, InstantFlaskDelay, 0
 		IniRead, QuickSilverMovementTimer , Config.ini, Config%A_Index%, QuickSilverMovementTimer, 15
 		IniRead, RemoveAilmentsTimer , Config.ini, Config%A_Index%, RemoveAilmentsTimer, 10
+      IniRead, RemoveCorruptedBloodCharges , Config.ini, Config%A_Index%, RemoveCorruptedBloodCharges, 10
 	}	
 }
 
@@ -91,42 +93,46 @@ IniRead, FlaskOnIgnitedCheck , Config.ini, Config, FlaskOnIgnitedCheck, 0
 
 IniRead, AttackInPlaceCheck , Config.ini, Config, AttackInPlaceCheck, 0
 
+IniRead, FlaskOnCurseCheck , Config.ini, Config, FlaskOnCurseCheck, 0
+
+IniRead, FlaskOnCorruptedBloodCheck , Config.ini, Config, FlaskOnCorruptedBloodCheck, 0
+
 Gui, Tab, AutoFlask
 
 Gui, Add, GroupBox, x12 y250 w220 h60 , Min Life `% to Use Jade/Granite Flask
 Gui, Add, Slider, x22 y270 w170 h30 gGuiUpdate vminLifePercentToJade +ToolTip TickInterval25, %minLifePercentToJade%
 Gui, Add, Text, x192 y270 w20 h30 vminLifePercentToJadeUpdate , %minLifePercentToJade%
-Gui, Add, Text, x212 y270 w10 h30 , `%
+Gui, Add, Text, x212 y270 w10 h30 vminLifePercentToJadeUpdatePercent, `%
 
 Gui, Add, GroupBox, x242 y250 w220 h60 , Min E.Shield `% to Use Jade/Granite Flask
 Gui, Add, Slider, x252 y270 w170 h30 gGuiUpdate vminESPercentToJade +ToolTip TickInterval25, %minESPercentToJade%
 Gui, Add, Text, x422 y270 w20 h30 vminESPercentToJadeUpdate, %minESPercentToJade%
-Gui, Add, Text, x442 y270 w10 h30 , `%
+Gui, Add, Text, x442 y270 w10 h30 vminESPercentToJadeUpdatePercent, `%
 
 Gui, Add, GroupBox, x12 y320 w220 h60 , Min Life `% to Use Elemental Resist Flask
 Gui, Add, Slider, x22 y340 w170 h30 gGuiUpdate vminLifePercentToElementalResist +ToolTip TickInterval25, %minLifePercentToElementalResist%
 Gui, Add, Text, x192 y340 w20 h30 vminLifePercentToElementalResistUpdate, %minLifePercentToElementalResist%
-Gui, Add, Text, x212 y340 w10 h30 , `%
+Gui, Add, Text, x212 y340 w10 h30 vminLifePercentToElementalResistUpdatePercent, `%
 
 Gui, Add, GroupBox, x242 y320 w220 h60 , Min E.Shield `% to Use Element. Resist Flask
 Gui, Add, Slider, x252 y340 w170 h30 gGuiUpdate vminESPercentToElementalResist +ToolTip TickInterval25, %minESPercentToElementalResist%
 Gui, Add, Text, x422 y340 w20 h30 vminESPercentToElementalResistUpdate, %minESPercentToElementalResist%
-Gui, Add, Text, x442 y340 w10 h30 , `%
+Gui, Add, Text, x442 y340 w10 h30 vminESPercentToElementalResistUpdatePercent, `%
 
 Gui, Add, GroupBox, x12 y40 w220 h60 , Min Life `% to Drink Health Potion
 Gui, Add, Slider, x22 y60 w170 h30 gGuiUpdate vminLifePercentToDrink +ToolTip TickInterval25, %minLifePercentToDrink%
 Gui, Add, Text, x192 y60 w20 h30 vminLifePercentToDrinkUpdate, %minLifePercentToDrink%
-Gui, Add, Text, x212 y60 w10 h30 , `%
+Gui, Add, Text, x212 y60 w10 h30 vminLifePercentToDrinkUpdatePercent, `%
 
 Gui, Add, GroupBox, x242 y40 w220 h60 , Min Mana `% to Drink Mana Potion
 Gui, Add, Slider, x252 y60 w170 h30 gGuiUpdate vminManaPercentToDrink +ToolTip TickInterval25, %minManaPercentToDrink%
 Gui, Add, Text, x422 y60 w20 h30 vminManaPercentToDrinkUpdate, %minManaPercentToDrink%
-Gui, Add, Text, x442 y60 w10 h30 , `%
+Gui, Add, Text, x442 y60 w10 h30 vminManaPercentToDrinkUpdatePercent, `%
 
 Gui, Add, GroupBox, x12 y180 w220 h60 , Min Life `% to Spam Instant Flasks
 Gui, Add, Slider, x22 y200 w170 h30 gGuiUpdate vminLifePercentToSpam +ToolTip TickInterval25, %minLifePercentToSpam%
 Gui, Add, Text, x192 y200 w20 h30 vminLifePercentToSpamUpdate, %minLifePercentToSpam%
-Gui, Add, Text, x212 y200 w10 h30 , `%
+Gui, Add, Text, x212 y200 w10 h30 vminLifePercentToSpamUpdatePercent, `%
 
 Gui, Add, GroupBox, x242 y110 w220 h60 , Min Mana to Drink Mana Potion
 Gui, Add, Slider, x252 y130 w170 h30 Range0-300 gGuiUpdate vminManaToDrinkPot +ToolTip TickInterval50, %minManaToDrinkPot%
@@ -136,7 +142,7 @@ Gui, Add, GroupBox, x242 y180 w220 h60 , Instant Flask Spam Delay  ;x12 y149 w22
 IniRead, InstantFlaskDelay , Config.ini, Config, InstantFlaskDelay, 0
 Gui, Add, Slider, x252 y200 w170 h30 Range0-50 gGuiUpdate vInstantFlaskDelay +ToolTip TickInterval50, %InstantFlaskDelay%
 Gui, Add, Text, x422 y200 w25 h30 vInstantFlaskDelayUpdate, % Round(InstantFlaskDelay/100,2)
-Gui, Add, Text, x447 y200 w10 h30 , s
+Gui, Add, Text, x447 y200 w10 h30 vInstantFlaskDelayUpdatePercent, s
 
 Gui, Add, GroupBox, x12 y390 w220 h60 , Only QuickSilver if Moving for X Seconds
 Gui, Add, Slider, x22 y410 w170 h30 Range0-100 gGuiUpdate vQuickSilverMovementTimer +ToolTip TickInterval20, %QuickSilverMovementTimer%
@@ -147,6 +153,11 @@ Gui, Add, GroupBox, x12 y460 w220 h60 , Only Remove Ailments if They Are Over
 Gui, Add, Slider, x22 y480 w170 h30 Range0-50 gGuiUpdate vRemoveAilmentsTimer +ToolTip TickInterval10, %RemoveAilmentsTimer%
 Gui, Add, Text, x192 y480 w22 h30 vRemoveAilmentsTimerUpdate, % Round(RemoveAilmentsTimer/10,1)
 Gui, Add, Text, x214 y480 w10 h30 , s
+
+Gui, Add, GroupBox, x12 y530 w220 h60 , Only Remove Corrupted Blood If X Charges
+Gui, Add, Slider, x22 y550 w170 h30 Range1-20 gGuiUpdate vRemoveCorruptedBloodCharges +ToolTip, %RemoveCorruptedBloodCharges%
+Gui, Add, Text, x192 y550 w12 h30 vRemoveCorruptedBloodChargesUpdate, %RemoveCorruptedBloodCharges%
+Gui, Add, Text, x210 y550 w20 h30 , ch
 
 Gui, Add, GroupBox, x12 y110 w220 h60 , Disable AutoFlask on Slot ;x12 y359 w220 h60
 
@@ -163,47 +174,65 @@ Loop, 5
 
 If QuickSilverCheck = 0
 {
-   Gui, Add, CheckBox, x242 y385 w220 h30 vQuickSilverCheckBox gQuickSilverCheck, Use QuickSilver Flask When 40+ Charges
+   Gui, Add, CheckBox, x242 y389 w220 h30 vQuickSilverCheckBox gQuickSilverCheck, Use QuickSilver Flask When 40+ Charges
 }
 If QuickSilverCheck = 1
 {
-   Gui, Add, CheckBox, x242 y385 w220 h30  vQuickSilverCheckBox gQuickSilverCheck Checked, Use QuickSilver Flask When 40+ Charges
+   Gui, Add, CheckBox, x242 y389 w220 h30  vQuickSilverCheckBox gQuickSilverCheck Checked, Use QuickSilver Flask When 40+ Charges
 }
 
 If QuickSilverCheck2 = 0
 {
-   Gui, Add, CheckBox, x242 y410 w220 h30 vQuickSilverCheckBox2 gQuickSilverCheck2, Use QuickSilver Flask When 20+ Charges
+   Gui, Add, CheckBox, x242 y418 w220 h30 vQuickSilverCheckBox2 gQuickSilverCheck2, Use QuickSilver Flask When 20+ Charges
 }
 If QuickSilverCheck2 = 1
 {
-   Gui, Add, CheckBox, x242 y410 w220 h30  vQuickSilverCheckBox2 gQuickSilverCheck2 Checked, Use QuickSilver Flask When 20+ Charges
+   Gui, Add, CheckBox, x242 y418 w220 h30  vQuickSilverCheckBox2 gQuickSilverCheck2 Checked, Use QuickSilver Flask When 20+ Charges
 }
 
 If FlaskOnFrozenCheck = 0
 {
-   Gui, Add, CheckBox, x242 y435 w220 h30 vFlaskOnFrozenCheckBox gFlaskOnFrozenCheck, Use Flask to Remove Frozen Ailment
+   Gui, Add, CheckBox, x242 y447 w220 h30 vFlaskOnFrozenCheckBox gFlaskOnFrozenCheck, Use Flask to Remove Frozen Ailment
 }
 If FlaskOnFrozenCheck = 1
 {
-   Gui, Add, CheckBox, x242 y435 w220 h30  vFlaskOnFrozenCheckBox gFlaskOnFrozenCheck Checked, Use Flask to Remove Frozen Ailment
+   Gui, Add, CheckBox, x242 y447 w220 h30  vFlaskOnFrozenCheckBox gFlaskOnFrozenCheck Checked, Use Flask to Remove Frozen Ailment
 }
 
 If FlaskOnShockedCheck = 0
 {
-   Gui, Add, CheckBox, x242 y460 w220 h30 vFlaskOnShockedCheckBox gFlaskOnShockedCheck, Use Flask to Remove Shocked Ailment
+   Gui, Add, CheckBox, x242 y475 w220 h30 vFlaskOnShockedCheckBox gFlaskOnShockedCheck, Use Flask to Remove Shocked Ailment
 }
 If FlaskOnShockedCheck = 1
 {
-   Gui, Add, CheckBox, x242 y460 w220 h30  vFlaskOnShockedCheckBox gFlaskOnShockedCheck Checked, Use Flask to Remove Shocked Ailment
+   Gui, Add, CheckBox, x242 y475 w220 h30  vFlaskOnShockedCheckBox gFlaskOnShockedCheck Checked, Use Flask to Remove Shocked Ailment
 }
 
 If FlaskOnIgnitedCheck = 0
 {
-   Gui, Add, CheckBox, x242 y485 w220 h30 vFlaskOnIgnitedCheckBox gFlaskOnIgnitedCheck, Use Flask to Remove Burning Ailment
+   Gui, Add, CheckBox, x242 y503 w220 h30 vFlaskOnIgnitedCheckBox gFlaskOnIgnitedCheck, Use Flask to Remove Burning Ailment
 }
 If FlaskOnIgnitedCheck = 1
 {
-   Gui, Add, CheckBox, x242 y485 w220 h30  vFlaskOnIgnitedCheckBox gFlaskOnIgnitedCheck Checked, Use Flask to Remove Burning Ailment
+   Gui, Add, CheckBox, x242 y503 w220 h30  vFlaskOnIgnitedCheckBox gFlaskOnIgnitedCheck Checked, Use Flask to Remove Burning Ailment
+}
+
+If FlaskOnCurseCheck = 0
+{
+   Gui, Add, CheckBox, x242 y531 w220 h30 vFlaskOnCurseCheckBox gFlaskOnCurseCheck, Use Flask to Remove Curses
+}
+If FlaskOnCurseCheck = 1
+{
+   Gui, Add, CheckBox, x242 y531 w220 h30  vFlaskOnCurseCheckBox gFlaskOnCurseCheck Checked, Use Flask to Remove Curses
+}
+
+If FlaskOnCorruptedBloodCheck = 0
+{
+   Gui, Add, CheckBox, x242 y558 w220 h30 vFlaskOnCorruptedBloodCheckBox gFlaskOnCorruptedBloodCheck, Use Flask to Remove Corrupted Blood
+}
+If FlaskOnCorruptedBloodCheck = 1
+{
+   Gui, Add, CheckBox, x242 y558 w220 h30  vFlaskOnCorruptedBloodCheckBox gFlaskOnCorruptedBloodCheck Checked, Use Flask to Remove Corrupted Blood
 }
 
 
@@ -213,44 +242,44 @@ Gui, Add, GroupBox, x12 y180 w220 h60, Auto Quit Method
 IniRead, AutoQuitMethod , Config.ini, Config, AutoQuitMethod, 1
 If AutoQuitMethod = 1
 {
-   Gui, Add, DropDownList, x22 y200 w200 h21 AltSubmit gAutoQuitList vAutoQuitChoice R5, Exit to Login Screen (Fastest)||Kill Process|Use a Portal (On Testing)|Disabled
+   Gui, Add, DropDownList, x22 y200 w200 h21 AltSubmit gAutoQuitList vAutoQuitChoice R5, Exit to Login Screen||Alt+F4 (Fastest according to Chris)|Use a Portal (On Testing)|Disabled
    autoQuitMode:=1
 }
 else If AutoQuitMethod = 2
 {
-   Gui, Add, DropDownList, x22 y200 w200 h21 AltSubmit gAutoQuitList vAutoQuitChoice R5, Exit to Login Screen (Fastest)|Kill Process||Use a Portal (On Testing)|Disabled
+   Gui, Add, DropDownList, x22 y200 w200 h21 AltSubmit gAutoQuitList vAutoQuitChoice R5, Exit to Login Screen|Alt+F4 (Fastest according to Chris)||Use a Portal (On Testing)|Disabled
    autoQuitMode:=0
 }
 else If AutoQuitMethod = 3
 {
-   Gui, Add, DropDownList, x22 y200 w200 h21 AltSubmit gAutoQuitList vAutoQuitChoice R5, Exit to Login Screen (Fastest)|Kill Process|Use a Portal (On Testing)||Disabled
+   Gui, Add, DropDownList, x22 y200 w200 h21 AltSubmit gAutoQuitList vAutoQuitChoice R5, Exit to Login Screen|Alt+F4 (Fastest according to Chris)|Use a Portal (On Testing)||Disabled
    autoQuitMode:=3
 }
 else If AutoQuitMethod = 4
 {
-   Gui, Add, DropDownList, x22 y200 w200 h21 AltSubmit gAutoQuitList vAutoQuitChoice R5, Exit to Login Screen (Fastest)|Kill Process|Use a Portal (On Testing)|Disabled||
+   Gui, Add, DropDownList, x22 y200 w200 h21 AltSubmit gAutoQuitList vAutoQuitChoice R5, Exit to Login Screen|Alt+F4 (Fastest according to Chris)|Use a Portal (On Testing)|Disabled||
    autoQuitMode:=4
 }
 
 Gui, Add, GroupBox, x12 y40 w220 h60 , Min Life `% to Quit
 Gui, Add, Slider, x22 y60 w170 h30 gGuiUpdate vminLifePercentToQuit +ToolTip TickInterval25, %minLifePercentToQuit%
 Gui, Add, Text, x192 y60 w20 h30 vminLifePercentToQuitUpdate, %minLifePercentToQuit%
-Gui, Add, Text, x212 y60 w10 h30 , `%
+Gui, Add, Text, x212 y60 w10 h30 vminLifePercentToQuitUpdatePercent, `%
 
 Gui, Add, GroupBox, x242 y40 w220 h60 , Min Energy Shield `% to Quit
 Gui, Add, Slider, x252 y60 w170 h30 gGuiUpdate vminESPercentToQuit +ToolTip TickInterval25, %minESPercentToQuit%
 Gui, Add, Text, x422 y60 w20 h30 vminESPercentToQuitUpdate, %minESPercentToQuit%
-Gui, Add, Text, x442 y60 w10 h30 , `%
+Gui, Add, Text, x442 y60 w10 h30 vminESPercentToQuitUpdatePercent, `%
 
 Gui, Add, GroupBox, x12 y110 w220 h60 , Max Life `% Per Hit to Quit
 Gui, Add, Slider, x22 y130 w170 h30 gGuiUpdate vmaxLifePercentPerHitToQuit +ToolTip TickInterval25, %maxLifePercentPerHitToQuit%
 Gui, Add, Text, x192 y130 w20 h30 vmaxLifePercentPerHitToQuitUpdate, %maxLifePercentPerHitToQuit%
-Gui, Add, Text, x212 y130 w10 h30 , `%
+Gui, Add, Text, x212 y130 w10 h30 vmaxLifePercentPerHitToQuitUpdatePercent, `%
 
 Gui, Add, GroupBox, x242 y110 w220 h60 , Max Energy Shield `% Per Hit to Quit
 Gui, Add, Slider, x252 y130 w170 h30 gGuiUpdate vmaxESPercentPerHitToQuit +ToolTip TickInterval25, %maxESPercentPerHitToQuit%
 Gui, Add, Text, x422 y130 w20 h30 vmaxESPercentPerHitToQuitUpdate, %maxESPercentPerHitToQuit%
-Gui, Add, Text, x442 y130 w10 h30 , `%
+Gui, Add, Text, x442 y130 w10 h30 vmaxESPercentPerHitToQuitUpdatePercent, `%
 
 Gui, Tab, Settings
 
@@ -286,6 +315,8 @@ Gui, Add, Text, x22 y70 w70 h20 vbasePtrText , %baseMgrPtr%
 
 Gui, Add, Button, x262 y120 w180 h40 gshowgui2, Configure Hotkeys
 
+Gui, Add, Button, x262 y180 w180 h40 gDefaultHotkeys, Restore Default Hotkeys
+
 
 Gui, Tab, Others
 
@@ -293,71 +324,200 @@ IniRead, TradeSpam, Config.ini, Config, TradeSpam, 0
 Gui, Add, GroupBox, x12 y40 w220 h60 , Send Trade Message Every X Minutes*
 Gui, Add, Slider, x22 y60 w170 h30 gGuiUpdate vTradeSpam +ToolTip TickInterval1 Range0-10, %TradeSpam%
 Gui, Add, Text, x192 y60 w20 h30 vTradeSpamUpdate, %TradeSpam%
-Gui, Add, Text, x212 y60 w10 h30 , m
+Gui, Add, Text, x212 y60 w10 h30 vTradeSpamUpdatePercent, m
 
-Gui, Add, Text,  x22 y425 w400 h21, *Opening the chat will stop and reset the trade spam.
+Gui, Add, Text,  x22 y565 w400 h21, *Opening the chat will stop and reset the trade spam.
 
 Gui, Add, GroupBox, x242 y40 w220 h60 , Send Resync Command Every X Seconds
 Gui, Add, Slider, x252 y60 w170 h30 gGuiUpdate vResyncSpam +ToolTip TickInterval30 Range0-120, %ResyncSpam%
 Gui, Add, Text, x422 y60 w20 h30 vResyncSpamUpdate, %ResyncSpam%
-Gui, Add, Text, x442 y60 w10 h30 , s
+Gui, Add, Text, x442 y60 w10 h30 vResyncSpamUpdatePercent, s
+
+Gui, Add, GroupBox, x242 y110 w220 h60 , Send Remaining Command Every X Secs
+Gui, Add, Slider, x252 y130 w170 h30 gGuiUpdate vRemainingSpam +ToolTip TickInterval30 Range0-120, %RemainingSpam%
+Gui, Add, Text, x422 y130 w20 h30 vRemainingSpamUpdate, %RemainingSpam%
+Gui, Add, Text, x442 y130 w10 h30 vRemainingSpamUpdatePercent, s
 
 If AttackInPlaceCheck = 0
 {
-   Gui, Add, CheckBox, x22 y110 w170 h30 vAttackInPlaceCheckBox gAttackInPlaceCheck, Auto Hold Shift When Attacking
+   Gui, Add, CheckBox, x22 y110 w170 h30 vAttackInPlaceCheckBox gAttackInPlaceCheck, Auto Hold In Place When Attacking
 }
 If AttackInPlaceCheck = 1
 {
-   Gui, Add, CheckBox, x22 y110 w170 h30  vAttackInPlaceCheckBox gAttackInPlaceCheck Checked, Auto Hold Shift When Attacking
+   Gui, Add, CheckBox, x22 y110 w170 h30  vAttackInPlaceCheckBox gAttackInPlaceCheck Checked, Auto Hold In Place When Attacking
 }
 
 
 Gui, Tab
 
-Gui, Add, Button, x22 y539 w130 h40 gDefault, Reset Profile
-Gui, Add, Button, x182 y539 w120 h40 gReadMe, ReadMe
-Gui, Add, Button, x332 y539 w120 h40 gDonate, Donate
+Gui, Add, Button, x22 y609 w130 h40 gDefault, Reset Profile
+Gui, Add, Button, x182 y609 w120 h40 gReadMe, ReadMe
+Gui, Add, Button, x332 y609 w120 h40 gDonate, Donate
 
 Gui, Add, Text, x380 y1 w110 h18 vguicontroled, Created by Gurud.
 
-Gui, Add, GroupBox, x0 y520 w472 h74 ,
-Gui, Add, GroupBox, x1 y521 w470 h72 ,
-Gui, Add, GroupBox, x2 y522 w468 h70 ,
-Gui, Add, GroupBox, x3 y523 w466 h68 ,
-Gui, Add, GroupBox, x4 y524 w464 h66 ,
+Gui, Add, GroupBox, x0 y590 w472 h74 ,
+Gui, Add, GroupBox, x1 y591 w470 h72 ,
+Gui, Add, GroupBox, x2 y592 w468 h70 ,
+Gui, Add, GroupBox, x3 y593 w466 h68 ,
+Gui, Add, GroupBox, x4 y594 w464 h66 ,
 
-Gui, Add, GroupBox, x0 y21 w472 h505 ,
-Gui, Add, GroupBox, x1 y22 w470 h504 ,
-Gui, Add, GroupBox, x2 y23 w468 h503 ,
-Gui, Add, GroupBox, x3 y24 w466 h502 ,
-Gui, Add, GroupBox, x4 y25 w464 h501 ,
+Gui, Add, GroupBox, x0 y21 w472 h575 ,
+Gui, Add, GroupBox, x1 y22 w470 h574 ,
+Gui, Add, GroupBox, x2 y23 w468 h573 ,
+Gui, Add, GroupBox, x3 y24 w466 h572 ,
+Gui, Add, GroupBox, x4 y25 w464 h571 ,
 
 Menu, Tray, Add, Configuration Window, showgui
 
+If (minLifePercentToQuit=0)
+{
+   GuiControl, , minLifePercentToQuitUpdate, N/A
+   GuiControl, , minLifePercentToQuitUpdatePercent,
+}
+If (minESPercentToQuit=0)
+{
+   GuiControl, , minESPercentToQuitUpdate, N/A
+   GuiControl, , minESPercentToQuitUpdatePercent, 
+}
+If (maxLifePercentPerHitToQuit=0 || maxLifePercentPerHitToQuit=100)
+{
+   GuiControl, , maxLifePercentPerHitToQuitUpdate, N/A
+   GuiControl, , maxLifePercentPerHitToQuitUpdatePercent, 
+}
+If (maxESPercentPerHitToQuit=0)
+{
+   GuiControl, , maxESPercentPerHitToQuitUpdate, N/A
+   GuiControl, , maxESPercentPerHitToQuitUpdatePercent,
+}
+If (minLifePercentToJade=0)
+{
+   GuiControl, , minLifePercentToJadeUpdate, N/A
+   GuiControl, , minLifePercentToJadeUpdatePercent, 
+}
+If (minESPercentToJade=0)
+{
+   GuiControl, , minESPercentToJadeUpdate, N/A
+   GuiControl, , minESPercentToJadeUpdatePercent, 
+}
+If (minLifePercentToElementalResist=0)
+{
+   GuiControl, , minLifePercentToElementalResistUpdate, N/A
+   GuiControl, , minLifePercentToElementalResistUpdatePercent, 
+}
+If (minESPercentToElementalResist=0)
+{
+   GuiControl, , minESPercentToElementalResistUpdate, N/A
+   GuiControl, , minESPercentToElementalResistUpdatePercent, 
+}
+If (minLifePercentToDrink=0)
+{
+   GuiControl, , minLifePercentToDrinkUpdate, N/A
+   GuiControl, , minLifePercentToDrinkUpdatePercent, 
+}
+If (minManaPercentToDrink=0)
+{
+   GuiControl, , minManaPercentToDrinkUpdate, N/A
+   GuiControl, , minManaPercentToDrinkUpdatePercent, 
+}
+If (minManaToDrinkPot=0)
+{
+   GuiControl, , minManaToDrinkPotUpdate, N/A
+}
+If (InstantFlaskDelay=0)
+{
+   GuiControl, , InstantFlaskDelayUpdate, N/A
+   GuiControl, , InstantFlaskDelayUpdatePercent, 
+}
+If (minLifePercentToSpam=0)
+{
+   GuiControl, , minLifePercentToSpamUpdate, N/A
+   GuiControl, , minLifePercentToSpamUpdatePercent, 
+}
+If (TradeSpam=0)
+{
+   GuiControl, , TradeSpamUpdate, N/A
+   GuiControl, , TradeSpamUpdatePercent, 
+}
+If (ResyncSpam=0)
+{
+   GuiControl, , ResyncSpamUpdate, N/A
+   GuiControl, , ResyncSpamUpdatePercent, 
+}
+If (RemainingSpam=0)
+{
+   GuiControl, , RemainingSpamUpdate, N/A
+   GuiControl, , RemainingSpamUpdatePercent, 
+}
+
 Gui, Submit
 
-Gui, Show, x760 y198 h595 w474, PoE MultiScript v09.12.2014
+Gui, Show, x760 y198 h665 w474, PoE MultiScript v09.19.2014
 
 ;---------------------START DYNAMIC HOTKEYS---------------------
 
- IniRead, savedHK1, Config.ini, Hotkeys, 1, F1
- IniRead, savedHK2, Config.ini, Hotkeys, 2, ~F2
- IniRead, savedHK3, Config.ini, Hotkeys, 3, ~F3
- IniRead, savedHK4, Config.ini, Hotkeys, 4, ~^F3
- IniRead, savedHK5, Config.ini, Hotkeys, 5, ~F4
- IniRead, savedHK6, Config.ini, Hotkeys, 6, ~^F4
- IniRead, savedHK7, Config.ini, Hotkeys, 7, ~F10
- IniRead, savedHK8, Config.ini, Hotkeys, 8, ~!w
- loop, 8
- {
- 	 Gui, 2:Add, Text, xm, Enter Hotkey #%A_Index%:
-	 If savedHK%A_Index%                                       ;Check for saved hotkeys in INI file.
-	 Hotkey,% savedHK%A_Index%, Label%A_Index%                 ;Activate saved hotkeys if found.
-	 StringReplace, noMods, savedHK%A_Index%, ~                  ;Remove tilde (~) and Win (#) modifiers...
-	 StringReplace, noMods, noMods, #,,UseErrorLevel              ;They are incompatible with hotkey controls (cannot be shown).
-	 Gui, 2:Add, Hotkey, x+5 vHK%A_Index% gGuiLabel, %noMods%        ;Add hotkey controls and show saved hotkeys.
-	 Gui, 2:Add, CheckBox, x+5 vCB%A_Index% Checked%ErrorLevel%, Win  ;Add checkboxes to allow the Windows key (#) as a modifier...
- }
+;"Wild Mode allows hotkeys to trigger when other modifiers are also held.`nFor example, if you bound Ctrl+C to an action...`nWild Mode ON: Ctrl+Alt+C, Ctrl+Shift+C etc would still trigger the action`nWild Mode OFF: Ctrl+Alt+C etc would not trigger the action."
+
+; Build list of "End Keys" for Input command
+EXTRA_KEY_LIST := "{Escape}"  ; DO NOT REMOVE! - Used to quit binding
+; Standard non-printables
+EXTRA_KEY_LIST .= "{F1}{F2}{F3}{F4}{F5}{F6}{F7}{F8}{F9}{F10}{F11}{F12}{Left}{Right}{Up}{Down}"
+EXTRA_KEY_LIST .= "{Home}{End}{PgUp}{PgDn}{Del}{Ins}{BackSpace}{Pause}"
+; Numpad - Numlock ON
+EXTRA_KEY_LIST .= "{Numpad0}{Numpad1}{Numpad2}{Numpad3}{Numpad4}{Numpad5}{Numpad6}{Numpad7}{Numpad8}{Numpad9}{NumpadDot}{NumpadMult}{NumpadAdd}{NumpadSub}"
+; Numpad - Numlock OFF
+EXTRA_KEY_LIST .= "{NumpadIns}{NumpadEnd}{NumpadDown}{NumpadPgDn}{NumpadLeft}{NumpadClear}{NumpadRight}{NumpadHome}{NumpadUp}{NumpadPgUp}{NumpadDel}"
+; Numpad - Common
+EXTRA_KEY_LIST .= "{NumpadMult}{NumpadAdd}{NumpadSub}{NumpadDiv}{NumpadEnter}"
+; Stuff we may or may not want to trap
+;EXTRA_KEY_LIST .= "{Numlock}"
+EXTRA_KEY_LIST .= "{Capslock}"
+;EXTRA_KEY_LIST .= "{PrintScreen}"
+; Browser keys
+EXTRA_KEY_LIST .= "{Browser_Back}{Browser_Forward}{Browser_Refresh}{Browser_Stop}{Browser_Search}{Browser_Favorites}{Browser_Home}"
+; Media keys
+EXTRA_KEY_LIST .= "{Volume_Mute}{Volume_Down}{Volume_Up}{Media_Next}{Media_Prev}{Media_Stop}{Media_Play_Pause}"
+; App Keys
+EXTRA_KEY_LIST .= "{Launch_Mail}{Launch_Media}{Launch_App1}{Launch_App2}"
+
+; BindMode vars
+HKModifierState := {}   ; The state of the modifiers at the end of the last detection sequence
+HKControlType := 0      ; The kind of control that the last hotkey was. 0 = regular key, 1 = solitary modifier, 2 = mouse, 3 = joystick
+HKSecondaryInput := ""  ; Set to button pressed if the last detected bind was a Mouse button, Joystick button or Solitary Modifier
+HKLastHotkey := 0       ; Time that Escape was pressed to exit key binding. Used to determine if Escape is held (Clear binding)
+
+DefaultHKObject := {hk: "", type: "", wild: ""}
+
+; Misc vars
+ININame := "Config.ini"
+HotkeyList := []
+NumHotkeys := 9
+
+; Create the GUI
+Gui 2:Add, Text,, This allows you to change Hotkeys.`n Click the "ReadMe" button to know what the hotkeys do.
+Gui, 2:Add, Text, x357 y25 w30 center, Wild`nMode
+
+ypos := 50
+
+;Gui, 2:Add, Text, x5 y40 w300 center,Hotkey
+;Gui, 2:Add, Text, x300 y40 center,~ *
+
+Loop % NumHotkeys 
+{
+   Gui, 2:Add, Edit, Disabled vHotkeyName%A_Index% w260 x5 y%ypos%, None
+   Gui, 2:Add, Button, gBind vBind%A_Index% yp-1 xp+270, Set Hotkey
+   Gui, 2:Add, Checkbox, vWild%A_Index% gOptionChanged xp+90 yp+5
+   ;Gui, 2:Add, Checkbox, vBlock%A_Index% gOptionChanged xp+30 yp
+   ypos += 25
+}
+
+
+; Set GUI State
+LoadSettings()
+
+; Enable defined hotkeys
+EnableHotkeys()
+
 Menu, Tray, Add, Configure Hotkeys, showgui2                                                      ;Check the box if Win modifier is used.
 Gui, 2:Submit, Hide
 
@@ -367,6 +527,12 @@ Menu Tray, Standard
 
 Menu Tray,Check, Configure Hotkeys
 Menu Tray,Check, Configuration Window
+
+
+
+ 
+
+
 ;---------------------END DYNAMIC HOTKEYS---------------------
 
 ;-------GUI-----------------GUI-----------------GUI-----------------GUI-----------------GUI----------
@@ -378,8 +544,7 @@ DetectHiddenWindows, On
 
 if not A_IsAdmin
 {
-	DllCall("shell32\ShellExecuteA", uint, 0, str, "RunAs", str, A_ScriptFullPath, str, """" . PARAM1 . """", str, A_WorkingDir, int, 1) ; Last parameter: SW_SHOWNORMAL = 1
-	ExitApp
+   TrayTip, Admin Required, Seems that you are not running this program as Admin`, it might not work properlly., 5
 }
 
 cliname=Path of Exile
@@ -395,6 +560,7 @@ FontSize := 12
 FixedFont := CreateFont()
 
 ResyncTimer:= A_TickCount
+RemainingTimer:= A_TickCount
 ChatStatusTimer:= A_TickCount+99999999999
 TradeTimer:= 0
 TradeChannel:= 0
@@ -417,7 +583,7 @@ autoQuitSoftToleranceBeforeKill:=2000 ; try to quit to loginscreen at most milli
 
 PlayerConfig:={}
 
-PlayerConfig["Default"]:={RemAilmentsTimer:RemoveAilmentsTimer,QuickSilverTimer:QuickSilverMovementTimer*100, minLifeRatioToInstant: minLifePercentToSpam/100, IFlaskDelay: InstantFlaskDelay,minLifeRatioToDrink: minLifePercentToDrink/100, minManaRatioToDrink: minManaPercentToDrink/100, minManaToDrink: minManaToDrinkPot, minLifeRatioToPopElementalResist: minLifePercentToElementalResist/100,minLifeRatioToPopJade: minLifePercentToJade/100, minLifeRatioToQuit: minLifePercentToQuit/100,maxLifeRatioPerHitToQuit: maxLifePercentPerHitToQuit/100,maxNShieldRatioPerHitToQuit: maxESPercentPerHitToQuit/100,minNShieldRatioToQuit: minESPercentToQuit/100, minNShieldRatioToPopElementalResist: minESPercentToElementalResist/100, minNShieldRatioToPopJade: minESPercentToJade/100}
+PlayerConfig["Default"]:={RemCorruptedBloodCharges:RemoveCorruptedBloodCharges,RemAilmentsTimer:RemoveAilmentsTimer,QuickSilverTimer:QuickSilverMovementTimer*100, minLifeRatioToInstant: minLifePercentToSpam/100, IFlaskDelay: InstantFlaskDelay,minLifeRatioToDrink: minLifePercentToDrink/100, minManaRatioToDrink: minManaPercentToDrink/100, minManaToDrink: minManaToDrinkPot, minLifeRatioToPopElementalResist: minLifePercentToElementalResist/100,minLifeRatioToPopJade: minLifePercentToJade/100, minLifeRatioToQuit: minLifePercentToQuit/100,maxLifeRatioPerHitToQuit: maxLifePercentPerHitToQuit/100,maxNShieldRatioPerHitToQuit: maxESPercentPerHitToQuit/100,minNShieldRatioToQuit: minESPercentToQuit/100, minNShieldRatioToPopElementalResist: minESPercentToElementalResist/100, minNShieldRatioToPopJade: minESPercentToJade/100}
 
 PlayerConfig["Default"].FlaskConfig:=[]
 
@@ -1106,10 +1272,13 @@ Main()
 	global autoQuitMode
 	global desync
 	global remaining
+   global hideout
 	global tradechat
 	global borderless
 	global ResyncTimer
 	global ResyncSpam
+   global RemainingTimer
+   global RemainingSpam
 	global tradechat
 	global TradeSpam
 	global TradeSpamTimer
@@ -1140,6 +1309,8 @@ Main()
 	global FlaskOnShockedCheck
 	global FlaskOnIgnitedCheck
 	global QuicksilverBuff
+   global FlaskOnCurseCheck
+   global FlaskOnCorruptedBloodCheck
 
 	WinGet, WinID, List, %cliname%
 
@@ -1245,7 +1416,8 @@ Main()
 		}
 		else
 		{
-			currLifeRatio:= 1
+			currLifeRatio:=1
+         LastLifeRatio:=0
 		}
       
 		if (PlayerStats.MaxMana>0)
@@ -1253,12 +1425,17 @@ Main()
 			currManaRatio:=PlayerStats.CurrMana/(PlayerStats.MaxMana-PlayerStats.ReservedManaFlat-PlayerStats.MaxMana*PlayerStats.ReservedManaPercent/100)
 		}
       
-		if (currLifeRatio<CurrentConfig.minLifeRatioToQuit || currNShieldRatio<CurrentConfig.minNShieldRatioToQuit || (currLifeRatio<LastLifeRatio And ((LastLifeRatio-currLifeRatio)>CurrentConfig.maxLifeRatioPerHitToQuit)) || (CurrentConfig.maxNShieldRatioPerHitToQuit>0 And currNShieldRatio<LastNShieldRatio And ((LastNShieldRatio-currNShieldRatio)>CurrentConfig.maxNShieldRatioPerHitToQuit)))
+		if (currLifeRatio<CurrentConfig.minLifeRatioToQuit || currNShieldRatio<CurrentConfig.minNShieldRatioToQuit || (currLifeRatio<LastLifeRatio And ((LastLifeRatio-currLifeRatio)>CurrentConfig.maxLifeRatioPerHitToQuit) And (CurrentConfig.maxLifeRatioPerHitToQuit<1 And CurrentConfig.maxLifeRatioPerHitToQuit>0)) || (CurrentConfig.maxNShieldRatioPerHitToQuit>0 And currNShieldRatio<LastNShieldRatio And ((LastNShieldRatio-currNShieldRatio)>CurrentConfig.maxNShieldRatioPerHitToQuit)))
 		{
 			if (autoQuitMode=0)
 			{
-				TrayTip, PoE AutoQuit by Killing the Process, Specified min life reached, %A_Space% , 2
-				WinKill, % "ahk_id" WinID%A_Index%
+            WinActivate Path of Exile ahk_class Direct3DWindowClass
+				IfWinActive Path of Exile ahk_class Direct3DWindowClass
+            {
+               SendInput {ALT Down}
+               SendInput {F4}
+               SendInput {ALT Up}
+            }
 				continue
 			}
 			else if (autoQuitMode=1)
@@ -1422,15 +1599,57 @@ Main()
 				continue
 			}
 
+         else if InStr(playerstats.BuffName[A_Index], "curse")
+         {
+            if (FlaskOnCurseCheck)
+            {
+               If ((!WindowQueuedFlaskEffects[k].HasKey("CurseQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].CurseQueueEndtime-lagCompensation)))
+               {
+                  flaskNum:=GetMaxChargesFlaskOfMod(FlasksData,"of Warding")
+                  if (flaskNum!="")
+                  {  
+                     WindowQueuedFlaskEffects[k].CurseQueueEndtime:=A_TickCount+300
+                     
+                     if (trayNotifications)
+                     {
+                        TrayTip, PoE AutoFlask Using "of Warding" flask %flaskNum%, %A_Space% , 2
+                     }
+                     hKey:=FlaskHotkey%flaskNum%
+                     ControlSend,,%hkey%, % "ahk_id" hwnd
+                  }
+               }
+            }
+            continue
+         }
+
+         else if InStr(playerstats.BuffName[A_Index], "corrupted_blood")
+         {
+            BuffCharges:=PlayerStats.BuffCharges[A_Index]
+            if ((FlaskOnCorruptedBloodCheck) && (BuffCharges>=RemCorruptedBloodCharges))
+            {
+               If ((!WindowQueuedFlaskEffects[k].HasKey("CorruptedBloodQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].CorruptedBloodQueueEndtime-lagCompensation)))
+               {
+                  flaskNum:=GetMaxChargesFlaskOfMod(FlasksData,"of Staunching")
+                  if (flaskNum!="")
+                  {  
+                     WindowQueuedFlaskEffects[k].CorruptedBloodQueueEndtime:=A_TickCount+300
+                     
+                     if (trayNotifications)
+                     {
+                        TrayTip, PoE AutoFlask Using "of Staunching" flask %flaskNum%, %A_Space% , 2
+                     }
+                     hKey:=FlaskHotkey%flaskNum%
+                     ControlSend,,%hkey%, % "ahk_id" hwnd
+                  }
+               }
+            }
+            continue
+         }
+
 			/* ;Others
 			else if InStr(playerstats.BuffName[A_Index], "chilled")
 			{
 				TrayTip, test , THIS BUFF IS CHILLED!!! buff%A_Index%
-				continue
-			}
-
-			else if InStr(playerstats.BuffName[A_Index], "curse")
-			{
 				continue
 			}
 
@@ -1907,6 +2126,33 @@ Main()
          }
       }
 
+      if hideout = 1
+      {
+         if (PlayerStats.ChatStatus!="" && PlayerStats.ChatStatus=65536)
+         {
+            if (IsInGame(hwnd))
+            {
+               if (PlayerStats.PanelWaypoint=65536 && PlayerStats.PanelInventory=65536 && PlayerStats.PanelSkillTree=65536 && PlayerStats.PanelSocial=65536)
+               {
+                  IfWinActive Path of Exile ahk_class Direct3DWindowClass
+                  {
+                     SendInput {NumpadEnter}/hideout{NumpadEnter}
+                  }
+                  Else
+                  {
+                     ControlSend,,{NumpadEnter}, % "ahk_id" hwnd
+                     SetKeyDelay, 40, 20
+                     ControlSend,,`/hideout, % "ahk_id" hwnd
+                     SetKeyDelay, 0, 0
+                     ControlSend,,{NumpadEnter}, % "ahk_id" hwnd
+                  }
+               }
+            }
+            hideout := 0
+            break
+         }
+      }
+
       if (PlayerStats.ChatStatus!="" && PlayerStats.ChatStatus=65536)
       {
          ChatCheckTimer:= 1
@@ -1971,7 +2217,7 @@ Main()
                      IfWinActive Path of Exile ahk_class Direct3DWindowClass
                      {
                         SendMode Input
-                        GetKeyState, stateSH, SHIFT, P
+                        GetKeyState, stateSH, SHIFT
                         if stateSH = D
                         {
                            Sendinput {SHIFT up}
@@ -2010,7 +2256,7 @@ Main()
                      Else
                      {
                         SendMode Input
-                        GetKeyState, stateSH, SHIFT, P
+                        GetKeyState, stateSH, SHIFT
                         if stateSH = D
                         {
                            Sendinput {SHIFT up}
@@ -2071,7 +2317,7 @@ Main()
                      {
                         IfWinActive Path of Exile ahk_class Direct3DWindowClass
                         {
-                           GetKeyState, stateSH, SHIFT, P
+                           GetKeyState, stateSH, SHIFT
                            if stateSH = D
                            {
                               Sendinput {SHIFT up}
@@ -2083,6 +2329,32 @@ Main()
                }
             }
             ResyncTimer:= A_TickCount
+         }
+
+         If (A_TickCount>=(RemainingTimer+RemainingSpam*1000) And (RemainingSpam>0))
+         {
+            if (PlayerStats.InCity!="" && PlayerStats.InCity=65537)
+            { 
+               if (PlayerStats.ChatStatus!="" && PlayerStats.ChatStatus=65536)
+               {
+                  if (IsInGame(hwnd))
+                  {
+                     if (PlayerStats.PanelWaypoint=65536 && PlayerStats.PanelInventory=65536 && PlayerStats.PanelSkillTree=65536 && PlayerStats.PanelSocial=65536)
+                     {
+                        IfWinActive Path of Exile ahk_class Direct3DWindowClass
+                        {
+                           GetKeyState, stateSH, SHIFT
+                           if stateSH = D
+                           {
+                              Sendinput {SHIFT up}
+                           }
+                           Sendinput {NumpadEnter}/remaining{NumpadEnter}
+                        }
+                     }
+                  }
+               }
+            }
+            RemainingTimer:= A_TickCount
          }
       }
     }
@@ -2102,57 +2374,57 @@ UsePortal()
       BlockInput On
       SendMode Input
       hwnd:=WinActive("A")
-      GetKeyState, stateR, RButton, P
+      GetKeyState, stateR, RButton
       if stateR = D
       {
          Send {RButton up}
       }
-      GetKeyState, stateL, LButton, P
+      GetKeyState, stateL, LButton
       if stateL = D
       {
          Send {LButton up}
       }
-      GetKeyState, stateM, MButton, P
+      GetKeyState, stateM, MButton
       if stateM = D
       {
          Send {MButton up}
       }
-      GetKeyState, stateQ, Q, P
+      GetKeyState, stateQ, Q
       if stateQ = D
       {
          Send {Q up}
       }
-      GetKeyState, stateW, W, P
+      GetKeyState, stateW, W
       if stateW = D
       {
          Send {W up}
       }
-      GetKeyState, stateE, E, P
+      GetKeyState, stateE, E
       if stateE = D
       {
          Send {E up}
       }
-      GetKeyState, stateR, R, P
+      GetKeyState, stateR, R
       if stateR = D
       {
          Send {R up}
       }
-      GetKeyState, stateT, T, P
+      GetKeyState, stateT, T
       if stateT = D
       {
          Send {T up}
       }
-      GetKeyState, stateI, I, P
+      GetKeyState, stateI, I
       if stateI = D
       {
          Send {I up}
       }
-      GetKeyState, stateSP, SPACE, P
+      GetKeyState, stateSP, SPACE
       if stateSP = D
       {
          Send {SPACE up}
       }
-      GetKeyState, stateSH, SHIFT, P
+      GetKeyState, stateSH, SHIFT
       if stateSH = D
       {
          Send {SHIFT up}
@@ -2506,159 +2778,174 @@ return false
 
 ;-------TEST FUNCTIONS-----------------TEST FUNCTIONS-----------------TEST FUNCTIONS-----------------
 
-;-------HOTKEYS-----------------HOTKEYS-----------------HOTKEYS-----------------HOTKEYS--------------
-
-
-showgui2:
-   Gui, 2:Show,,Dynamic Hotkeys
-Return
-
-GuiLabel:
- If %A_GuiControl% in +,^,!,+^,+!,^!,+^!    ;If the hotkey contains only modifiers, return to wait for a key.
-  return
- If InStr(%A_GuiControl%,"vk07")            ;vk07 = MenuMaskKey (see below)
-  GuiControl,,%A_GuiControl%, % lastHK      ;Reshow the hotkey, because MenuMaskKey clears it.
- Else
-  validateHK(A_GuiControl)
-return
-
-validateHK(GuiControl) {
- global lastHK
- Gui, 2:Submit, NoHide
- lastHK := %GuiControl%                     ;Backup the hotkey, in case it needs to be reshown.
- num := SubStr(GuiControl,3)                ;Get the index number of the hotkey control.
- If (HK%num% != "") {                       ;If the hotkey is not blank...
-  StringReplace, HK%num%, HK%num%, SC15D, AppsKey      ;Use friendlier names,
-  StringReplace, HK%num%, HK%num%, SC154, PrintScreen  ;  instead of these scan codes.
-  If CB%num%                                ;  If the 'Win' box is checked, then add its modifier (#).
-   HK%num% := "#" HK%num%
-  If !RegExMatch(HK%num%,"[#!\^\+]")        ;  If the new hotkey has no modifiers, add the (~) modifier.
-   HK%num% := "~" HK%num%                   ;    This prevents any key from being blocked.
-  checkDuplicateHK(num)
- }
- If (savedHK%num% || HK%num%)               ;Unless both are empty,
-  setHK(num, savedHK%num%, HK%num%)         ;  update INI/GUI
-}
-
-checkDuplicateHK(num) {
- global #ctrls
- Loop,% #ctrls
-  If (HK%num% = savedHK%A_Index%) {
-   dup := A_Index
-   Loop,6 {
-    GuiControl,% "Disable" b:=!b, HK%dup%   ;Flash the original hotkey to alert the user.
-    Sleep,200
-   }
-   GuiControl,,HK%num%,% HK%num% :=""       ;Delete the hotkey and clear the control.
-   break
-  }
-}
-
-setHK(num,INI,GUI) {
- If INI                           ;If previous hotkey exists,
-  Hotkey, %INI%, Label%num%, Off  ;  disable it.
- If GUI                           ;If new hotkey exists,
-  Hotkey, %GUI%, Label%num%, On   ;  enable it.
- IniWrite,% GUI ? GUI:null, Config.ini, Hotkeys, %num%
- savedHK%num%  := HK%num%
- if (trayNotifications)
- TrayTip, Label%num%,% !INI ? GUI " ON":!GUI ? INI " OFF":GUI " ON`n" INI " OFF"
-}
-
-#MenuMaskKey vk07                 ;Requires AHK_L 38+
-#If ctrl := HotkeyCtrlHasFocus()
- *AppsKey::                       ;Add support for these special keys,
- *BackSpace::                     ;  which the hotkey control does not normally allow.
- *Delete::
- *Enter::
- *Escape::
- *Pause::
- *PrintScreen::
- *Space::
- *Tab::
- *XButton1::
- *XButton2::
-  modifier := ""
-  If GetKeyState("Shift","P")
-   modifier .= "+"
-  If GetKeyState("Ctrl","P")
-   modifier .= "^"
-  If GetKeyState("Alt","P")
-   modifier .= "!"
-  Gui, Submit, NoHide             ;If BackSpace is the first key press, Gui has never been submitted.
-  If (A_ThisHotkey == "*BackSpace" && %ctrl% && !modifier)   ;If the control has text but no modifiers held,
-   GuiControl,,%ctrl%                                       ;  allow BackSpace to clear that text.
-  Else                                                     ;Otherwise,
-   GuiControl,,%ctrl%, % modifier SubStr(A_ThisHotkey,2)  ;  show the hotkey.
-  validateHK(ctrl)
- return
-#If
-
-HotkeyCtrlHasFocus() {
- GuiControlGet, ctrl, Focus       ;ClassNN
- If InStr(ctrl,"hotkey") {
-  GuiControlGet, ctrl, FocusV     ;Associated variable
-  Return, ctrl
- }
-}
-
-;These labels may contain any commands for their respective hotkeys to perform.
-Label1:
-	desync:=1
-return
-
-Label2:
-	remaining:=1
-return
-
-Label3:
-	DPSCalc()
-return
-
-Label4:
-	Webgrab()
-return
-
-Label5:
-	QuitToLoginScreen(WinActive("A"))
-return
-
-Label6:
-	UsePortal()
-return
-
-Label7:
-	tradechat:=1
-return
-
-Label8:
-	WinGet, window, ID, A   ; Use the ID of the active window.
-	Toggle_Window(window)
-return
-
-;-------HOTKEYS-----------------HOTKEYS-----------------HOTKEYS-----------------HOTKEYS--------------
-
 ;-------GUI UPDATE FUNCTIONS--------------GUI UPDATE FUNCTIONS--------------GUI UPDATE FUNCTIONS-----
 
 GuiUpdate:
    Gui, Submit, NoHide
-   GuiControl, , minLifePercentToQuitUpdate, %minLifePercentToQuit%
-   GuiControl, , minESPercentToQuitUpdate, %minESPercentToQuit%
-   GuiControl, , maxLifePercentPerHitToQuitUpdate, %maxLifePercentPerHitToQuit%
-   GuiControl, , maxESPercentPerHitToQuitUpdate, %maxESPercentPerHitToQuit%
-   GuiControl, , minLifePercentToJadeUpdate, %minLifePercentToJade%
-   GuiControl, , minESPercentToJadeUpdate, %minESPercentToJade%
-   GuiControl, , minLifePercentToElementalResistUpdate, %minLifePercentToElementalResist%
-   GuiControl, , minESPercentToElementalResistUpdate, %minESPercentToElementalResist%
-   GuiControl, , minLifePercentToDrinkUpdate, %minLifePercentToDrink%
-   GuiControl, , minManaPercentToDrinkUpdate, %minManaPercentToDrink%
-   GuiControl, , minManaToDrinkPotUpdate, %minManaToDrinkPot%
-   GuiControl, , InstantFlaskDelayUpdate,  % Round(InstantFlaskDelay/100,2)
-   GuiControl, , minLifePercentToSpamUpdate, %minLifePercentToSpam%
+
    GuiControl, , QuickSilverMovementTimerUpdate, % Round(QuickSilverMovementTimer/10,1)
    GuiControl, , RemoveAilmentsTimerUpdate, % Round(RemoveAilmentsTimer/10,1)
-   GuiControl, , TradeSpamUpdate, %TradeSpam%
-   GuiControl, , ResyncSpamUpdate, %ResyncSpam%
+   GuiControl, , RemoveCorruptedBloodChargesUpdate, %RemoveCorruptedBloodCharges%
+
+   If (minLifePercentToQuit=0)
+   {
+      GuiControl, , minLifePercentToQuitUpdate, N/A
+      GuiControl, , minLifePercentToQuitUpdatePercent,
+   }
+   Else
+   {
+      GuiControl, , minLifePercentToQuitUpdate, %minLifePercentToQuit%
+      GuiControl, , minLifePercentToQuitUpdatePercent, `%
+   }
+   If (minESPercentToQuit=0)
+   {
+      GuiControl, , minESPercentToQuitUpdate, N/A
+      GuiControl, , minESPercentToQuitUpdatePercent, 
+   }
+   Else
+   {
+      GuiControl, , minESPercentToQuitUpdate, %minESPercentToQuit%
+      GuiControl, , minESPercentToQuitUpdatePercent, `%
+   }
+   If (maxLifePercentPerHitToQuit=0 || maxLifePercentPerHitToQuit=100)
+   {
+      GuiControl, , maxLifePercentPerHitToQuitUpdate, N/A
+      GuiControl, , maxLifePercentPerHitToQuitUpdatePercent, 
+   }
+   Else
+   {
+      GuiControl, , maxLifePercentPerHitToQuitUpdate, %maxLifePercentPerHitToQuit%
+      GuiControl, , maxLifePercentPerHitToQuitUpdatePercent, `%
+   }
+   If (maxESPercentPerHitToQuit=0)
+   {
+      GuiControl, , maxESPercentPerHitToQuitUpdate, N/A
+      GuiControl, , maxESPercentPerHitToQuitUpdatePercent,
+   }
+   Else
+   {
+      GuiControl, , maxESPercentPerHitToQuitUpdate, %maxESPercentPerHitToQuit%
+      GuiControl, , maxESPercentPerHitToQuitUpdatePercent, `%
+   }
+   If (minLifePercentToJade=0)
+   {
+      GuiControl, , minLifePercentToJadeUpdate, N/A
+      GuiControl, , minLifePercentToJadeUpdatePercent, 
+   }
+   Else
+   {
+      GuiControl, , minLifePercentToJadeUpdate, %minLifePercentToJade%
+      GuiControl, , minLifePercentToJadeUpdatePercent, `% 
+   }
+   If (minESPercentToJade=0)
+   {
+      GuiControl, , minESPercentToJadeUpdate, N/A
+      GuiControl, , minESPercentToJadeUpdatePercent, 
+   }
+   Else
+   {
+      GuiControl, , minESPercentToJadeUpdate, %minESPercentToJade%
+      GuiControl, , minESPercentToJadeUpdatePercent, `%
+   }
+   If (minLifePercentToElementalResist=0)
+   {
+      GuiControl, , minLifePercentToElementalResistUpdate, N/A
+      GuiControl, , minLifePercentToElementalResistUpdatePercent, 
+   }
+   Else
+   {
+      GuiControl, , minLifePercentToElementalResistUpdate, %minLifePercentToElementalResist%
+      GuiControl, , minLifePercentToElementalResistUpdatePercent, `%
+   }
+   If (minESPercentToElementalResist=0)
+   {
+      GuiControl, , minESPercentToElementalResistUpdate, N/A
+      GuiControl, , minESPercentToElementalResistUpdatePercent, 
+   }
+   Else
+   {
+      GuiControl, , minESPercentToElementalResistUpdate, %minESPercentToElementalResist%
+      GuiControl, , minESPercentToElementalResistUpdatePercent, `%
+   }
+   If (minLifePercentToDrink=0)
+   {
+      GuiControl, , minLifePercentToDrinkUpdate, N/A
+      GuiControl, , minLifePercentToDrinkUpdatePercent, 
+   }
+   Else
+   {
+      GuiControl, , minLifePercentToDrinkUpdate, %minLifePercentToDrink%
+      GuiControl, , minLifePercentToDrinkUpdatePercent, `%
+   }
+   If (minManaPercentToDrink=0)
+   {
+      GuiControl, , minManaPercentToDrinkUpdate, N/A
+      GuiControl, , minManaPercentToDrinkUpdatePercent, 
+   }
+   Else
+   {
+      GuiControl, , minManaPercentToDrinkUpdate, %minManaPercentToDrink%
+      GuiControl, , minManaPercentToDrinkUpdatePercent, `%
+   }
+   If (minManaToDrinkPot=0)
+   {
+      GuiControl, , minManaToDrinkPotUpdate, N/A
+   }
+   Else
+   {
+      GuiControl, , minManaToDrinkPotUpdate, %minManaToDrinkPot%
+   }
+   If (InstantFlaskDelay=0)
+   {
+      GuiControl, , InstantFlaskDelayUpdate, N/A
+      GuiControl, , InstantFlaskDelayUpdatePercent, 
+   }
+   Else
+   {
+      GuiControl, , InstantFlaskDelayUpdate,  % Round(InstantFlaskDelay/100,2)
+      GuiControl, , InstantFlaskDelayUpdatePercent, s
+
+   }
+   If (minLifePercentToSpam=0)
+   {
+      GuiControl, , minLifePercentToSpamUpdate, N/A
+      GuiControl, , minLifePercentToSpamUpdatePercent, 
+   }
+   Else
+   {
+      GuiControl, , minLifePercentToSpamUpdate, %minLifePercentToSpam%
+      GuiControl, , minLifePercentToSpamUpdatePercent, `%
+   }
+   If (TradeSpam=0)
+   {
+      GuiControl, , TradeSpamUpdate, N/A
+      GuiControl, , TradeSpamUpdatePercent, 
+   }
+   Else
+   {
+      GuiControl, , TradeSpamUpdate, %TradeSpam%
+      GuiControl, , TradeSpamUpdatePercent, m
+   }
+   If (ResyncSpam=0)
+   {
+      GuiControl, , ResyncSpamUpdate, N/A
+      GuiControl, , ResyncSpamUpdatePercent, 
+   }
+   Else
+   {
+      GuiControl, , ResyncSpamUpdate, %ResyncSpam%
+      GuiControl, , ResyncSpamUpdatePercent, s
+   }
+   If (RemainingSpam=0)
+   {
+      GuiControl, , RemainingSpamUpdate, N/A
+      GuiControl, , RemainingSpamUpdatePercent, 
+   }
+   Else
+   {
+      GuiControl, , RemainingSpamUpdate, %RemainingSpam%
+      GuiControl, , RemainingSpamUpdatePercent, s
+   }
 
    Loop, 5
    {
@@ -2680,6 +2967,8 @@ GuiUpdate:
 			IniWrite, %QuickSilverMovementTimer% , Config.ini, Config%A_Index%, QuickSilverMovementTimer
 			IniWrite, %RemoveAilmentsTimer% , Config.ini, Config%A_Index%, RemoveAilmentsTimer
 			IniWrite, %ResyncSpam% , Config.ini, Config%A_Index%, ResyncSpam
+         IniWrite, %RemainingSpam% , Config.ini, Config%A_Index%, RemainingSpam
+         IniWrite, %RemoveCorruptedBloodCharges% , Config.ini, Config%A_Index%, RemoveCorruptedBloodCharges
 		}
    }
 
@@ -2687,7 +2976,7 @@ GuiUpdate:
    IniWrite, %InstantFlaskDelay% , Config.ini, Config, InstantFlaskDelay
    IFDelay:= InstantFlaskDelay
 
-   PlayerConfig["Default"]:={RemAilmentsTimer:RemoveAilmentsTimer,QuickSilverTimer:QuickSilverMovementTimer*100, minLifeRatioToInstant: minLifePercentToSpam/100, IFlaskDelay: InstantFlaskDelay,minLifeRatioToDrink: minLifePercentToDrink/100, minManaRatioToDrink: minManaPercentToDrink/100, minManaToDrink: minManaToDrinkPot, minLifeRatioToPopElementalResist: minLifePercentToElementalResist/100,minLifeRatioToPopJade: minLifePercentToJade/100, minLifeRatioToQuit: minLifePercentToQuit/100,maxLifeRatioPerHitToQuit: maxLifePercentPerHitToQuit/100,maxNShieldRatioPerHitToQuit: maxESPercentPerHitToQuit/100,minNShieldRatioToQuit: minESPercentToQuit/100, minNShieldRatioToPopElementalResist: minESPercentToElementalResist/100, minNShieldRatioToPopJade: minESPercentToJade/100}
+   PlayerConfig["Default"]:={RemCorruptedBloodCharges:RemoveCorruptedBloodCharges,RemAilmentsTimer:RemoveAilmentsTimer,QuickSilverTimer:QuickSilverMovementTimer*100, minLifeRatioToInstant: minLifePercentToSpam/100, IFlaskDelay: InstantFlaskDelay,minLifeRatioToDrink: minLifePercentToDrink/100, minManaRatioToDrink: minManaPercentToDrink/100, minManaToDrink: minManaToDrinkPot, minLifeRatioToPopElementalResist: minLifePercentToElementalResist/100,minLifeRatioToPopJade: minLifePercentToJade/100, minLifeRatioToQuit: minLifePercentToQuit/100,maxLifeRatioPerHitToQuit: maxLifePercentPerHitToQuit/100,maxNShieldRatioPerHitToQuit: maxESPercentPerHitToQuit/100,minNShieldRatioToQuit: minESPercentToQuit/100, minNShieldRatioToPopElementalResist: minESPercentToElementalResist/100, minNShieldRatioToPopJade: minESPercentToJade/100}
 
 
 return
@@ -2716,8 +3005,20 @@ Default:
    
    Reload
    Sleep, 2000
-   MsgBox,0,, An error ocurred, closing script.
+   MsgBox,0,, An error ocurred, reloading script.
 ExitApp
+
+DefaultHotkeys:
+   Gui, Submit, NoHide
+
+   IniDelete, Config.ini, Hotkeys
+
+
+   Reload
+   Sleep, 2000
+   MsgBox,0,, An error ocurred, reloading script.
+ExitApp
+
 
 AutoQuitList:
    Gui, Submit, NoHide
@@ -2758,47 +3059,201 @@ ConfigList:
 			IniRead, minManaToDrinkPot , Config.ini, Config%A_Index%, minManaToDrinkPot, 15
 			IniRead, minLifePercentToSpam, Config.ini, Config%A_Index%, minLifePercentToSpam, 35
 			IniRead, ResyncSpam, Config.ini, Config%A_Index%, ResyncSpam, 0
+         IniRead, RemainingSpam, Config.ini, Config%A_Index%, RemainingSpam, 0
 			IniRead, InstantFlaskDelay, Config.ini, Config%A_Index%, InstantFlaskDelay, 0
 			IniRead, QuickSilverMovementTimer , Config.ini, Config%A_Index%, QuickSilverMovementTimer, 15
+         IniRead, RemoveAilmentsTimer , Config.ini, Config%A_Index%, RemoveAilmentsTimer, 10
+         IniRead, RemoveCorruptedBloodCharges, Config.ini, Config%A_Index%, RemoveCorruptedBloodCharges, 10
 			IniWrite, %A_Index%, Config.ini, Config, ConfigNumber
 		}
 	}
 
 
    GuiControl, , minLifePercentToQuit, %minLifePercentToQuit%
-   GuiControl, , minLifePercentToQuitUpdate, %minLifePercentToQuit%
    GuiControl, , maxLifePercentPerHitToQuit, %maxLifePercentPerHitToQuit%
-   GuiControl, , maxLifePercentPerHitToQuitUpdate, %maxLifePercentPerHitToQuit%
    GuiControl, , maxESPercentPerHitToQuit, %maxESPercentPerHitToQuit%
-   GuiControl, , maxESPercentPerHitToQuitUpdate, %maxESPercentPerHitToQuit%
    GuiControl, , minESPercentToQuit, %minESPercentToQuit%
-   GuiControl, , minESPercentToQuitUpdate, %minESPercentToQuit%
    GuiControl, , minLifePercentToJade, %minLifePercentToJade%
-   GuiControl, , minLifePercentToJadeUpdate, %minLifePercentToJade%
    GuiControl, , minESPercentToJade, %minESPercentToJade%
-   GuiControl, , minESPercentToJadeUpdate, %minESPercentToJade%
    GuiControl, , minLifePercentToElementalResist, %minLifePercentToElementalResist%
-   GuiControl, , minLifePercentToElementalResistUpdate, %minLifePercentToElementalResist%
    GuiControl, , minESPercentToElementalResist, %minESPercentToElementalResist%
-   GuiControl, , minESPercentToElementalResistUpdate, %minESPercentToElementalResist%
    GuiControl, , minLifePercentToDrink, %minLifePercentToDrink%
-   GuiControl, , minLifePercentToDrinkUpdate, %minLifePercentToDrink%
    GuiControl, , minManaPercentToDrink, %minManaPercentToDrink%
-   GuiControl, , minManaPercentToDrinkUpdate, %minManaPercentToDrink%
    GuiControl, , minManaToDrinkPot, %minManaToDrinkPot%
-   GuiControl, , minManaToDrinkPotUpdate, %minManaToDrinkPot%
    GuiControl, , minLifePercentToSpam, %minLifePercentToSpam%
-   GuiControl, , minLifePercentToSpamUpdate, %minLifePercentToSpam%
    GuiControl, , ResyncSpam, %ResyncSpam%
-   GuiControl, , ResyncSpamUpdate, %ResyncSpam%
+   GuiControl, , RemainingSpam, %RemainingSpam%
    GuiControl, , InstantFlaskDelay, %InstantFlaskDelay%
-   GuiControl, , InstantFlaskDelayUpdate,  % Round(InstantFlaskDelay/100,2)
    GuiControl, , QuickSilverMovementTimer, %QuickSilverMovementTimer%
-   GuiControl, , QuickSilverMovementTimerUpdate, % Round(QuickSilverMovementTimer/10,1)
    GuiControl, , RemoveAilmentsTimer, %RemoveAilmentsTimer%
-   GuiControl, , RemoveAilmentsTimerUpdate, % Round(RemoveAilmentsTimer/10,1)
+   GuiControl, , RemoveCorruptedBloodCharges, %RemoveCorruptedBloodCharges%
 
-   PlayerConfig["Default"]:={RemAilmentsTimer:RemoveAilmentsTimer, QuickSilverTimer:QuickSilverMovementTimer*100, minLifeRatioToInstant: minLifePercentToSpam/100, IFlaskDelay: InstantFlaskDelay,minLifeRatioToDrink: minLifePercentToDrink/100, minManaRatioToDrink: minManaPercentToDrink/100, minManaToDrink: minManaToDrinkPot, minLifeRatioToPopElementalResist: minLifePercentToElementalResist/100,minLifeRatioToPopJade: minLifePercentToJade/100, minLifeRatioToQuit: minLifePercentToQuit/100,maxLifeRatioPerHitToQuit: maxLifePercentPerHitToQuit/100,maxNShieldRatioPerHitToQuit: maxESPercentPerHitToQuit/100,minNShieldRatioToQuit: minESPercentToQuit/100, minNShieldRatioToPopElementalResist: minESPercentToElementalResist/100, minNShieldRatioToPopJade: minESPercentToJade/100}
+
+   GuiControl, , QuickSilverMovementTimerUpdate, % Round(QuickSilverMovementTimer/10,1)
+   GuiControl, , RemoveAilmentsTimerUpdate, % Round(RemoveAilmentsTimer/10,1)
+   GuiControl, , RemoveCorruptedBloodChargesUpdate, %RemoveCorruptedBloodCharges%
+
+   If (minLifePercentToQuit=0)
+   {
+      GuiControl, , minLifePercentToQuitUpdate, N/A
+      GuiControl, , minLifePercentToQuitUpdatePercent,
+   }
+   Else
+   {
+      GuiControl, , minLifePercentToQuitUpdate, %minLifePercentToQuit%
+      GuiControl, , minLifePercentToQuitUpdatePercent, `%
+   }
+   If (minESPercentToQuit=0)
+   {
+      GuiControl, , minESPercentToQuitUpdate, N/A
+      GuiControl, , minESPercentToQuitUpdatePercent, 
+   }
+   Else
+   {
+      GuiControl, , minESPercentToQuitUpdate, %minESPercentToQuit%
+      GuiControl, , minESPercentToQuitUpdatePercent, `%
+   }
+   If (maxLifePercentPerHitToQuit=0 || maxLifePercentPerHitToQuit=100)
+   {
+      GuiControl, , maxLifePercentPerHitToQuitUpdate, N/A
+      GuiControl, , maxLifePercentPerHitToQuitUpdatePercent, 
+   }
+   Else
+   {
+      GuiControl, , maxLifePercentPerHitToQuitUpdate, %maxLifePercentPerHitToQuit%
+      GuiControl, , maxLifePercentPerHitToQuitUpdatePercent, `%
+   }
+   If (maxESPercentPerHitToQuit=0)
+   {
+      GuiControl, , maxESPercentPerHitToQuitUpdate, N/A
+      GuiControl, , maxESPercentPerHitToQuitUpdatePercent,
+   }
+   Else
+   {
+      GuiControl, , maxESPercentPerHitToQuitUpdate, %maxESPercentPerHitToQuit%
+      GuiControl, , maxESPercentPerHitToQuitUpdatePercent, `%
+   }
+   If (minLifePercentToJade=0)
+   {
+      GuiControl, , minLifePercentToJadeUpdate, N/A
+      GuiControl, , minLifePercentToJadeUpdatePercent, 
+   }
+   Else
+   {
+      GuiControl, , minLifePercentToJadeUpdate, %minLifePercentToJade%
+      GuiControl, , minLifePercentToJadeUpdatePercent, `% 
+   }
+   If (minESPercentToJade=0)
+   {
+      GuiControl, , minESPercentToJadeUpdate, N/A
+      GuiControl, , minESPercentToJadeUpdatePercent, 
+   }
+   Else
+   {
+      GuiControl, , minESPercentToJadeUpdate, %minESPercentToJade%
+      GuiControl, , minESPercentToJadeUpdatePercent, `%
+   }
+   If (minLifePercentToElementalResist=0)
+   {
+      GuiControl, , minLifePercentToElementalResistUpdate, N/A
+      GuiControl, , minLifePercentToElementalResistUpdatePercent, 
+   }
+   Else
+   {
+      GuiControl, , minLifePercentToElementalResistUpdate, %minLifePercentToElementalResist%
+      GuiControl, , minLifePercentToElementalResistUpdatePercent, `%
+   }
+   If (minESPercentToElementalResist=0)
+   {
+      GuiControl, , minESPercentToElementalResistUpdate, N/A
+      GuiControl, , minESPercentToElementalResistUpdatePercent, 
+   }
+   Else
+   {
+      GuiControl, , minESPercentToElementalResistUpdate, %minESPercentToElementalResist%
+      GuiControl, , minESPercentToElementalResistUpdatePercent, `%
+   }
+   If (minLifePercentToDrink=0)
+   {
+      GuiControl, , minLifePercentToDrinkUpdate, N/A
+      GuiControl, , minLifePercentToDrinkUpdatePercent, 
+   }
+   Else
+   {
+      GuiControl, , minLifePercentToDrinkUpdate, %minLifePercentToDrink%
+      GuiControl, , minLifePercentToDrinkUpdatePercent, `%
+   }
+   If (minManaPercentToDrink=0)
+   {
+      GuiControl, , minManaPercentToDrinkUpdate, N/A
+      GuiControl, , minManaPercentToDrinkUpdatePercent, 
+   }
+   Else
+   {
+      GuiControl, , minManaPercentToDrinkUpdate, %minManaPercentToDrink%
+      GuiControl, , minManaPercentToDrinkUpdatePercent, `%
+   }
+   If (minManaToDrinkPot=0)
+   {
+      GuiControl, , minManaToDrinkPotUpdate, N/A
+   }
+   Else
+   {
+      GuiControl, , minManaToDrinkPotUpdate, %minManaToDrinkPot%
+   }
+   If (InstantFlaskDelay=0)
+   {
+      GuiControl, , InstantFlaskDelayUpdate, N/A
+      GuiControl, , InstantFlaskDelayUpdatePercent, 
+   }
+   Else
+   {
+      GuiControl, , InstantFlaskDelayUpdate,  % Round(InstantFlaskDelay/100,2)
+      GuiControl, , InstantFlaskDelayUpdatePercent, s
+
+   }
+   If (minLifePercentToSpam=0)
+   {
+      GuiControl, , minLifePercentToSpamUpdate, N/A
+      GuiControl, , minLifePercentToSpamUpdatePercent, 
+   }
+   Else
+   {
+      GuiControl, , minLifePercentToSpamUpdate, %minLifePercentToSpam%
+      GuiControl, , minLifePercentToSpamUpdatePercent, `%
+   }
+   If (TradeSpam=0)
+   {
+      GuiControl, , TradeSpamUpdate, N/A
+      GuiControl, , TradeSpamUpdatePercent, 
+   }
+   Else
+   {
+      GuiControl, , TradeSpamUpdate, %TradeSpam%
+      GuiControl, , TradeSpamUpdatePercent, m
+   }
+   If (ResyncSpam=0)
+   {
+      GuiControl, , ResyncSpamUpdate, N/A
+      GuiControl, , ResyncSpamUpdatePercent, 
+   }
+   Else
+   {
+      GuiControl, , ResyncSpamUpdate, %ResyncSpam%
+      GuiControl, , ResyncSpamUpdatePercent, s
+   }
+   If (RemainingSpam=0)
+   {
+      GuiControl, , RemainingSpamUpdate, N/A
+      GuiControl, , RemainingSpamUpdatePercent, 
+   }
+   Else
+   {
+      GuiControl, , RemainingSpamUpdate, %RemainingSpam%
+      GuiControl, , RemainingSpamUpdatePercent, s
+   }
+
+   PlayerConfig["Default"]:={RemCorruptedBloodCharges:RemoveCorruptedBloodCharges,RemAilmentsTimer:RemoveAilmentsTimer,QuickSilverTimer:QuickSilverMovementTimer*100, minLifeRatioToInstant: minLifePercentToSpam/100, IFlaskDelay: InstantFlaskDelay,minLifeRatioToDrink: minLifePercentToDrink/100, minManaRatioToDrink: minManaPercentToDrink/100, minManaToDrink: minManaToDrinkPot, minLifeRatioToPopElementalResist: minLifePercentToElementalResist/100,minLifeRatioToPopJade: minLifePercentToJade/100, minLifeRatioToQuit: minLifePercentToQuit/100,maxLifeRatioPerHitToQuit: maxLifePercentPerHitToQuit/100,maxNShieldRatioPerHitToQuit: maxESPercentPerHitToQuit/100,minNShieldRatioToQuit: minESPercentToQuit/100, minNShieldRatioToPopElementalResist: minESPercentToElementalResist/100, minNShieldRatioToPopJade: minESPercentToJade/100}
    
 return
 
@@ -2892,6 +3347,35 @@ FlaskOnIgnitedCheck:
    IniWrite, %FlaskOnIgnitedCheck% , Config.ini, Config, FlaskOnIgnitedCheck
 return 
 
+FlaskOnCurseCheck:
+   Gui, Submit, NoHide
+   If FlaskOnCurseCheckBox = 0
+   {
+      FlaskOnCurseCheck = 0
+      IniWrite, 0 , Config.ini, Config, FlaskOnCurseCheck
+   }
+   If FlaskOnCurseCheckBox = 1
+   {
+      FlaskOnCurseCheck = 1
+      IniWrite, 1 , Config.ini, Config, FlaskOnCurseCheck
+   }
+   IniWrite, %FlaskOnCurseCheck% , Config.ini, Config, FlaskOnCurseCheck
+return 
+
+FlaskOnCorruptedBloodCheck:
+   Gui, Submit, NoHide
+   If FlaskOnCorruptedBloodCheckBox = 0
+   {
+      FlaskOnCorruptedBloodCheck = 0
+      IniWrite, 0 , Config.ini, Config, FlaskOnCorruptedBloodCheck
+   }
+   If FlaskOnCorruptedBloodCheckBox = 1
+   {
+      FlaskOnCorruptedBloodCheck = 1
+      IniWrite, 1 , Config.ini, Config, FlaskOnCorruptedBloodCheck
+   }
+   IniWrite, %FlaskOnCorruptedBloodCheck% , Config.ini, Config, FlaskOnCorruptedBloodCheck
+return 
 
 AttackInPlaceCheck:
    Gui, Submit, NoHide
@@ -2922,7 +3406,18 @@ DPSCheck:
 Return
 
 showgui:
-   Gui, Show, x760 y198 h525 w474,
+   Gui, Show, x760 y198 h665 w474
+Return
+
+showgui2:
+   
+   Gui, 2:Show,,Hotkeys
+
+   ; Set GUI State
+   LoadSettings()
+
+   ; Enable defined hotkeys
+   EnableHotkeys()
 Return
 
 DisableSlot:
@@ -2941,7 +3436,7 @@ DisableSlot:
 return
 
 ReadMe:
-   MsgBox, ------------------------------HOTKEYS------------------------------`n`n[F1] --- Use Resync Command`n[F2] --- Use Remaining Command`n[F3] --- Over an Item for DPSCalc`n[Ctrl+F3] --- Over an Item for More info on the Internet`n[F4] --- Test Exit to Log In Screen`n[Ctrl+F4] -- Test Use Portal`n[F10] -- Send Last Chat Message to Trade Channels 1-10`n[Alt + W] - Change Window to Bordeless, and locks mouse on window.`n`n------------------------------CREDITS------------------------------`n`n Base Script Created by Wrongusername.`n`n GUI and Improvements by Gurud.`n`n DPSCalc By Nipper`n`n----------------------------MORE INFO----------------------------`n`nFor more Info and Updates Go to:`n`n http://www.ownedcore.com/forums`n/mmo/path-of-exile/poe-bots-programs`n/451206-poe-autoflask-autoscript-improvements-updates.html`n`nThe link has been coppied to the clipboard.
+   MsgBox, ------------------------------HOTKEYS------------------------------`n`n[F1] --- Use Resync Command`n[F2] --- Use Remaining Command`n[F3] --- Over an Item for DPSCalc`n[Ctrl+F3] --- Over an Item for More info on the Internet`n[F4] --- Test Exit to Log In Screen`n[Ctrl+F4] -- Test Use Portal`n[F10] -- Send Last Chat Message to Trade Channels 1-10`n[Alt + W] - Change Window to Bordeless, and locks mouse on window.`n[MIDDLE MOUSE] - Send Hideout command.`n`n------------------------------CREDITS------------------------------`n`n Base Script Created by Wrongusername.`n`n GUI and Improvements by Gurud.`n`n DPSCalc By Nipper`n`n----------------------------MORE INFO----------------------------`n`nFor more Info and Updates Go to:`n`n http://www.ownedcore.com/forums`n/mmo/path-of-exile/poe-bots-programs`n/451206-poe-autoflask-autoscript-improvements-updates.html`n`nThe link has been coppied to the clipboard.
    clipboard = http://www.ownedcore.com/forums/mmo/path-of-exile/poe-bots-programs/451206-poe-autoflask-autoscript-improvements-updates.html
 return
 
@@ -2957,7 +3452,670 @@ GuiClose:
    }
 return
 
+
+
 ;-------GUI UPDATE FUNCTIONS--------------GUI UPDATE FUNCTIONS--------------GUI UPDATE FUNCTIONS-----
+
+;-------HOTKEYS-----------------HOTKEYS-----------------HOTKEYS-----------------HOTKEYS--------------
+; Test that bound hotkeys work
+;These labels may contain any commands for their respective hotkeys to perform.
+DoHotkey1:
+   desync:=1
+return
+
+DoHotkey2:
+   remaining:=1
+return
+
+DoHotkey3:
+   DPSCalc()
+return
+
+DoHotkey4:
+   Webgrab()
+return
+
+DoHotkey5:
+   QuitToLoginScreen(WinActive("A"))
+return
+
+DoHotkey6:
+   UsePortal()
+return
+
+DoHotkey7:
+   tradechat:=1
+return
+
+DoHotkey8:
+   WinGet, window, ID, A   ; Use the ID of the active window.
+   Toggle_Window(window)
+return
+
+DoHotkey9:
+   hideout:=1
+return
+
+;-------HOTKEYS-----------------HOTKEYS-----------------HOTKEYS-----------------HOTKEYS--------------
+
+; Something changed - rebuild
+OptionChanged:
+   OptionChanged()
+   return
+
+OptionChanged()
+{
+   global HotkeyList
+
+   Gui, 2:Submit, NoHide
+   ; Disable Hotkeys
+   DisableHotkeys()
+
+   Loop % HotkeyList.MaxIndex(){
+      ;HotkeyList[A_Index].block := Block%A_Index%
+      HotkeyList[A_Index].wild := Wild%A_Index%
+   }
+
+   EnableHotkeys()
+
+   SaveSettings()
+}
+
+; Detects a pressed key combination
+Bind:
+   Gui, 2:Submit, NoHide
+   Bind(substr(A_GuiControl,5))
+   return
+
+Bind(ctrlnum)
+{
+   global HKModifierState
+   global BindMode
+   global EXTRA_KEY_LIST
+   global HKControlType
+   global HKSecondaryInput
+   global HKLastHotkey
+
+   global HotkeyList
+
+   ; init vars
+   HKControlType := 0
+   HKModifierState := {ctrl: 0, alt: 0, shift: 0, win: 0}
+
+   ; Disable existing hotkeys
+   DisableHotkeys()
+
+   ; Enable Joystick detection hotkeys
+   JoystickDetection(1)
+
+   ; Start Bind Mode - this starts detection for mouse buttons and modifier keys
+   BindMode := 1
+
+   ; Show the prompt
+   prompt := "Please press the desired key combination.`n`n"
+   prompt .= "Supports most keyboard keys and all mouse buttons. Also Ctrl, Alt, Shift, Win as modifiers or individual keys.`n"
+   prompt .= "Joystick buttons are also supported, but currently not with modifiers.`n"
+   prompt .= "`nHit Escape to cancel."
+   prompt .= "`nHold Escape to clear a binding."
+   Gui, 3:Add, text, center, %prompt%
+   Gui, 3:-Border +AlwaysOnTop
+   Gui, 3:Show
+
+   outhk := ""
+
+   Input, detectedkey, L1 M, %EXTRA_KEY_LIST%
+
+   if (substr(ErrorLevel,1,7) == "EndKey:"){
+      ; A "Special" (Non-printable) key was pressed
+      tmp := substr(ErrorLevel,8)
+      detectedkey := tmp
+      if (tmp == "Escape"){
+         ; Detection ended by Escape
+         if (HKControlType > 0){
+            ; The Escape key was sent because a special button was used
+            detectedkey := HKSecondaryInput
+         } else {
+            detectedkey := ""
+            ; Start listening to key up event for Escape, to see if it was held
+            HKLastHotkey := ctrlnum
+            hotkey, Escape up, EscapeReleased, ON
+            SetTimer, DeleteHotkey, 1000
+         }
+      }
+   }
+
+   ; Stop listening to mouse, keyboard etc
+   BindMode := 0
+   JoystickDetection(0)
+
+   ; Hide prompt
+   Gui, 3:Submit
+
+
+   ; Process results
+
+   modct := CurrentModifierCount()
+
+   if (detectedkey && modct && HKControlType == 3){
+      msgbox ,,Error, Modifiers (Ctrl, Alt, Shift, Win) are currently not supported with Joystick buttons.
+      detectedkey := ""
+   }
+
+   if (detectedkey)
+   {
+      ; Update the hotkey object
+      outhk := BuildHotkeyString(detectedkey,HKControlType)
+      tmp := {hk: outhk, type: HKControlType, status: 0}
+
+      clash := 0
+      Loop % HotkeyList.MaxIndex(){
+         if (A_Index == ctrlnum)
+         {
+            continue
+         }
+         if (StripPrefix(HotkeyList[A_Index].hk) == StripPrefix(tmp.hk))
+         {
+            clash := 1
+         }
+      }
+      if (clash)
+      {
+         msgbox You cannot bind the same hotkey to two different actions. Aborting...
+      } 
+      else 
+      {
+         HotkeyList[ctrlnum] := tmp
+      }
+
+      ; Rebuild rest of hotkey object, save settings etc
+      OptionChanged()
+      ; Write settings to INI file
+      ;SaveSettings()
+
+      ; Update the GUI control
+      UpdateHotkeyControls()
+
+      ; Enable the hotkeys
+      ;EnableHotkeys()
+   } 
+   else 
+   {
+      ; Escape was pressed - resotre original hotkey, if any
+      EnableHotkeys()
+   }
+   return
+}
+
+DeleteHotkey:
+   SetTimer, DeleteHotkey, Off
+   DeleteHotKey(HKLastHotkey)
+return
+
+DeleteHotkey(hk)
+{
+   global HotkeyList
+   global DefaultHKObject
+
+   soundbeep
+   DisableHotkeys()
+   HotkeyList[hk] := DefaultHKObject
+
+   OptionChanged()
+
+   UpdateHotkeyControls()
+   return
+}
+
+EscapeReleased:
+   hotkey, Escape up, EscapeReleased, OFF
+   SetTimer, DeleteHotkey, Off
+return
+
+; Enables User-Defined Hotkeys
+EnableHotkeys()
+{
+   global HotkeyList
+   Loop % HotkeyList.MaxIndex()
+   {
+      status := HotkeyList[A_Index].status
+      hk := HotkeyList[A_Index].hk
+      if (hk != "" && status == 0){
+         prefix := BuildPrefix(HotkeyList[A_Index])
+         ;Msgbox % "ADDING: " prefix "," hk
+         hotkey, %prefix%%hk%, DoHotkey%A_Index%, ON
+         HotkeyList[A_Index].status := 1
+      }
+   }
+}
+
+; Disables User-Defined Hotkeys
+DisableHotkeys()
+{
+   global HotkeyList
+
+   Loop % HotkeyList.MaxIndex(){
+      status := HotkeyList[A_Index].status
+      hk := HotkeyList[A_Index].hk
+      if (hk != "" && status == 1){
+         prefix := BuildPrefix(HotkeyList[A_Index])
+         ;Msgbox % "REMOVING: " prefix "," hk
+         hotkey, %prefix%%hk%, DoHotkey%A_Index%, OFF
+         ;hotkey, %hk%, DoHotkey%A_Index%, OFF
+         HotkeyList[A_Index].status := 0
+      }
+   }
+}
+
+; Builds the prefix for a given hotkey object
+BuildPrefix(hk)
+{
+   prefix := "~"
+   ;if (!hk.block){
+   ;  prefix .= "~"
+   ;}
+   if (hk.wild){
+      prefix .= "*"
+   }
+   return prefix
+}
+
+; Removes ~ * etc prefixes (But NOT modifiers!) from a hotkey object for comparison
+StripPrefix(hk)
+{
+   Loop {
+      chr := substr(hk,1,1)
+      if (chr == "~" || chr == "*" || chr == "$"){
+         hk := substr(hk,2)
+      } else {
+         break
+      }
+   }
+   return hk
+}
+
+; Write settings to the INI
+SaveSettings()
+{
+   global ININame
+   global NumHotkeys
+   global HotkeyList
+
+   Loop % HotkeyList.MaxIndex(){
+      hk := HotkeyList[A_Index].hk
+      type := HotkeyList[A_Index].type
+      ;block := HotkeyList[A_Index].block
+      wild := HotkeyList[A_Index].wild
+
+      ;if (hk != ""){
+         iniwrite, %hk%, %ININame%, Hotkeys, hk_%A_Index%_hk
+         iniwrite, %type%, %ININame%, Hotkeys, hk_%A_Index%_type
+         ;iniwrite, %block%, %ININame%, Hotkeys, hk_%A_Index%_block
+         iniwrite, %wild%, %ININame%, Hotkeys, hk_%A_Index%_wild
+      ;}
+   }
+   return
+}
+
+
+; Read settings from the INI
+LoadSettings()
+{
+   global ININame
+   global NumHotkeys
+   global HotkeyList
+   global DefaultHKObject
+
+   Loop % NumHotkeys 
+   {
+      ; Init array so all items exist
+      HotkeyList[A_Index] := DefaultHKObject
+
+      IniRead, type, %ININame% , Hotkeys, hk_%A_Index%_type,
+      
+      If A_index=1
+      {
+         IniRead, val, %ININame% , Hotkeys, hk_%A_Index%_hk,F1
+      }
+      If A_index=2
+      {
+         IniRead, val, %ININame% , Hotkeys, hk_%A_Index%_hk,F2
+      }
+      If A_index=3
+      {
+         IniRead, val, %ININame% , Hotkeys, hk_%A_Index%_hk,F3
+      }
+      If A_index=4
+      {
+         IniRead, val, %ININame% , Hotkeys, hk_%A_Index%_hk,^F3
+      }
+      If A_index=5
+      {
+         IniRead, val, %ININame% , Hotkeys, hk_%A_Index%_hk,F4
+      }
+      If A_index=6
+      {
+         IniRead, val, %ININame% , Hotkeys, hk_%A_Index%_hk,^F4
+      }
+      If A_index=7
+      {
+         IniRead, val, %ININame% , Hotkeys, hk_%A_Index%_hk,F10
+      }
+      If A_index=8
+      {
+         IniRead, val, %ININame% , Hotkeys, hk_%A_Index%_hk,!W
+      }
+      If A_index=9
+      {
+         IniRead, val, %ININame% , Hotkeys, hk_%A_Index%_hk,mbutton
+      }
+      
+      ;IniRead, val, %ININame% , Hotkeys, hk_%A_Index%_hk,
+      
+      if (val != "ERROR")
+      {
+         If A_index=9
+         {
+            IniRead, type, %ININame% , Hotkeys, hk_%A_Index%_type,2
+         }
+         Else
+         {
+            IniRead, type, %ININame% , Hotkeys, hk_%A_Index%_type, 0
+         }
+         ;IniRead, block, %ININame% , Hotkeys, hk_%A_Index%_block, 0
+         IniRead, wild, %ININame% , Hotkeys, hk_%A_Index%_wild, 0
+
+         HotkeyList[A_Index] := {hk: val, type: type, wild: wild, status: 0}
+      }
+   }
+   UpdateHotkeyControls()
+   Gui, 2:Submit, NoHide
+}
+
+; Update the GUI controls with the hotkey names
+UpdateHotkeyControls()
+{
+   global HotkeyList
+
+   Loop % HotkeyList.MaxIndex()
+   {
+      if (HotkeyList[A_Index].hk != "")
+      {
+         tmp := BuildHotkeyName(HotkeyList[A_Index].hk,HotkeyList[A_Index].type)
+         GuiControl, 2:, HotkeyName%A_Index%, %tmp%
+      } 
+      else 
+      {
+         GuiControl, 2:, HotkeyName%A_Index%, None
+      }
+      ;tmp := HotkeyList[A_Index].block
+      ;GuiControl,, Block%A_Index%, %tmp%
+
+      tmp := HotkeyList[A_Index].wild
+      GuiControl, 2:, Wild%A_Index%, %tmp%
+   }
+   Gui, 2:Submit, NoHide
+}
+
+; Builds an AHK String (eg "^c" for CTRL + C) from the last detected hotkey
+BuildHotkeyString(str, type := 0)
+{
+   global HKModifierState
+
+   outhk := ""
+   modct := CurrentModifierCount()
+
+   if (type == 1){
+      ; Solitary modifier key used (eg Left / Right Alt)
+      outhk := str
+   } else {
+      if (modct){
+         ; Modifiers used in combination with something else - List modifiers in a specific order
+         modifiers := ["CTRL","ALT","SHIFT","WIN"]
+
+         Loop, 4 {
+            key := modifiers[A_Index]
+            value := HKModifierState[modifiers[A_Index]]
+            if (value){
+               if (key == "CTRL"){
+                  outhk .= "^"
+               } else if (key == "ALT"){
+                  outhk .= "!"
+               } else if (key == "SHIFT"){
+                  outhk .= "+"
+               } else if (key == "WIN"){
+                  outhk .= "#"
+               }
+            }
+         }
+      }
+      ; Modifiers etc processed, complete the string
+      outhk .= str
+   }
+
+   return outhk
+}
+
+; Builds a Human-Readable form of a Hotkey string (eg "^C" -> "CTRL + C")
+BuildHotkeyName(hk,ctrltype)
+{
+   outstr := ""
+   modctr := 0
+   stringupper, hk, hk
+
+   Loop % strlen(hk) {
+      chr := substr(hk,1,1)
+      mod := 0
+
+      if (chr == "^"){
+         ; Ctrl
+         mod := "CTRL"
+         modctr++
+      } else if (chr == "!"){
+         ; Alt
+         mod := "ALT"
+         modctr++
+      } else if (chr == "+"){
+         ; Shift
+         mod := "SHIFT"
+         modctr++
+      } else if (chr == "#"){
+         ; Win
+         mod := "WIN"
+         modctr++
+      } else {
+         break
+      }
+      if (mod){
+         if (modctr > 1){
+            outstr .= " + "
+         }
+         outstr .= mod
+         ; shift character out
+         hk := substr(hk,2)
+      }
+   }
+   if (modctr){
+      outstr .= " + "
+   }
+
+   if (ctrltype == 1){
+      ; Solitary Modifiers
+      pfx := substr(hk,1,1)
+      if (pfx == "L"){
+         outstr .= "LEFT "
+      } else {
+         outstr .= "RIGHT "
+      }
+      outstr .= substr(hk,2)
+   } else if (ctrltype == 2){
+      ; Mouse Buttons
+      if (hk == "LBUTTON") {
+         outstr .= "LEFT MOUSE"
+      } else if (hk == "RBUTTON") {
+         outstr .= "RIGHT MOUSE"
+      } else if (hk == "MBUTTON") {
+         outstr .= "MIDDLE MOUSE"
+      } else if (hk == "XBUTTON1") {
+         outstr .= "MOUSE THUMB 1"
+      } else if (hk == "XBUTTON2") {
+         outstr .= "MOUSE THUMB 2"
+      } else if (hk == "WHEELUP") {
+         outstr .= "MOUSE WHEEL U"
+      } else if (hk == "WHEELDOWN") {
+         outstr .= "MOUSE WHEEL D"
+      } else if (hk == "WHEELLEFT") {
+         outstr .= "MOUSE WHEEL L"
+      } else if (hk == "WHEELRIGHT") {
+         outstr .= "MOUSE WHEEL R"
+      }
+   } else if (ctrltype == 3){
+      ; Joystick Buttons
+      pos := instr(hk,"JOY")
+      id := substr(hk,1,pos-1)
+      button := substr(hk,5)
+      outstr .= "JOYSTICK " id " BTN " button
+   } else {
+      ; Keyboard Keys
+      tmp := instr(hk,"NUMPAD")
+      if (tmp){
+         outstr .= "NUMPAD " substr(hk,7)
+      } else {
+         ; Replace underscores with spaces (In case of key name like MEDIA_PLAY_PAUSE)
+         StringReplace, hk, hk, _ , %A_SPACE%, All
+         outstr .= hk
+      }
+   }
+
+
+   return outstr
+}
+
+; Detects Modifiers and Mouse Buttons in BindMode
+#If BindMode
+   ; Detect key down of modifier keys
+   *lctrl::
+   *rctrl::
+   *lalt::
+   *ralt::
+   *lshift::
+   *rshift::
+   *lwin::
+   *rwin::
+      mod := substr(A_ThisHotkey,2)
+      SetModifier(mod,1)
+      return
+
+   ; Detect key up of modifier keys
+   *lctrl up::
+   *rctrl up::
+   *lalt up::
+   *ralt up::
+   *lshift up::
+   *rshift up::
+   *lwin up::
+   *rwin up::
+      ; Strip * from beginning, " up" from end etc
+      mod := substr(substr(A_ThisHotkey,2),1,strlen(A_ThisHotkey) -4)
+      if (CurrentModifierCount() == 1){
+         ; If CurrentModifierCount is 1 when an up is received, then that is a Solitary Modifier
+         ; It cannot be a modifier + normal key, as this code would have quit on keydown of normal key
+
+         HKControlType := 1
+         HKSecondaryInput := mod
+
+         ; Send Escape - This will cause the Input command to quit with an EndKey of Escape
+         ; But we stored the modifier key, so we will know it was not really escape
+         Send {Escape}
+      }
+      SetModifier(mod,0)
+      return
+
+   ; Detect Mouse buttons
+   lbutton::
+   rbutton::
+   mbutton::
+   xbutton1::
+   xbutton2::
+   wheelup::
+   wheeldown::
+   wheelleft::
+   wheelright::
+      HKControlType := 2
+      HKSecondaryInput := A_ThisHotkey
+      Send {Escape}
+      return
+#If
+
+; Adds / removes hotkeys to detect Joystick Buttons in BindMode
+JoystickDetection(mode := 1)
+{
+   if (mode){
+      mode := "ON"
+   } else {
+      mode := "OFF"
+   }
+   Loop , 16 {
+      stickid := A_Index
+      Loop, 32 {
+         buttonid := A_Index
+         hotkey, %stickid%Joy%buttonid%, JoystickPressed, %mode%
+      }
+   }
+}
+
+; A Joystick button was pressed while in Binding mode
+JoystickPressed:
+   HKControlType := 3
+   HKSecondaryInput := A_ThisHotkey
+   Send {Escape}
+   return
+
+; Sets the state of the HKModifierState object to reflect the state of the modifier keys
+SetModifier(hk,state)
+{
+   global HKModifierState
+
+   if (hk == "lctrl" || hk == "rctrl"){
+      HKModifierState.ctrl := state
+   } else if (hk == "lalt" || hk == "ralt"){
+      HKModifierState.alt := state
+   } else if (hk == "lshift" || hk == "rshift"){
+      HKModifierState.shift := state
+   } else if (hk == "lwin" || hk == "rwin"){
+      HKModifierState.win := state
+   }
+   return
+}
+
+; Counts how many modifier keys are currently held
+CurrentModifierCount()
+{
+   global HKModifierState
+
+   return HKModifierState.ctrl + HKModifierState.alt + HKModifierState.shift  + HKModifierState.win
+}
+
+; Takes the start of the file name (before .ini or .exe and replaces it with .ini)
+BuildIniName()
+{
+   tmp := A_Scriptname
+   Stringsplit, tmp, tmp,.
+   ini_name := ""
+   last := ""
+   Loop, % tmp0
+   {
+      ; build the string up to the last period (.)
+      if (last != ""){
+         if (ini_name != ""){
+            ini_name := ini_name "."
+         }
+         ini_name := ini_name last
+      }
+      last := tmp%A_Index%
+   }
+   ;this.ini_name := ini_name ".ini"
+   return ini_name ".ini"
+}
 
 ;-------NOT MY FUNCTIONS--------------NOT MY FUNCTIONS--------------NOT MY FUNCTIONS-----------------
  
