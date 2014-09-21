@@ -1910,7 +1910,44 @@ Main()
 				}
 			}
 		}
-
+		
+		; CTRL KEY DOWN wben waypointpanel is active!
+		; (http://www.ownedcore.com/forums/mmo/path-of-exile/poe-bots-programs/451206-poe-autoflask-autoscript-improvements-updates-41.html#post3148264)
+		IfWinActive Path of Exile ahk_class Direct3DWindowClass
+		{
+			SendMode Input
+			if (IsInGame(hwnd))
+			{
+				if (PlayerStats.ChatStatus!="" && PlayerStats.ChatStatus=65536)
+				{
+					if (PlayerStats.PanelWaypoint=65537)
+					{
+						GetKeyState, stateCTRL, CTRL
+						if not stateCTRL = D
+						{
+							SendInput, {Ctrl Down}
+							if (trayNotifications)
+							{
+								TrayTip, Waypoint panel detected!, CTRL key: DOWN, 2
+							}
+						}
+					}
+					else
+					{
+						GetKeyState, stateCTRL, CTRL
+						if stateCTRL = D
+						{
+							SendInput, {Ctrl Up}
+							if (trayNotifications)
+							{
+								TrayTip, Waypoint panel closed!, CTRL key: UP, 2
+							}
+						}
+					}
+				}
+			}
+		}
+		
 		if (PlayerStats.PlayerActionID!="" && PlayerStats.PlayerActionID!=80 && PlayerStats.PlayerActionID!=90)
 		{
 			MovementTimer:= A_TickCount
