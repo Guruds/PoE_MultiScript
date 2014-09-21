@@ -1911,6 +1911,8 @@ Main()
 			}
 		}
 		
+		; CTRL KEY DOWN wben waypointpanel is active!
+		; (http://www.ownedcore.com/forums/mmo/path-of-exile/poe-bots-programs/451206-poe-autoflask-autoscript-improvements-updates-41.html#post3148264)
 		IfWinActive Path of Exile ahk_class Direct3DWindowClass
 		{
 			SendMode Input
@@ -1946,8 +1948,6 @@ Main()
 			}
 		}
 		
-		; CTRL KEY DOWN wben waypointpanel is active!
-		; (http://www.ownedcore.com/forums/mmo/path-of-exile/poe-bots-programs/451206-poe-autoflask-autoscript-improvements-updates-41.html#post3148264)
 		if (PlayerStats.PlayerActionID!="" && PlayerStats.PlayerActionID!=80 && PlayerStats.PlayerActionID!=90)
 		{
 			MovementTimer:= A_TickCount
