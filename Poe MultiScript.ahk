@@ -1311,6 +1311,8 @@ Main()
 	global QuicksilverBuff
    global FlaskOnCurseCheck
    global FlaskOnCorruptedBloodCheck
+	global OnetimeNotification
+	global stateRCTRL
 
 	WinGet, WinID, List, %cliname%
 
@@ -1910,9 +1912,7 @@ Main()
 				}
 			}
 		}
-		
-		; CTRL KEY DOWN wben waypointpanel is active!
-		; (http://www.ownedcore.com/forums/mmo/path-of-exile/poe-bots-programs/451206-poe-autoflask-autoscript-improvements-updates-41.html#post3148264)
+
 		IfWinActive Path of Exile ahk_class Direct3DWindowClass
 		{
 			SendMode Input
@@ -1922,27 +1922,48 @@ Main()
 				{
 					if (PlayerStats.PanelWaypoint=65537)
 					{
-						GetKeyState, stateCTRL, CTRL
-						if not stateCTRL = D
+						GetKeyState, stateRCTRL, RCtrl
+						if stateRCTRL = U
 						{
-							SendInput, {Ctrl Down}
+							SendInput, {RCtrl Down}
+							OnetimeNotification := true
 							if (trayNotifications)
 							{
-								TrayTip, Waypoint panel detected!, CTRL key: DOWN, 2
+								TrayTip, Waypoint panel detected!, CTRL key: DOWN, 1
 							}
 						}
 					}
 					else
 					{
-						GetKeyState, stateCTRL, CTRL
-						if stateCTRL = D
+						if (OnetimeNotification)
 						{
-							SendInput, {Ctrl Up}
-							if (trayNotifications)
+							GetKeyState, stateRCTRL, RCtrl
+							if stateRCTRL = D
 							{
-								TrayTip, Waypoint panel closed!, CTRL key: UP, 2
+								SendInput, {RCtrl Up}
+								OnetimeNotification := false
+								if (trayNotifications)
+								{
+									TrayTip, Waypoint panel closed!, CTRL key: UP, 1
+								}
 							}
 						}
+					}
+				}
+			}
+		}
+		else
+		{
+			if (OnetimeNotification)
+			{
+				GetKeyState, stateRCTRL, RCtrl
+				if stateRCTRL = D
+				{
+					SendInput, {RCtrl Up}
+					OnetimeNotification := false
+					if (trayNotifications)
+					{
+						TrayTip, Releasing CTRL Key!, Path of Exile is no longer your active window!`n> CTRL key: UP, 2
 					}
 				}
 			}
