@@ -850,7 +850,17 @@ ReadPlayerStats(hwnd, byRef PlayerStats)
 	PlayerStats.ChatStatus:=ReadMemUInt(pH,ChatStatusOffset+0x860)
 	MouseOnMonsterOffset:=ReadMemUInt(pH,CheckBase+0x184)
 	PlayerStats.MouseOnMonsterStatus:=ReadMemUInt(pH,MouseOnMonsterOffset+0x860)
-
+	MouseOnAreaTransitionOffset:=GetMultilevelPointer(pH,[fBase+0x1824,0x0,0x8])
+	MouseOnAreaTransitionStatus:=ReadMemStr(ph,MouseOnAreaTransitionOffset+0x0,100,"UTF-16")
+	PlayerStats.MoET:=MouseOnAreaTransitionStatus
+	if (MouseOnAreaTransitionStatus="Metadata/MiscellaneousObjects/AreaTransition")
+	{
+		PlayerStats.MouseOnAreaTransitionStatus:=True
+	}
+	else
+	{
+		PlayerStats.MouseOnAreaTransitionStatus:=False
+	}
 	PanelWaypointOffset:=ReadMemUInt(pH,CheckBase+0x118)
 	PlayerStats.PanelWaypoint:=ReadMemUInt(pH,PanelWaypointOffset+0x860)
 	PanelInventoryOffset:=ReadMemUInt(pH,CheckBase+0xF4)
@@ -859,6 +869,8 @@ ReadPlayerStats(hwnd, byRef PlayerStats)
 	PlayerStats.PanelSkillTree:=ReadMemUInt(pH,PanelSkillTreeOffset+0x860)
 	PanelSocialOffset:=ReadMemUInt(pH,CheckBase+0x104)
 	PlayerStats.PanelSocial:=ReadMemUInt(pH,PanelSocialOffset+0x860)
+	PanelAreaSelectionOffset:=ReadMemUInt(pH,CheckBase+0x198)
+	PlayerStats.PanelAreaSelection:=ReadMemUInt(pH,PanelAreaSelectionOffset+0x860)
 
 	InCityOffset:=GetMultilevelPointer(pH,[CheckBase+0x11C,0x788,0x200])
 	PlayerStats.InCity:=ReadMemUInt(pH,InCityOffset+0x860)
@@ -1311,6 +1323,8 @@ Main()
 	global QuicksilverBuff
    global FlaskOnCurseCheck
    global FlaskOnCorruptedBloodCheck
+	global OnetimeNotification
+	global stateRCTRL
 
 	WinGet, WinID, List, %cliname%
 
@@ -1911,6 +1925,105 @@ Main()
 			}
 		}
 
+		ReadHeroPos(WinID%A_Index%, xAT, yAT)
+		xAT:=% round(xAT,0)
+		yAT:=% round(yAT,0)
+		
+		IfWinActive Path of Exile ahk_class Direct3DWindowClass
+		{
+			SendMode Input
+			if (IsInGame(hwnd))
+			{
+				if (PlayerStats.ChatStatus!="" && PlayerStats.ChatStatus=65536)
+				{
+					if (PlayerStats.PanelWaypoint=65537)
+					{
+						GetKeyState, stateRCTRL, RCtrl
+						if stateRCTRL = U
+						{
+							SendInput, {RCtrl Down}
+							OnetimeNotification := true
+							if (trayNotifications)
+							{
+								TrayTip, Waypoint panel detected!, CTRL key: DOWN, 1
+							}
+						}
+					}
+					else
+					{
+						if (OnetimeNotification)
+						{
+							GetKeyState, stateRCTRL, RCtrl
+							if stateRCTRL = D
+							{
+								SendInput, {RCtrl Up}
+								OnetimeNotification := false
+								if (trayNotifications)
+								{
+									TrayTip, Waypoint panel closed!, CTRL key: UP, 1
+								}
+							}
+						}
+					}
+
+					if yAT between 710 and 1160
+					{
+						if xAT between 3100 and 3375
+						{
+							if(PlayerStats.MouseOnAreaTransitionStatus)
+							{
+								GetKeyState, stateRCTRL, RCtrl
+								if stateRCTRL = U
+								{
+									SendInput, {RCtrl Down}
+									OnetimeNotification := true
+									if (trayNotifications)
+									{
+										TrayTip, Area-Transition (Sarn Encampment > City of Sarn) detected!, CTRL key: DOWN, 1
+									}
+								}
+							}
+							else
+							{
+								if (PlayerStats.PanelAreaSelection=65537)
+								{
+									if (OnetimeNotification)
+									{
+										GetKeyState, stateRCTRL, RCtrl
+										if stateRCTRL = D
+										{
+											SendInput, {RCtrl Up}
+											OnetimeNotification := false
+											if (trayNotifications)
+											{
+												TrayTip, Releasing CTRL Key!, CTRL key: UP, 1
+											}
+										}
+									}
+								}
+							}
+						}	
+					}
+				}
+			}
+		}
+		else
+		{
+			if (OnetimeNotification)
+			{
+				GetKeyState, stateRCTRL, RCtrl
+				if stateRCTRL = D
+				{
+					SendInput, {RCtrl Up}
+					OnetimeNotification := false
+					if (trayNotifications)
+					{
+						TrayTip, Releasing CTRL Key!, Path of Exile is no longer your active window!`n> CTRL key: UP, 2
+					}
+				}
+			}
+		}
+		
 		if (PlayerStats.PlayerActionID!="" && PlayerStats.PlayerActionID!=80 && PlayerStats.PlayerActionID!=90)
 		{
 			MovementTimer:= A_TickCount
@@ -2581,7 +2694,7 @@ Webgrab()
       }
       NameIsDone := False
       ItemName :=
-
+	  
       Loop, Parse, Clipboard, `n, `r
       {
          ; Clipboard must have "Rarity:" in the first line
@@ -2590,6 +2703,10 @@ Webgrab()
             IfNotInString, A_LoopField, Rarity:
             {
                Exit
+            }
+            IfInString, A_LoopField, Rarity: Normal
+            {
+               Rarity:= 1
             }
             IfInString, A_LoopField, Rarity: Magic
             {
@@ -2605,7 +2722,7 @@ Webgrab()
             }
 
          }
-      
+		 
          ; Get name
          If Not NameIsDone
          {
@@ -2619,7 +2736,16 @@ Webgrab()
             }
             Continue
          }
-
+		 
+		 if (Rarity = 1)
+		 {
+			PoemodsItemType := GetItemType(ItemName2)
+		 }
+		 else 
+		 {
+		    PoemodsItemType := GetItemType(ItemName%Rarity%)
+		 }
+		 
          If (Rarity = 2)
          {
             IfInString, ItemName2, Flask
@@ -2629,15 +2755,14 @@ Webgrab()
                Rarity:= 0
                return
             }
-            Run http://www.poemods.com
+            Run http://poemods.com/index.php?item_type=%PoemodsItemType%
             Rarity:= 0
             return
          }
 
-
-         If (Rarity = 3)
+         If (Rarity = 3 || Rarity = 1)
          {
-            Run http://www.poemods.com
+            Run http://poemods.com/index.php?item_type=%PoemodsItemType%
             Rarity:= 0
             return
          }
@@ -2653,6 +2778,28 @@ Webgrab()
    return
 }
 
+GetItemType(ItemName)
+{
+	ItemListArray = 0
+    Loop, Read, %A_WorkingDir%\itemtypes.csv
+    {
+        ItemListArray += 1
+        StringSplit, BasenamePoemodsurl, A_LoopReadLine, |,
+        ItemTypeArray%ItemListArray%1 := BasenamePoemodsurl1  ; Store this line in the next array element.
+        ItemTypeArray%ItemListArray%2 := BasenamePoemodsurl2
+    }
+
+    Loop %ItemListArray%
+	{
+        element := ItemTypeArray%A_Index%1
+		IfInString, ItemName, %element%
+        {
+            BaseItemType := ItemTypeArray%A_Index%2
+            Break
+        }
+    }
+    return BaseItemType
+}
 
 PortalInvCheck()
 {
