@@ -452,7 +452,7 @@ If (RemainingSpam=0)
 
 Gui, Submit
 
-Gui, Show, x760 y198 h665 w474, PoE MultiScript v09.19.2014
+Gui, Show, x760 y198 h665 w474, PoE MultiScript v10.02.2014
 
 ;---------------------START DYNAMIC HOTKEYS---------------------
 
@@ -753,10 +753,10 @@ GetUiBase(hwnd)
       return
    if (Steam)
    {
-      uiBase:=GetMultilevelPointer(pH,[FrameBase+0x15c,0x220,0x4C])
+      uiBase:=GetMultilevelPointer(pH,[FrameBase+0x158,0x220,0x4C])
    }
    else
-   uiBase:=GetMultilevelPointer(pH,[FrameBase+0x140,0x220,0x4C])
+   uiBase:=GetMultilevelPointer(pH,[FrameBase+0x13c,0x220,0x4C])
    return uiBase
 }
 
@@ -794,11 +794,11 @@ ReadPlayerStats(hwnd, byRef PlayerStats)
 	BaseMgr:=ReadMemUInt(pH,mBase+baseMgrPtr)
 	if (Steam) 
 	{
-		PlayerBase:=GetMultilevelPointer(pH,[fBase+0x158,0x5A0])
+		PlayerBase:=GetMultilevelPointer(pH,[fBase+0x154,0x5A0])
 	}
 	else
 	{
-		PlayerBase:=GetMultilevelPointer(pH,[fBase+0x13C,0x5A0])
+		PlayerBase:=GetMultilevelPointer(pH,[fBase+0x138,0x5A0])
 	}
 	Config:=GetMultilevelPointer(pH,[BaseMgr+0x180,0x108,0x8c])
 	PlayerStats.ConfigPath:=ReadMemStr(ph,Config+0xa4,255,"UTF-16")
@@ -842,10 +842,10 @@ ReadPlayerStats(hwnd, byRef PlayerStats)
 
 	if (Steam)
 	{
-		CheckBase:=GetMultilevelPointer(pH,[fBase+0x15c,0x220])
+		CheckBase:=GetMultilevelPointer(pH,[fBase+0x158,0x220])
 	}
 	else
-	CheckBase:=GetMultilevelPointer(pH,[fBase+0x140,0x220])
+	CheckBase:=GetMultilevelPointer(pH,[fBase+0x13c,0x220])
 	ChatStatusOffset:=GetMultilevelPointer(pH,[CheckBase+0xd8,0x808,0x0])
 	PlayerStats.ChatStatus:=ReadMemUInt(pH,ChatStatusOffset+0x860)
 	MouseOnMonsterOffset:=ReadMemUInt(pH,CheckBase+0x184)
@@ -1026,10 +1026,10 @@ IsInGame(hwnd)
       return false
    if (Steam)
    {
-      localConnection:=ReadMemUInt(pH,fBase+0x15c)
+      localConnection:=ReadMemUInt(pH,fBase+0x158)
    }
    else
-   localConnection:=ReadMemUInt(pH,fBase+0x140)
+   localConnection:=ReadMemUInt(pH,fBase+0x13c)
    if (localConnection=0 || localConnection="")
       return false
    else
@@ -1049,10 +1049,10 @@ SetGameStateMenu(hwnd)
       return false
    if (Steam)
    {
-      localConnection:=ReadMemUInt(pH,fBase+0x15c)
+      localConnection:=ReadMemUInt(pH,fBase+0x158)
    }
    else
-   localConnection:=ReadMemUInt(pH,fBase+0x140)
+   localConnection:=ReadMemUInt(pH,fBase+0x13c)
    if (localConnection!="" && localConnection!=0)
    {
       WriteMemUInt(pH,localConnection+0x2A78,1)
@@ -1068,9 +1068,9 @@ ReadHeroPos(hwnd,ByRef x, ByRef y)
       FrameBase:=GetFrameBase(hwnd)
 
       if (Steam) 
-   	  PlayerPosBase:=GetMultilevelPointer(pH,[FrameBase+0x158,0x5A0,0x24])
+   	  PlayerPosBase:=GetMultilevelPointer(pH,[FrameBase+0x154,0x5A0,0x24])
       else 
-      PlayerPosBase:=GetMultilevelPointer(pH,[FrameBase+0x13C,0x5A0,0x24])
+      PlayerPosBase:=GetMultilevelPointer(pH,[FrameBase+0x138,0x5A0,0x24])
 
       x:=ReadMemFloat(pH,PlayerPosBase+0x2c)
       y:=ReadMemFloat(pH,PlayerPosBase+0x30)
@@ -1311,6 +1311,8 @@ Main()
 	global QuicksilverBuff
    global FlaskOnCurseCheck
    global FlaskOnCorruptedBloodCheck
+   global ManaRegenCheck
+   global LifeRegenCheck
 
 	WinGet, WinID, List, %cliname%
 
@@ -1468,6 +1470,8 @@ Main()
 			LastMaxHP:=0
 			LastMaxES:=0
 		}
+
+      
       
 		FlasksData:=[]
 		ReadFlasksData(WinID%A_Index%,FlasksData)
@@ -1508,6 +1512,9 @@ Main()
 		QuicksilverBuff:=0
 
 		RemAilmentsTimer:=Round(CurrentConfig.RemAilmentsTimer/10,1)
+
+      ManaRegenCheck:=0
+      LifeRegenCheck:=0
 
 		loop, %BuffAmount%
 		{
@@ -1599,7 +1606,7 @@ Main()
 				continue
 			}
 
-         else if InStr(playerstats.BuffName[A_Index], "curse")
+         else if ((InStr(playerstats.BuffName[A_Index], "curse")) And !(InStr(playerstats.BuffName[A_Index], "flask")))
          {
             if (FlaskOnCurseCheck)
             {
@@ -1646,6 +1653,18 @@ Main()
             continue
          }
 
+         else if InStr(playerstats.BuffName[A_Index], "flask_effect_mana")
+         {
+            ManaRegenCheck:=1
+            continue
+         }
+
+         else if InStr(playerstats.BuffName[A_Index], "flask_effect_life")
+         {
+            LifeRegenCheck:=1
+            continue
+         }
+
 			/* ;Others
 			else if InStr(playerstats.BuffName[A_Index], "chilled")
 			{
@@ -1667,6 +1686,22 @@ Main()
 			}
 			*/
 		}
+
+      If (LifeRegenCheck=0)
+      {
+         If ((WindowQueuedFlaskEffects[k].hpQueueEndtime)>A_TickCount+500)
+         {
+            WindowQueuedFlaskEffects[k].hpQueueEndtime:=A_TickCount
+         }
+      }
+
+      If (ManaRegenCheck=0)
+      {
+         If ((WindowQueuedFlaskEffects[k].ManaQueueEndtime)>A_TickCount+500)
+         {
+            WindowQueuedFlaskEffects[k].ManaQueueEndtime:=A_TickCount
+         }
+      }
 
 		if (currLifeRatio<CurrentConfig.minLifeRatioToDrink)
 		{
