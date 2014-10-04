@@ -552,7 +552,7 @@ cliname=Path of Exile
 cliexesteam=PathOfExileSteam.exe
 
 cliexe=PathOfExile.exe
-AutoFlaskWatchdogPeriod:=10 ;milliseconds, time to have script recheck life/mana/flasks availability more often/increase chances of getting saved from death in time, increase this if fps drop.
+AutoFlaskWatchdogPeriod:=20 ;milliseconds, time to have script recheck life/mana/flasks availability more often/increase chances of getting saved from death in time, increase this if fps drop.
 lagCompensation:=50
 ; Font size for the tooltip, leave empty for default(part of DPSCalc)
 FontSize := 12
@@ -577,6 +577,8 @@ LastES:=0
 FlaskOnFrozen:=1
 FlaskOnShocked:=1
 FlaskOnIgnited:=1
+ManaRegenCheck:=0
+LifeRegenCheck:=0
 
 autoQuitPauseBeforeClick:=100
 autoQuitSoftToleranceBeforeKill:=2000 ; try to quit to loginscreen at most milliseconds before killing game window(in case we can't quit by clicking menu option for some reason)
@@ -753,7 +755,7 @@ GetUiBase(hwnd)
       return
    if (Steam)
    {
-      uiBase:=GetMultilevelPointer(pH,[FrameBase+0x158,0x220,0x4C])
+      uiBase:=GetMultilevelPointer(pH,[FrameBase+0x154,0x220,0x4C])
    }
    else
    uiBase:=GetMultilevelPointer(pH,[FrameBase+0x13c,0x220,0x4C])
@@ -794,7 +796,7 @@ ReadPlayerStats(hwnd, byRef PlayerStats)
 	BaseMgr:=ReadMemUInt(pH,mBase+baseMgrPtr)
 	if (Steam) 
 	{
-		PlayerBase:=GetMultilevelPointer(pH,[fBase+0x154,0x5A0])
+		PlayerBase:=GetMultilevelPointer(pH,[fBase+0x150,0x5A0])
 	}
 	else
 	{
@@ -842,7 +844,7 @@ ReadPlayerStats(hwnd, byRef PlayerStats)
 
 	if (Steam)
 	{
-		CheckBase:=GetMultilevelPointer(pH,[fBase+0x158,0x220])
+		CheckBase:=GetMultilevelPointer(pH,[fBase+0x154,0x220])
 	}
 	else
 	CheckBase:=GetMultilevelPointer(pH,[fBase+0x13c,0x220])
@@ -1026,7 +1028,7 @@ IsInGame(hwnd)
       return false
    if (Steam)
    {
-      localConnection:=ReadMemUInt(pH,fBase+0x158)
+      localConnection:=ReadMemUInt(pH,fBase+0x154)
    }
    else
    localConnection:=ReadMemUInt(pH,fBase+0x13c)
@@ -1049,7 +1051,7 @@ SetGameStateMenu(hwnd)
       return false
    if (Steam)
    {
-      localConnection:=ReadMemUInt(pH,fBase+0x158)
+      localConnection:=ReadMemUInt(pH,fBase+0x154)
    }
    else
    localConnection:=ReadMemUInt(pH,fBase+0x13c)
@@ -1068,7 +1070,7 @@ ReadHeroPos(hwnd,ByRef x, ByRef y)
       FrameBase:=GetFrameBase(hwnd)
 
       if (Steam) 
-   	  PlayerPosBase:=GetMultilevelPointer(pH,[FrameBase+0x154,0x5A0,0x24])
+   	  PlayerPosBase:=GetMultilevelPointer(pH,[FrameBase+0x150,0x5A0,0x24])
       else 
       PlayerPosBase:=GetMultilevelPointer(pH,[FrameBase+0x138,0x5A0,0x24])
 
@@ -1313,6 +1315,8 @@ Main()
    global FlaskOnCorruptedBloodCheck
    global ManaRegenCheck
    global LifeRegenCheck
+   global ManaRegenCheck2
+   global LifeRegenCheck2
 
 	WinGet, WinID, List, %cliname%
 
@@ -1471,8 +1475,7 @@ Main()
 			LastMaxES:=0
 		}
 
-      
-      
+
 		FlasksData:=[]
 		ReadFlasksData(WinID%A_Index%,FlasksData)
 
@@ -1513,10 +1516,10 @@ Main()
 
 		RemAilmentsTimer:=Round(CurrentConfig.RemAilmentsTimer/10,1)
 
-      ManaRegenCheck:=0
-      LifeRegenCheck:=0
+      LifeRegenCheck2:=0
+      ManaRegenCheck2:=0
 
-		loop, %BuffAmount%
+      loop, %BuffAmount%
 		{
 			BuffTimer:=PlayerStats.BuffTimer[A_Index]
 
@@ -1656,12 +1659,14 @@ Main()
          else if InStr(playerstats.BuffName[A_Index], "flask_effect_mana")
          {
             ManaRegenCheck:=1
+            ManaRegenCheck2:=1
             continue
          }
 
          else if InStr(playerstats.BuffName[A_Index], "flask_effect_life")
          {
             LifeRegenCheck:=1
+            LifeRegenCheck2:=1
             continue
          }
 
@@ -1687,20 +1692,22 @@ Main()
 			*/
 		}
 
-      If (LifeRegenCheck=0)
+      If (LifeRegenCheck=1 And LifeRegenCheck2=0)
       {
          If ((WindowQueuedFlaskEffects[k].hpQueueEndtime)>A_TickCount+500)
          {
             WindowQueuedFlaskEffects[k].hpQueueEndtime:=A_TickCount
          }
+         LifeRegenCheck:=0
       }
 
-      If (ManaRegenCheck=0)
+      If (ManaRegenCheck=1 And ManaRegenCheck2=0)
       {
          If ((WindowQueuedFlaskEffects[k].ManaQueueEndtime)>A_TickCount+500)
          {
             WindowQueuedFlaskEffects[k].ManaQueueEndtime:=A_TickCount
          }
+         ManaRegenCheck:=0
       }
 
 		if (currLifeRatio<CurrentConfig.minLifeRatioToDrink)
