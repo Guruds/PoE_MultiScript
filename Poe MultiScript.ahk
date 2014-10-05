@@ -93,6 +93,8 @@ IniRead, FlaskOnIgnitedCheck , Config.ini, Config, FlaskOnIgnitedCheck, 0
 
 IniRead, AttackInPlaceCheck , Config.ini, Config, AttackInPlaceCheck, 0
 
+IniRead, HoldCtrlCheck , Config.ini, Config, HoldCtrlCheck, 0
+
 IniRead, FlaskOnCurseCheck , Config.ini, Config, FlaskOnCurseCheck, 0
 
 IniRead, FlaskOnCorruptedBloodCheck , Config.ini, Config, FlaskOnCorruptedBloodCheck, 0
@@ -315,6 +317,8 @@ Gui, Add, Text, x22 y70 w70 h20 vbasePtrText , %baseMgrPtr%
 
 Gui, Add, Button, x262 y120 w180 h40 gshowgui2, Configure Hotkeys
 
+Gui, Add, Button, x32 y180 w180 h40 gshowgui4, Debug Window
+
 Gui, Add, Button, x262 y180 w180 h40 gDefaultHotkeys, Restore Default Hotkeys
 
 
@@ -340,11 +344,20 @@ Gui, Add, Text, x442 y130 w10 h30 vRemainingSpamUpdatePercent, s
 
 If AttackInPlaceCheck = 0
 {
-   Gui, Add, CheckBox, x22 y110 w170 h30 vAttackInPlaceCheckBox gAttackInPlaceCheck, Auto Hold In Place When Attacking
+   Gui, Add, CheckBox, x22 y110 w200 h30 vAttackInPlaceCheckBox gAttackInPlaceCheck, Auto Hold In Place When Attacking
 }
 If AttackInPlaceCheck = 1
 {
-   Gui, Add, CheckBox, x22 y110 w170 h30  vAttackInPlaceCheckBox gAttackInPlaceCheck Checked, Auto Hold In Place When Attacking
+   Gui, Add, CheckBox, x22 y110 w200 h30  vAttackInPlaceCheckBox gAttackInPlaceCheck Checked, Auto Hold In Place When Attacking
+}
+
+If HoldCtrlCheck = 0
+{
+   Gui, Add, CheckBox, x22 y140 w200 h30 vHoldCtrlCheckBox gHoldCtrlCheck, Auto Hold Ctrl On Waypoint Panel
+}
+If HoldCtrlCheck = 1
+{
+   Gui, Add, CheckBox, x22 y140 w200 h30  vHoldCtrlCheckBox gHoldCtrlCheck Checked, Auto Hold Ctrl On Waypoint Panel
 }
 
 
@@ -452,7 +465,7 @@ If (RemainingSpam=0)
 
 Gui, Submit
 
-Gui, Show, x760 y198 h665 w474, PoE MultiScript v10.02.2014
+Gui, Show, x760 y198 h665 w474, PoE MultiScript v10.05.2014
 
 ;---------------------START DYNAMIC HOTKEYS---------------------
 
@@ -528,13 +541,120 @@ Menu Tray, Standard
 Menu Tray,Check, Configure Hotkeys
 Menu Tray,Check, Configuration Window
 
-
-
- 
-
-
 ;---------------------END DYNAMIC HOTKEYS---------------------
+;---------------------DEBUG WINDOW----------------------------
 
+Gui, 4:Add, GroupBox, x5 y0 w300 h300 , Player Stats
+ypos := 25
+Gui, 4:Add, Text, x15 y%ypos% w155, Max HP
+Gui, 4:Add, Edit, Disabled vMaxHPvar  x140 y%ypos% w150, Not In Game or Broken
+ypos += 25
+Gui, 4:Add, Text, x15 y%ypos% w155, Current HP
+Gui, 4:Add, Edit, Disabled vCurrHPvar  x140 y%ypos% w150, Not In Game or Broken
+ypos += 25
+Gui, 4:Add, Text, x15 y%ypos% w155, Reserved HP Flat
+Gui, 4:Add, Edit, Disabled vReservedHPFlatvar  x140 y%ypos% w150, Not In Game or Broken
+ypos += 25
+Gui, 4:Add, Text, x15 y%ypos% w155, Reserved HP Percent
+Gui, 4:Add, Edit, Disabled vReservedHPPercentvar  x140 y%ypos% w150, Not In Game or Broken
+ypos += 25
+Gui, 4:Add, Text, x15 y%ypos% w155, Max Mana
+Gui, 4:Add, Edit, Disabled vMaxManavar  x140 y%ypos% w150, Not In Game or Broken
+ypos += 25
+Gui, 4:Add, Text, x15 y%ypos% w155, Current Mana
+Gui, 4:Add, Edit, Disabled vCurrManavar  x140 y%ypos% w150, Not In Game or Broken
+ypos += 25
+Gui, 4:Add, Text, x15 y%ypos% w155, Reserved Mana Flat
+Gui, 4:Add, Edit, Disabled vReservedManaFlatvar  x140 y%ypos% w150, Not In Game or Broken
+ypos += 25
+Gui, 4:Add, Text, x15 y%ypos% w155, Reserved Mana Percent
+Gui, 4:Add, Edit, Disabled vReservedManaPercentvar  x140 y%ypos% w150, Not In Game or Broken
+ypos += 25
+Gui, 4:Add, Text, x15 y%ypos% w155, Max Energy Shield
+Gui, 4:Add, Edit, Disabled vMaxEShieldvar  x140 y%ypos% w150, Not In Game or Broken
+ypos += 25
+Gui, 4:Add, Text, x15 y%ypos% w155, Current Energy Shield
+Gui, 4:Add, Edit, Disabled vCurrEShieldvar  x140 y%ypos% w150, Not In Game or Broken
+ypos += 25
+Gui, 4:Add, Text, x15 y%ypos% w155, Player Action ID
+Gui, 4:Add, Edit, Disabled vPlayerActionIDvar  x140 y%ypos% w150, Not In Game or Broken
+ypos += 35
+
+Gui, 4:Add, GroupBox, x5 y%ypos% w300 h340 , Checks
+ypos += 25
+Gui, 4:Add, Text, x15 y%ypos% w155, Chat Status
+Gui, 4:Add, Edit, Disabled vChatStatusvar  x140 y%ypos% w150, Not In Game or Broken
+ypos += 25
+Gui, 4:Add, Text, x15 y%ypos% w155, Mouse On Enemy
+Gui, 4:Add, Edit, Disabled vMouseOnEnemyStatusvar  x140 y%ypos% w150, Not In Game or Broken
+ypos += 25
+Gui, 4:Add, Text, x15 y%ypos% w155, Panel Waypoint
+Gui, 4:Add, Edit, Disabled vPanelWaypointvar  x140 y%ypos% w150, Not In Game or Broken
+ypos += 25
+Gui, 4:Add, Text, x15 y%ypos% w155, Panel Inventory
+Gui, 4:Add, Edit, Disabled vPanelInventoryvar  x140 y%ypos% w150, Not In Game or Broken
+ypos += 25
+Gui, 4:Add, Text, x15 y%ypos% w155, Panel Skill Tree
+Gui, 4:Add, Edit, Disabled vPanelSkillTreevar  x140 y%ypos% w150, Not In Game or Broken
+ypos += 25
+Gui, 4:Add, Text, x15 y%ypos% w155, Panel Social
+Gui, 4:Add, Edit, Disabled vPanelSocialvar  x140 y%ypos% w150, Not In Game or Broken
+ypos += 25
+Gui, 4:Add, Text, x15 y%ypos% w155, Panel Instance Manager
+Gui, 4:Add, Edit, Disabled vPanelInstanceManagervar  x140 y%ypos% w150, Not In Game or Broken
+ypos += 25
+Gui, 4:Add, Text, x15 y%ypos% w155, In City
+Gui, 4:Add, Edit, Disabled vInCityvar  x140 y%ypos% w150, Not In Game or Broken
+ypos += 25
+Gui, 4:Add, Text, x15 y%ypos% w155, Enemy Name
+Gui, 4:Add, Edit, Disabled vEnemyNamevar  x140 y%ypos% w150, Not In Game or Broken
+ypos += 25
+Gui, 4:Add, Text, x15 y%ypos% w155, Enemy Name 2
+Gui, 4:Add, Edit, Disabled vEnemyName2var  x140 y%ypos% w150, Not In Game or Broken
+ypos += 25
+Gui, 4:Add, Text, x15 y%ypos% w155, Map Name
+Gui, 4:Add, Edit, Disabled vMapNamevar  x140 y%ypos% w150, Not In Game or Broken
+
+Gui, 4:Add, GroupBox, x305 y0 w300 h650 , Flasks Data
+ypos := 25
+Loop, 5
+{
+   Gui, 4:Add, Text, x315 y%ypos% w155, Flask %A_Index% Type
+   Gui, 4:Add, Edit, Disabled vFlask%A_Index%Typevar  x440 y%ypos% w150, Not In Game or Broken
+   ypos += 25
+   Gui, 4:Add, Text, x315 y%ypos% w155, Flask %A_Index% Charges Current
+   Gui, 4:Add, Edit, Disabled vFlask%A_Index%ChargesCurrentvar  x440 y%ypos% w150, Not In Game or Broken
+   ypos += 25
+   Gui, 4:Add, Text, x315 y%ypos% w155, Flask %A_Index% Charges Per Use
+   Gui, 4:Add, Edit, Disabled vFlask%A_Index%ChargesPerUsevar  x440 y%ypos% w150, Not In Game or Broken
+   ypos += 25
+   Gui, 4:Add, Text, x315 y%ypos% w155, Flask %A_Index% Mod 1
+   Gui, 4:Add, Edit, Disabled vFlask%A_Index%Mod1var  x440 y%ypos% w150, Not In Game or Broken
+   ypos += 25
+   Gui, 4:Add, Text, x315 y%ypos% w155, Flask %A_Index% Mod 2
+   Gui, 4:Add, Edit, Disabled vFlask%A_Index%Mod2var  x440 y%ypos% w150, Not In Game or Broken
+   ypos += 25
+}
+
+Gui, 4:Add, GroupBox, x605 y0 w300 h650 , Buff Data
+ypos := 25
+Gui, 4:Add, Text, x615 y%ypos% w155, Buff Amount
+Gui, 4:Add, Edit, Disabled vBuffAmountvar  x740 y%ypos% w150, Not In Game or Broken
+ypos += 25
+Loop, 8
+{
+   Gui, 4:Add, Text, x615 y%ypos% w155, Buff %A_Index% Name
+   Gui, 4:Add, Edit, Disabled vBuff%A_Index%Namevar  x740 y%ypos% w150, Not In Game or Broken
+   ypos += 25
+   Gui, 4:Add, Text, x615 y%ypos% w155, Buff %A_Index% Charges
+   Gui, 4:Add, Edit, Disabled vBuff%A_Index%Chargesvar  x740 y%ypos% w150, Not In Game or Broken
+   ypos += 25
+   Gui, 4:Add, Text, x615 y%ypos% w155, Buff %A_Index% Timer
+   Gui, 4:Add, Edit, Disabled vBuff%A_Index%Timervar  x740 y%ypos% w150, Not In Game or Broken
+   ypos += 25
+}
+
+;---------------------DEBUG WINDOW----------------------------
 ;-------GUI-----------------GUI-----------------GUI-----------------GUI-----------------GUI----------
 
 ;-------START VARIABLES-----------------START VARIABLES-----------------START VARIABLES--------------
@@ -585,7 +705,7 @@ autoQuitSoftToleranceBeforeKill:=2000 ; try to quit to loginscreen at most milli
 
 PlayerConfig:={}
 
-PlayerConfig["Default"]:={RemCorruptedBloodCharges:RemoveCorruptedBloodCharges,RemAilmentsTimer:RemoveAilmentsTimer,QuickSilverTimer:QuickSilverMovementTimer*100, minLifeRatioToInstant: minLifePercentToSpam/100, IFlaskDelay: InstantFlaskDelay,minLifeRatioToDrink: minLifePercentToDrink/100, minManaRatioToDrink: minManaPercentToDrink/100, minManaToDrink: minManaToDrinkPot, minLifeRatioToPopElementalResist: minLifePercentToElementalResist/100,minLifeRatioToPopJade: minLifePercentToJade/100, minLifeRatioToQuit: minLifePercentToQuit/100,maxLifeRatioPerHitToQuit: maxLifePercentPerHitToQuit/100,maxNShieldRatioPerHitToQuit: maxESPercentPerHitToQuit/100,minNShieldRatioToQuit: minESPercentToQuit/100, minNShieldRatioToPopElementalResist: minESPercentToElementalResist/100, minNShieldRatioToPopJade: minESPercentToJade/100}
+PlayerConfig["Default"]:={RemCorruptedBloodCharges:RemoveCorruptedBloodCharges,RemAilmentsTimer:RemoveAilmentsTimer,QuickSilverTimer:QuickSilverMovementTimer*100, minLifeRatioToInstant: minLifePercentToSpam/100, IFlaskDelay: InstantFlaskDelay,minLifeRatioToDrink: minLifePercentToDrink/100, minManaRatioToDrink: minManaPercentToDrink/100, minManaToDrink: minManaToDrinkPot, minLifeRatioToPopElementalResist: minLifePercentToElementalResist/100,minLifeRatioToPopJade: minLifePercentToJade/100, minLifeRatioToQuit: minLifePercentToQuit/100,maxLifeRatioPerHitToQuit: maxLifePercentPerHitToQuit/100,maxEShieldRatioPerHitToQuit: maxESPercentPerHitToQuit/100,minEShieldRatioToQuit: minESPercentToQuit/100, minEShieldRatioToPopElementalResist: minESPercentToElementalResist/100, minEShieldRatioToPopJade: minESPercentToJade/100}
 
 PlayerConfig["Default"].FlaskConfig:=[]
 
@@ -814,8 +934,8 @@ ReadPlayerStats(hwnd, byRef PlayerStats)
 	PlayerStats.ReservedManaFlat:=ReadMemUInt(pH,PlayerStatsOffset+0x80)
 	PlayerStats.ReservedManaPercent:=ReadMemUInt(pH,PlayerStatsOffset+0x84)
 	PlayerStats.CurrMana:=ReadMemUInt(pH,PlayerStatsOffset+0x78)
-	PlayerStats.MaxNShield:=ReadMemUInt(pH,PlayerStatsOffset+0x98)
-	PlayerStats.CurrNShield:=ReadMemUInt(pH,PlayerStatsOffset+0x9C)
+	PlayerStats.MaxEShield:=ReadMemUInt(pH,PlayerStatsOffset+0x98)
+	PlayerStats.CurrEShield:=ReadMemUInt(pH,PlayerStatsOffset+0x9C)
 	PlayerActionIDOffset:=ReadMemUInt(pH,PlayerMain+0x1C)
 	PlayerActionID:=ReadMemUInt(pH,PlayerActionIDOffset+0x9C)
 	SetFormat, IntegerFast, hex
@@ -847,11 +967,13 @@ ReadPlayerStats(hwnd, byRef PlayerStats)
 		CheckBase:=GetMultilevelPointer(pH,[fBase+0x154,0x220])
 	}
 	else
-	CheckBase:=GetMultilevelPointer(pH,[fBase+0x13c,0x220])
+   {
+      CheckBase:=GetMultilevelPointer(pH,[fBase+0x13c,0x220])
+   }
 	ChatStatusOffset:=GetMultilevelPointer(pH,[CheckBase+0xd8,0x808,0x0])
 	PlayerStats.ChatStatus:=ReadMemUInt(pH,ChatStatusOffset+0x860)
-	MouseOnMonsterOffset:=ReadMemUInt(pH,CheckBase+0x184)
-	PlayerStats.MouseOnMonsterStatus:=ReadMemUInt(pH,MouseOnMonsterOffset+0x860)
+	MouseOnEnemyOffset:=ReadMemUInt(pH,CheckBase+0x184)
+	PlayerStats.MouseOnEnemyStatus:=ReadMemUInt(pH,MouseOnEnemyOffset+0x860)
 
 	PanelWaypointOffset:=ReadMemUInt(pH,CheckBase+0x118)
 	PlayerStats.PanelWaypoint:=ReadMemUInt(pH,PanelWaypointOffset+0x860)
@@ -861,15 +983,28 @@ ReadPlayerStats(hwnd, byRef PlayerStats)
 	PlayerStats.PanelSkillTree:=ReadMemUInt(pH,PanelSkillTreeOffset+0x860)
 	PanelSocialOffset:=ReadMemUInt(pH,CheckBase+0x104)
 	PlayerStats.PanelSocial:=ReadMemUInt(pH,PanelSocialOffset+0x860)
+   PanelInstanceManagerOffset:=ReadMemUInt(pH,CheckBase+0x19c)  ;added by immor
+   PlayerStats.PanelInstanceManager:=ReadMemUInt(pH,PanelInstanceManagerOffset+0x860) ;added by immor
 
 	InCityOffset:=GetMultilevelPointer(pH,[CheckBase+0x11C,0x788,0x200])
 	PlayerStats.InCity:=ReadMemUInt(pH,InCityOffset+0x860)
-	EntityNamePtr:=GetMultilevelPointer(ph,[CheckBase+0x184,0x978,0xC14])
-	EntityName:=ReadMemStr(ph,EntityNamePtr,70,"UTF-16")
-	PlayerStats.EntityName:=EntityName
-	EntityNamePtr2:=GetMultilevelPointer(ph,[CheckBase+0x184,0x978,0xB94])
-	EntityName2:=ReadMemStr(ph,EntityNamePtr2+0x32,70,"UTF-16")
-	PlayerStats.EntityName2:=EntityName2
+	EnemyNamePtr:=GetMultilevelPointer(ph,[CheckBase+0x184,0x978,0xC14])
+	EnemyName:=ReadMemStr(ph,EnemyNamePtr,70,"UTF-16")
+	PlayerStats.EnemyName:=EnemyName
+	EnemyNamePtr2:=GetMultilevelPointer(ph,[CheckBase+0x184,0x978,0xB94])
+	EnemyName2:=ReadMemStr(ph,EnemyNamePtr2+0x32,70,"UTF-16")
+	PlayerStats.EnemyName2:=EnemyName2
+
+   if (Steam)
+   {
+      MapNameOffset:=GetMultilevelPointer(pH,[fBase+0x150,0x8,0x4])
+   }
+   else
+   {
+      MapNameOffset:=GetMultilevelPointer(pH,[fBase+0x138,0x8,0x4])
+   }
+   MapName:=ReadMemStr(ph,MapNameOffset,100,"UTF-16")
+   PlayerStats.MapName:=MapName
 }
 
 ReadFlasksData(hwnd, byRef FlasksData)
@@ -1317,6 +1452,9 @@ Main()
    global LifeRegenCheck
    global ManaRegenCheck2
    global LifeRegenCheck2
+   global HoldCtrlCheck
+   global CtrlkeyDown
+   global AttackInPlaceKeyDown
 
 	WinGet, WinID, List, %cliname%
 
@@ -1377,7 +1515,7 @@ Main()
 					vk += 0
 					vk .= ""
 					SetFormat, IntegerFast, d
-					FlaskHotkey%A_Index%={vk%vk% Down vk%vk% UP}
+					FlaskHotkey%A_Index%={vk%vk%}
 					If (A_Index=1)
 					{
 						IniRead, AttackInPlaceKey, %ConfigPath%, ACTION_KEYS, attack_in_place, %A_Index%
@@ -1397,18 +1535,18 @@ Main()
 			20secsTimer:=A_TickCount
 		}
       
-		if PlayerStats.MaxNShield>0
+		if PlayerStats.MaxEShield>0
 		{
-			currNShieldRatio:=PlayerStats.CurrNShield/PlayerStats.MaxNShield
-			LastNShieldRatio:=LastES/PlayerStats.MaxNShield
-			If (LastMaxES!=PlayerStats.MaxNShield)
+			currEShieldRatio:=PlayerStats.CurrEShield/PlayerStats.MaxEShield
+			LastEShieldRatio:=LastES/PlayerStats.MaxEShield
+			If (LastMaxES!=PlayerStats.MaxEShield)
 			{
-				LastNShieldRatio:=0
+				LastEShieldRatio:=0
 			}
 		}
 		else 
 		{
-			currNShieldRatio:= 1
+			currEShieldRatio:= 1
 		}
 
 		if (PlayerStats.MaxHP>1)
@@ -1431,7 +1569,7 @@ Main()
 			currManaRatio:=PlayerStats.CurrMana/(PlayerStats.MaxMana-PlayerStats.ReservedManaFlat-PlayerStats.MaxMana*PlayerStats.ReservedManaPercent/100)
 		}
       
-		if (currLifeRatio<CurrentConfig.minLifeRatioToQuit || currNShieldRatio<CurrentConfig.minNShieldRatioToQuit || (currLifeRatio<LastLifeRatio And ((LastLifeRatio-currLifeRatio)>CurrentConfig.maxLifeRatioPerHitToQuit) And (CurrentConfig.maxLifeRatioPerHitToQuit<1 And CurrentConfig.maxLifeRatioPerHitToQuit>0)) || (CurrentConfig.maxNShieldRatioPerHitToQuit>0 And currNShieldRatio<LastNShieldRatio And ((LastNShieldRatio-currNShieldRatio)>CurrentConfig.maxNShieldRatioPerHitToQuit)))
+		if (currLifeRatio<CurrentConfig.minLifeRatioToQuit || currEShieldRatio<CurrentConfig.minEShieldRatioToQuit || (currLifeRatio<LastLifeRatio And ((LastLifeRatio-currLifeRatio)>CurrentConfig.maxLifeRatioPerHitToQuit) And (CurrentConfig.maxLifeRatioPerHitToQuit<1 And CurrentConfig.maxLifeRatioPerHitToQuit>0)) || (CurrentConfig.maxEShieldRatioPerHitToQuit>0 And currEShieldRatio<LastEShieldRatio And ((LastEShieldRatio-currEShieldRatio)>CurrentConfig.maxEShieldRatioPerHitToQuit)))
 		{
 			if (autoQuitMode=0)
 			{
@@ -1463,9 +1601,9 @@ Main()
 		if (PlayerStats.CurrHP>0)
 		{
 			LastHP:=PlayerStats.CurrHP
-			LastES:=PlayerStats.CurrNShield
+			LastES:=PlayerStats.CurrEShield
 			LastMaxHP:=PlayerStats.MaxHP
-			LastMaxES:=PlayerStats.MaxNShield
+			LastMaxES:=PlayerStats.MaxEShield
 		}
 		Else
 		{
@@ -1518,6 +1656,7 @@ Main()
 
       LifeRegenCheck2:=0
       ManaRegenCheck2:=0
+      LeavingArea:=0
 
       loop, %BuffAmount%
 		{
@@ -1556,7 +1695,14 @@ Main()
 								TrayTip, PoE AutoFlask Using "of Heat" flask %flaskNum%, %A_Space% , 2
 							}
 							hKey:=FlaskHotkey%flaskNum%
-							ControlSend,,%hkey%, % "ahk_id" hwnd
+							IfWinActive Path of Exile ahk_class Direct3DWindowClass
+                     {
+                        Sendinput %hkey%
+                     } 
+                     Else
+                     {
+                        ControlSend,,%hkey%, % "ahk_id" hwnd
+                     }
 						}
 					}
 				}
@@ -1579,7 +1725,14 @@ Main()
 								TrayTip, PoE AutoFlask Using "of Grounding" flask %flaskNum%, %A_Space% , 2
 							}
 							hKey:=FlaskHotkey%flaskNum%
-							ControlSend,,%hkey%, % "ahk_id" hwnd
+							IfWinActive Path of Exile ahk_class Direct3DWindowClass
+                     {
+                        Sendinput %hkey%
+                     } 
+                     Else
+                     {
+                        ControlSend,,%hkey%, % "ahk_id" hwnd
+                     }
 						}
 					}
 				}
@@ -1602,7 +1755,14 @@ Main()
 								TrayTip, PoE AutoFlask Using "of Dousing" flask %flaskNum%, %A_Space% , 2
 							}
 							hKey:=FlaskHotkey%flaskNum%
-							ControlSend,,%hkey%, % "ahk_id" hwnd
+							IfWinActive Path of Exile ahk_class Direct3DWindowClass
+                     {
+                        Sendinput %hkey%
+                     } 
+                     Else
+                     {
+                        ControlSend,,%hkey%, % "ahk_id" hwnd
+                     }
 						}
 					}
 				}
@@ -1625,7 +1785,14 @@ Main()
                         TrayTip, PoE AutoFlask Using "of Warding" flask %flaskNum%, %A_Space% , 2
                      }
                      hKey:=FlaskHotkey%flaskNum%
-                     ControlSend,,%hkey%, % "ahk_id" hwnd
+                     IfWinActive Path of Exile ahk_class Direct3DWindowClass
+                     {
+                        Sendinput %hkey%
+                     } 
+                     Else
+                     {
+                        ControlSend,,%hkey%, % "ahk_id" hwnd
+                     }
                   }
                }
             }
@@ -1649,7 +1816,14 @@ Main()
                         TrayTip, PoE AutoFlask Using "of Staunching" flask %flaskNum%, %A_Space% , 2
                      }
                      hKey:=FlaskHotkey%flaskNum%
-                     ControlSend,,%hkey%, % "ahk_id" hwnd
+                     IfWinActive Path of Exile ahk_class Direct3DWindowClass
+                     {
+                        Sendinput %hkey%
+                     } 
+                     Else
+                     {
+                        ControlSend,,%hkey%, % "ahk_id" hwnd
+                     }
                   }
                }
             }
@@ -1669,6 +1843,13 @@ Main()
             LifeRegenCheck2:=1
             continue
          }
+
+         else if InStr(playerstats.BuffName[A_Index], "leaving_area_protection")
+         {
+            LeavingArea:=1
+            continue
+         }
+         
 
 			/* ;Others
 			else if InStr(playerstats.BuffName[A_Index], "chilled")
@@ -1759,7 +1940,14 @@ Main()
 						TrayTip, PoE AutoFlask Using HP flask %flaskNum%, %A_Space% , 2
 					}
 					hKey:=FlaskHotkey%flaskNum%
-					ControlSend,,%hkey%, % "ahk_id" hwnd
+					IfWinActive Path of Exile ahk_class Direct3DWindowClass
+               {
+                  Sendinput %hkey%
+               } 
+               Else
+               {
+                  ControlSend,,%hkey%, % "ahk_id" hwnd
+               }
 					Break
 				}
 			}
@@ -1783,13 +1971,20 @@ Main()
 						TrayTip, PoE AutoFlask Using HP Flask %flaskNum%, %A_Space% , 2
 					}
 					hKey:=FlaskHotkey%flaskNum%
-					ControlSend,,%hkey%, % "ahk_id" hwnd
+					IfWinActive Path of Exile ahk_class Direct3DWindowClass
+               {
+                  Sendinput %hkey%
+               } 
+               Else
+               {
+                  ControlSend,,%hkey%, % "ahk_id" hwnd
+               }
 					break
 				}
 			}
 		}
 
-		if (currLifeRatio<CurrentConfig.minLifeRatioToPopJade || currNShieldRatio<CurrentConfig.minNShieldRatioToPopJade)
+		if (currLifeRatio<CurrentConfig.minLifeRatioToPopJade || currEShieldRatio<CurrentConfig.minEShieldRatioToPopJade)
 		{
 			if ((!WindowQueuedFlaskEffects[k].HasKey("jadeQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].jadeQueueEndtime-lagCompensation)))
 			{
@@ -1803,7 +1998,14 @@ Main()
 				      TrayTip, PoE AutoFlask Using Jade Flask %flaskNum%, %A_Space% , 2
 				   }
 				   hKey:=FlaskHotkey%flaskNum%
-				   ControlSend,,%hkey%, % "ahk_id" hwnd
+				   IfWinActive Path of Exile ahk_class Direct3DWindowClass
+               {
+                  Sendinput %hkey%
+               } 
+               Else
+               {
+                  ControlSend,,%hkey%, % "ahk_id" hwnd
+               }
 				   break
 				}
 			}
@@ -1819,13 +2021,20 @@ Main()
 						TrayTip, PoE AutoFlask Using Granite Flask %flaskNum%, %A_Space% , 2
 					}
 					hKey:=FlaskHotkey%flaskNum%
-					ControlSend,,%hkey%, % "ahk_id" hwnd
+					IfWinActive Path of Exile ahk_class Direct3DWindowClass
+               {
+                  Sendinput %hkey%
+               } 
+               Else
+               {
+                  ControlSend,,%hkey%, % "ahk_id" hwnd
+               }
 					break
 				}
 			}
 		}
 
-		if (currLifeRatio<CurrentConfig.minLifeRatioToPopElementalResist || currNShieldRatio<CurrentConfig.minNShieldRatioToPopElementalResist)
+		if (currLifeRatio<CurrentConfig.minLifeRatioToPopElementalResist || currEShieldRatio<CurrentConfig.minEShieldRatioToPopElementalResist)
 		{
 			if ((!WindowQueuedFlaskEffects[k].HasKey("RubyQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].RubyQueueEndtime-lagCompensation)))
 			{
@@ -1839,7 +2048,14 @@ Main()
 						TrayTip, PoE AutoFlask Using Ruby Flask %flaskNum%, %A_Space% , 2
 					}
 					hKey:=FlaskHotkey%flaskNum%
-					ControlSend,,%hkey%, % "ahk_id" hwnd
+					IfWinActive Path of Exile ahk_class Direct3DWindowClass
+               {
+                  Sendinput %hkey%
+               } 
+               Else
+               {
+                  ControlSend,,%hkey%, % "ahk_id" hwnd
+               }
 					break
 				}
 			}
@@ -1856,7 +2072,14 @@ Main()
 						TrayTip, PoE AutoFlask Using Topaz Flask %flaskNum%, %A_Space% , 2
 					}
 					hKey:=FlaskHotkey%flaskNum%
-					ControlSend,,%hkey%, % "ahk_id" hwnd
+					IfWinActive Path of Exile ahk_class Direct3DWindowClass
+               {
+                  Sendinput %hkey%
+               } 
+               Else
+               {
+                  ControlSend,,%hkey%, % "ahk_id" hwnd
+               }
 					break
 				}
 			}
@@ -1873,7 +2096,14 @@ Main()
 						TrayTip, PoE AutoFlask Using Sapphire flask %flaskNum%, %A_Space% , 2
 					}
 					hKey:=FlaskHotkey%flaskNum%
-					ControlSend,,%hkey%, % "ahk_id" hwnd
+					IfWinActive Path of Exile ahk_class Direct3DWindowClass
+               {
+                  Sendinput %hkey%
+               } 
+               Else
+               {
+                  ControlSend,,%hkey%, % "ahk_id" hwnd
+               }
 					break
 				}
 			}
@@ -1890,7 +2120,14 @@ Main()
 						TrayTip, PoE AutoFlask Using Amethyst Flask %flaskNum%, %A_Space% , 2
 					}
 					hKey:=FlaskHotkey%flaskNum%
-					ControlSend,,%hkey%, % "ahk_id" hwnd
+					IfWinActive Path of Exile ahk_class Direct3DWindowClass
+               {
+                  Sendinput %hkey%
+               } 
+               Else
+               {
+                  ControlSend,,%hkey%, % "ahk_id" hwnd
+               }
 					break
 				}
 			}
@@ -1947,7 +2184,14 @@ Main()
 						TrayTip, PoE AutoFlask Using Mana Flask %flaskNum%, %A_Space% , 2
 					}
 					hKey:=FlaskHotkey%flaskNum%
-					ControlSend,,%hkey%, % "ahk_id" hwnd
+					IfWinActive Path of Exile ahk_class Direct3DWindowClass
+               {
+                  Sendinput %hkey%
+               } 
+               Else
+               {
+                  ControlSend,,%hkey%, % "ahk_id" hwnd
+               }
 					Break
 				}
 			}
@@ -1983,7 +2227,14 @@ Main()
 											TrayTip, PoE AutoFlask Using QuickSilver Flask %flaskNum%, %A_Space% , 2
 										}
 										hKey:=FlaskHotkey%flaskNum%
-										ControlSend,,%hkey%, % "ahk_id" hwnd
+										IfWinActive Path of Exile ahk_class Direct3DWindowClass
+                              {
+                                 Sendinput %hkey%
+                              } 
+                              Else
+                              {
+                                 ControlSend,,%hkey%, % "ahk_id" hwnd
+                              }
 										break
 									}
 								}
@@ -2018,7 +2269,14 @@ Main()
 											TrayTip, PoE AutoFlask Using QuickSilver flask %flaskNum%, %A_Space% , 2
 										}
 										hKey:=FlaskHotkey%flaskNum%
-										ControlSend,,%hkey%, % "ahk_id" hwnd
+										IfWinActive Path of Exile ahk_class Direct3DWindowClass
+                              {
+                                 Sendinput %hkey%
+                              } 
+                              Else
+                              {
+                                 ControlSend,,%hkey%, % "ahk_id" hwnd
+                              }
 										break
 									}
 								}
@@ -2037,15 +2295,15 @@ Main()
 				{
 					if (PlayerStats.PanelWaypoint=65536 && PlayerStats.PanelInventory=65536 && PlayerStats.PanelSkillTree=65536 && PlayerStats.PanelSocial=65536)
 					{
-						if (PlayerStats.MouseOnMonsterStatus!="" && PlayerStats.MouseOnMonsterStatus=65537)
+						if (PlayerStats.MouseOnEnemyStatus!="" && PlayerStats.MouseOnEnemyStatus=65537)
 						{
 							if (PlayerStats.ChatStatus!="" && PlayerStats.ChatStatus=65536)
 							{
-								if (PlayerStats.EntityName!="")
+								if (PlayerStats.EnemyName!="")
 								{
-									if (PlayerStats.EntityName2!="Oak}" && PlayerStats.EntityName2!="Alira}" && PlayerStats.EntityName2!="Kraityn}")
+									if (PlayerStats.EnemyName2!="Oak}" && PlayerStats.EnemyName2!="Alira}" && PlayerStats.EnemyName2!="Kraityn}")
 									{
-										If (InStr(PlayerStats.EntityName2,"Shrine") || InStr(PlayerStats.EntityName2,"Level"))
+										If (InStr(PlayerStats.EnemyName2,"Shrine") || InStr(PlayerStats.EnemyName2,"Level"))
 										{
 											AttackInPlaceKeyUp:=1
 										}
@@ -2053,8 +2311,13 @@ Main()
 										{
 											IfWinActive Path of Exile ahk_class Direct3DWindowClass
 											{
-												Sendinput, {%AttackInPlaceKey% DOWN}
-												AttackInPlaceKeyUp:=0
+                                    GetKeyState, stateSH, %AttackInPlaceKey%
+                                    if stateRCtrl = U
+                                    {
+   												Sendinput, {%AttackInPlaceKey% DOWN}
+   												AttackInPlaceKeyUp:=0
+                                       AttackInPlaceKeyDown:=1
+                                    }
 											} 
 											Else
 											{
@@ -2096,16 +2359,81 @@ Main()
 			{
 				AttackInPlaceKeyUp:=1
 			}
-			If AttackInPlaceKeyUp = 1
-		    {
-		       GetKeyState, stateSH, %AttackInPlaceKey%
-		       if stateSH = D
-		       {
-		          Sendinput, {%AttackInPlaceKey% UP}
-		       }
-		       AttackInPlaceKeyUp:=0
-		    }
+			If (AttackInPlaceKeyUp=1 && AttackInPlaceKeyDown=1)
+         {
+            GetKeyState, stateSH, %AttackInPlaceKey%
+            if stateSH = D
+            {
+               Sendinput, {%AttackInPlaceKey% UP}
+            }
+            AttackInPlaceKeyUp:=0
+         }
 		}
+
+      if(HoldCtrlCheck)
+      {
+         if (IsInGame(hwnd))
+         {
+            if (PlayerStats.PanelWaypoint=65537 && PlayerStats.PanelInstanceManager=65536 && PlayerStats.PanelInventory=65536 && PlayerStats.PanelSkillTree=65536 && PlayerStats.PanelSocial=65536)
+            {
+               if (PlayerStats.ChatStatus!="" && PlayerStats.ChatStatus=65536)
+               {
+                  if (LeavingArea=0)
+                  {
+                     IfWinActive Path of Exile ahk_class Direct3DWindowClass
+                     {
+                        GetKeyState, stateRCtrl, RCtrl
+                        if stateRCtrl = U
+                        {
+                           Sendinput, {RCtrl Down}
+                           CtrlKeyUp:=0
+                           CtrlkeyDown:=1
+                           if (trayNotifications)
+                           {
+                              TrayTip, , CTRL key: DOWN, 1
+                           }
+                        }
+                     } 
+                     Else
+                     {
+                        CtrlKeyUp:=1
+                     }
+                  }
+                  Else
+                  {
+                     CtrlKeyUp:=1
+                  }
+               }
+               Else
+               {
+                  CtrlKeyUp:=1
+               }
+            }
+            Else
+            {
+               CtrlKeyUp:=1
+            }
+         }
+         Else
+         {
+            CtrlKeyUp:=1
+         }
+         If (CtrlKeyUp=1 && CtrlkeyDown=1)
+         {
+            GetKeyState, stateRCtrl, RCtrl
+            if stateRCtrl = D
+            {
+               Sendinput, {RCtrl Up}
+               if (trayNotifications)
+               {
+                  TrayTip,, CTRL key: UP, 1
+               }
+               CtrlkeyDown=0
+               CtrlKeyUp:=0
+            }
+         }
+      }
+
 
       
    ;if (PlayerStats.PlayerActionID!="" && PlayerStats.PlayerActionID=2176)  ;2048 not
@@ -2399,7 +2727,183 @@ Main()
             RemainingTimer:= A_TickCount
          }
       }
-    }
+
+      ;--------------Debug Window Update------------------
+
+      IfWinExist, Debug Window
+      {
+         MaxHPvalue:=PlayerStats.MaxHP
+         GuiControl,4: , MaxHPvar , %MaxHPvalue%
+         CurrHPvalue:=PlayerStats.CurrHP
+         GuiControl,4: , CurrHPvar , %CurrHPvalue%
+         ReservedHPFlatvalue:=PlayerStats.ReservedHPFlat
+         GuiControl,4: , ReservedHPFlatvar , %ReservedHPFlatvalue%
+         ReservedHPPercentvalue:=PlayerStats.ReservedHPPercent
+         GuiControl,4: , ReservedHPPercentvar , %ReservedHPPercentvalue%
+         MaxManavalue:=PlayerStats.MaxMana
+         GuiControl,4: , MaxManavar , %MaxManavalue%
+         CurrManavalue:=PlayerStats.CurrMana
+         GuiControl,4: , CurrManavar , %CurrManavalue%
+         ReservedManaFlatvalue:=PlayerStats.ReservedManaFlat
+         GuiControl,4: , ReservedManaFlatvar , %ReservedManaFlatvalue%
+         ReservedManaPercentvalue:=PlayerStats.ReservedManaPercent
+         GuiControl,4: , ReservedManaPercentvar , %ReservedManaPercentvalue%
+         MaxEShieldvalue:=PlayerStats.MaxEShield
+         GuiControl,4: , MaxEShieldvar , %MaxEShieldvalue%
+         CurrEShieldvalue:=PlayerStats.CurrEShield
+         GuiControl,4: , CurrEShieldvar , %CurrEShieldvalue%
+         PlayerActionIDvalue:=PlayerStats.PlayerActionID
+         If (PlayerActionIDvalue=80 || PlayerActionIDvalue=90)
+         {
+            GuiControl,4: , PlayerActionIDvar , %PlayerActionIDvalue% (Moving)
+         }
+         else if (PlayerActionIDvalue=02 || PlayerActionIDvalue=10 || PlayerActionIDvalue=12)
+         {
+            GuiControl,4: , PlayerActionIDvar , %PlayerActionIDvalue% (Attacking)
+         }
+         else if (PlayerActionIDvalue=00)
+         {
+            GuiControl,4: , PlayerActionIDvar , %PlayerActionIDvalue% (Nothing)
+         }
+         else if (PlayerActionIDvalue=40)
+         {
+            GuiControl,4: , PlayerActionIDvar , %PlayerActionIDvalue% (Dead)
+         }
+         else
+         {
+            GuiControl,4: , PlayerActionIDvar , %PlayerActionIDvalue% (Unknown)
+         }
+         ChatStatusvalue:=PlayerStats.ChatStatus
+         if (ChatStatusvalue=65537)
+         {
+            GuiControl,4: , ChatStatusvar , Opened
+         }
+         else if (ChatStatusvalue=65536)
+         {
+            GuiControl,4: , ChatStatusvar , Closed
+         }
+         MouseOnEnemyStatusvalue:=PlayerStats.MouseOnEnemyStatus
+         if (MouseOnEnemyStatusvalue=65537)
+         {
+            GuiControl,4: , MouseOnEnemyStatusvar , Yes
+         }
+         else if (MouseOnEnemyStatusvalue=65536)
+         {
+            GuiControl,4: , MouseOnEnemyStatusvar , No
+         }
+         PanelWaypointvalue:=PlayerStats.PanelWaypoint
+         if (PanelWaypointvalue=65537)
+         {
+            GuiControl,4: , PanelWaypointvar , Opened
+         }
+         else if (PanelWaypointvalue=65536)
+         {
+            GuiControl,4: , PanelWaypointvar , Closed
+         }
+         PanelInventoryvalue:=PlayerStats.PanelInventory
+         if (PanelInventoryvalue=65537)
+         {
+            GuiControl,4: , PanelInventoryvar , Opened
+         }
+         else if (PanelInventoryvalue=65536)
+         {
+            GuiControl,4: , PanelInventoryvar , Closed
+         }
+         PanelSkillTreevalue:=PlayerStats.PanelSkillTree
+         if (PanelSkillTreevalue=65537)
+         {
+            GuiControl,4: , PanelSkillTreevar , Opened
+         }
+         else if (PanelSkillTreevalue=65536)
+         {
+            GuiControl,4: , PanelSkillTreevar , Closed
+         }
+         PanelSocialvalue:=PlayerStats.PanelSocial
+         if (PanelSocialvalue=65537)
+         {
+            GuiControl,4: , PanelSocialvar , Opened
+         }
+         else if (PanelSkillTreevalue=65536)
+         {
+            GuiControl,4: , PanelSocialvar , Closed
+         }
+         InCityvalue:=PlayerStats.InCity
+         if (InCityvalue=65537)
+         {
+            GuiControl,4: , InCityvar , No
+         }
+         else if (InCityvalue=65536)
+         {
+            GuiControl,4: , InCityvar , Yes
+         }
+         PanelInstanceManagervalue:=PlayerStats.PanelInstanceManager
+         if (PanelInstanceManagervalue=65537)
+         {
+            GuiControl,4: , PanelInstanceManagervar , Opened
+         }
+         else if (PanelInstanceManagervalue=65536)
+         {
+            GuiControl,4: , PanelInstanceManagervar , Closed
+         }
+         
+         EnemyNamevalue:=PlayerStats.EnemyName
+         GuiControl,4: , EnemyNamevar , %EnemyNamevalue%
+         EnemyName2value:=PlayerStats.EnemyName2
+         GuiControl,4: , EnemyName2var , %EnemyName2value%
+         MapNamevalue:=PlayerStats.MapName
+         GuiControl,4: , MapNamevar , %MapNamevalue%
+
+         Loop, 5
+         {
+            Flask%A_Index%Typevalue:=FlasksData[A_Index].type
+            value:=Flask%A_Index%Typevalue
+            GuiControl,4: , Flask%A_Index%Typevar , %value%
+
+            Flask%A_Index%ChargesCurrentvalue:=FlasksData[A_Index].ChargesCurrent
+            value:=Flask%A_Index%ChargesCurrentvalue
+            GuiControl,4: , Flask%A_Index%ChargesCurrentvar , %value%
+
+            Flask%A_Index%ChargesPerUsevalue:=FlasksData[A_Index].ChargesPerUse
+            value:=Flask%A_Index%ChargesPerUsevalue
+            GuiControl,4: , Flask%A_Index%ChargesPerUsevar , %value%
+
+            Flask%A_Index%mod1value:=FlasksData[A_Index].mod1
+            value:=Flask%A_Index%mod1value
+            GuiControl,4: , Flask%A_Index%mod1var , %value%
+
+            Flask%A_Index%mod2value:=FlasksData[A_Index].mod2
+            value:=Flask%A_Index%mod2value
+            GuiControl,4: , Flask%A_Index%mod2var , %value%
+         }
+
+         BuffAmountvalue:=round(PlayerStats.BuffAmount)
+         GuiControl,4: , BuffAmountvar , %BuffAmountvalue%
+
+         Loop, 8
+         {
+
+            BuffName%A_Index%value:=PlayerStats.BuffName[A_Index]
+            value:=BuffName%A_Index%value
+            GuiControl,4: , Buff%A_Index%Namevar , %value%
+
+            BuffCharges%A_Index%value:=PlayerStats.BuffCharges[A_Index]
+            value:=BuffCharges%A_Index%value
+            GuiControl,4: , Buff%A_Index%Chargesvar , %value%
+
+            BuffTimer%A_Index%value:=PlayerStats.BuffTimer[A_Index]
+            value:=BuffTimer%A_Index%value
+            If (value="1.#INF00")
+            {
+               GuiControl,4: , Buff%A_Index%Timervar , Infinite
+            }
+            Else
+            {
+               GuiControl,4: , Buff%A_Index%Timervar , %value%
+            }
+         }
+      }
+      ;--------------Debug Window Update------------------
+   }
 
 	Sleep, %AutoFlaskWatchdogPeriod%   
 }
@@ -3018,7 +3522,7 @@ GuiUpdate:
    IniWrite, %InstantFlaskDelay% , Config.ini, Config, InstantFlaskDelay
    IFDelay:= InstantFlaskDelay
 
-   PlayerConfig["Default"]:={RemCorruptedBloodCharges:RemoveCorruptedBloodCharges,RemAilmentsTimer:RemoveAilmentsTimer,QuickSilverTimer:QuickSilverMovementTimer*100, minLifeRatioToInstant: minLifePercentToSpam/100, IFlaskDelay: InstantFlaskDelay,minLifeRatioToDrink: minLifePercentToDrink/100, minManaRatioToDrink: minManaPercentToDrink/100, minManaToDrink: minManaToDrinkPot, minLifeRatioToPopElementalResist: minLifePercentToElementalResist/100,minLifeRatioToPopJade: minLifePercentToJade/100, minLifeRatioToQuit: minLifePercentToQuit/100,maxLifeRatioPerHitToQuit: maxLifePercentPerHitToQuit/100,maxNShieldRatioPerHitToQuit: maxESPercentPerHitToQuit/100,minNShieldRatioToQuit: minESPercentToQuit/100, minNShieldRatioToPopElementalResist: minESPercentToElementalResist/100, minNShieldRatioToPopJade: minESPercentToJade/100}
+   PlayerConfig["Default"]:={RemCorruptedBloodCharges:RemoveCorruptedBloodCharges,RemAilmentsTimer:RemoveAilmentsTimer,QuickSilverTimer:QuickSilverMovementTimer*100, minLifeRatioToInstant: minLifePercentToSpam/100, IFlaskDelay: InstantFlaskDelay,minLifeRatioToDrink: minLifePercentToDrink/100, minManaRatioToDrink: minManaPercentToDrink/100, minManaToDrink: minManaToDrinkPot, minLifeRatioToPopElementalResist: minLifePercentToElementalResist/100,minLifeRatioToPopJade: minLifePercentToJade/100, minLifeRatioToQuit: minLifePercentToQuit/100,maxLifeRatioPerHitToQuit: maxLifePercentPerHitToQuit/100,maxEShieldRatioPerHitToQuit: maxESPercentPerHitToQuit/100,minEShieldRatioToQuit: minESPercentToQuit/100, minEShieldRatioToPopElementalResist: minESPercentToElementalResist/100, minEShieldRatioToPopJade: minESPercentToJade/100}
 
 
 return
@@ -3295,7 +3799,7 @@ ConfigList:
       GuiControl, , RemainingSpamUpdatePercent, s
    }
 
-   PlayerConfig["Default"]:={RemCorruptedBloodCharges:RemoveCorruptedBloodCharges,RemAilmentsTimer:RemoveAilmentsTimer,QuickSilverTimer:QuickSilverMovementTimer*100, minLifeRatioToInstant: minLifePercentToSpam/100, IFlaskDelay: InstantFlaskDelay,minLifeRatioToDrink: minLifePercentToDrink/100, minManaRatioToDrink: minManaPercentToDrink/100, minManaToDrink: minManaToDrinkPot, minLifeRatioToPopElementalResist: minLifePercentToElementalResist/100,minLifeRatioToPopJade: minLifePercentToJade/100, minLifeRatioToQuit: minLifePercentToQuit/100,maxLifeRatioPerHitToQuit: maxLifePercentPerHitToQuit/100,maxNShieldRatioPerHitToQuit: maxESPercentPerHitToQuit/100,minNShieldRatioToQuit: minESPercentToQuit/100, minNShieldRatioToPopElementalResist: minESPercentToElementalResist/100, minNShieldRatioToPopJade: minESPercentToJade/100}
+   PlayerConfig["Default"]:={RemCorruptedBloodCharges:RemoveCorruptedBloodCharges,RemAilmentsTimer:RemoveAilmentsTimer,QuickSilverTimer:QuickSilverMovementTimer*100, minLifeRatioToInstant: minLifePercentToSpam/100, IFlaskDelay: InstantFlaskDelay,minLifeRatioToDrink: minLifePercentToDrink/100, minManaRatioToDrink: minManaPercentToDrink/100, minManaToDrink: minManaToDrinkPot, minLifeRatioToPopElementalResist: minLifePercentToElementalResist/100,minLifeRatioToPopJade: minLifePercentToJade/100, minLifeRatioToQuit: minLifePercentToQuit/100,maxLifeRatioPerHitToQuit: maxLifePercentPerHitToQuit/100,maxEShieldRatioPerHitToQuit: maxESPercentPerHitToQuit/100,minEShieldRatioToQuit: minESPercentToQuit/100, minEShieldRatioToPopElementalResist: minESPercentToElementalResist/100, minEShieldRatioToPopJade: minESPercentToJade/100}
    
 return
 
@@ -3434,6 +3938,21 @@ AttackInPlaceCheck:
    IniWrite, %AttackInPlaceCheck% , Config.ini, Config, AttackInPlaceCheck
 return
 
+HoldCtrlCheck:
+   Gui, Submit, NoHide
+   If HoldCtrlCheckBox = 0
+   {
+      HoldCtrlCheck = 0
+      IniWrite, 0 , Config.ini, Config, HoldCtrlCheck
+   }
+   If HoldCtrlCheckBox = 1
+   {
+      HoldCtrlCheck = 1
+      IniWrite, 1 , Config.ini, Config, HoldCtrlCheck
+   }
+   IniWrite, %HoldCtrlCheck% , Config.ini, Config, HoldCtrlCheck
+return
+
 
 DPSCheck:
    Gui, Submit, NoHide
@@ -3460,6 +3979,12 @@ showgui2:
 
    ; Enable defined hotkeys
    EnableHotkeys()
+Return
+
+showgui4:
+   
+   Gui, 4:Show,,Debug Window
+
 Return
 
 DisableSlot:
