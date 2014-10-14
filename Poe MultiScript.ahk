@@ -15,15 +15,15 @@ If LastTab = AutoFlask
 {
    Gui,Add,Tab2, x0 y0 w474 h595 gTabFunc vTabChoice,AutoFlask||AutoQuit|Others|Settings|
 }
-else If LastTab = AutoQuit
+Else If LastTab = AutoQuit
 {
    Gui,Add,Tab2, x0 y0 w474 h595 gTabFunc vTabChoice,AutoFlask|AutoQuit||Others|Settings|
 }
-else If LastTab = Others
+Else If LastTab = Others
 {
    Gui,Add,Tab2, x0 y0 w474 h595 gTabFunc vTabChoice,AutoFlask|AutoQuit|Others||Settings|
 }
-else If LastTab = Settings
+Else If LastTab = Settings
 {
    Gui,Add,Tab2, x0 y0 w474 h595 gTabFunc vTabChoice,AutoFlask|AutoQuit|Others|Settings||
 }
@@ -38,19 +38,19 @@ If ConfigNumber = 1
 {
    Gui, Add, DropDownList, x22 y130 w200 h21 AltSubmit gConfigList vConfigChoice R5 , Profile 1||Profile 2|Profile 3|Profile 4|Profile 5
 }
-else If ConfigNumber = 2
+Else If ConfigNumber = 2
 {
    Gui, Add, DropDownList, x22 y130 w200 h21 AltSubmit gConfigList vConfigChoice R5 , Profile 1|Profile 2||Profile 3|Profile 4|Profile 5
 }
-else If ConfigNumber = 3
+Else If ConfigNumber = 3
 {
    Gui, Add, DropDownList, x22 y130 w200 h21 AltSubmit gConfigList vConfigChoice R5 , Profile 1|Profile 2|Profile 3||Profile 4|Profile 5
 }
-else If ConfigNumber = 4
+Else If ConfigNumber = 4
 {
    Gui, Add, DropDownList, x22 y130 w200 h21 AltSubmit gConfigList vConfigChoice R5 , Profile 1|Profile 2|Profile 3|Profile 4||Profile 5
 }
-else If ConfigNumber = 5
+Else If ConfigNumber = 5
 {
    Gui, Add, DropDownList, x22 y130 w200 h21 AltSubmit gConfigList vConfigChoice R5 , Profile 1|Profile 2|Profile 3|Profile 4|Profile 5||
 }
@@ -146,12 +146,12 @@ Gui, Add, Slider, x252 y200 w170 h30 Range0-50 gGuiUpdate vInstantFlaskDelay +To
 Gui, Add, Text, x422 y200 w25 h30 vInstantFlaskDelayUpdate, % Round(InstantFlaskDelay/100,2)
 Gui, Add, Text, x447 y200 w10 h30 vInstantFlaskDelayUpdatePercent, s
 
-Gui, Add, GroupBox, x12 y390 w220 h60 , Only QuickSilver if Moving for X Seconds
+Gui, Add, GroupBox, x12 y390 w220 h60 , Only QuickSilver If Moving for X Seconds
 Gui, Add, Slider, x22 y410 w170 h30 Range0-100 gGuiUpdate vQuickSilverMovementTimer +ToolTip TickInterval20, %QuickSilverMovementTimer%
 Gui, Add, Text, x192 y410 w22 h30 vQuickSilverMovementTimerUpdate, % Round(QuickSilverMovementTimer/10,1)
 Gui, Add, Text, x214 y410 w10 h30 , s
 
-Gui, Add, GroupBox, x12 y460 w220 h60 , Only Remove Ailments if They Are Over
+Gui, Add, GroupBox, x12 y460 w220 h60 , Only Remove Ailments If They Are Over
 Gui, Add, Slider, x22 y480 w170 h30 Range0-50 gGuiUpdate vRemoveAilmentsTimer +ToolTip TickInterval10, %RemoveAilmentsTimer%
 Gui, Add, Text, x192 y480 w22 h30 vRemoveAilmentsTimerUpdate, % Round(RemoveAilmentsTimer/10,1)
 Gui, Add, Text, x214 y480 w10 h30 , s
@@ -247,17 +247,17 @@ If AutoQuitMethod = 1
    Gui, Add, DropDownList, x22 y200 w200 h21 AltSubmit gAutoQuitList vAutoQuitChoice R5, Exit to Login Screen||Alt+F4 (Fastest according to Chris)|Use a Portal (On Testing)|Disabled
    autoQuitMode:=1
 }
-else If AutoQuitMethod = 2
+Else If AutoQuitMethod = 2
 {
    Gui, Add, DropDownList, x22 y200 w200 h21 AltSubmit gAutoQuitList vAutoQuitChoice R5, Exit to Login Screen|Alt+F4 (Fastest according to Chris)||Use a Portal (On Testing)|Disabled
    autoQuitMode:=0
 }
-else If AutoQuitMethod = 3
+Else If AutoQuitMethod = 3
 {
    Gui, Add, DropDownList, x22 y200 w200 h21 AltSubmit gAutoQuitList vAutoQuitChoice R5, Exit to Login Screen|Alt+F4 (Fastest according to Chris)|Use a Portal (On Testing)||Disabled
    autoQuitMode:=3
 }
-else If AutoQuitMethod = 4
+Else If AutoQuitMethod = 4
 {
    Gui, Add, DropDownList, x22 y200 w200 h21 AltSubmit gAutoQuitList vAutoQuitChoice R5, Exit to Login Screen|Alt+F4 (Fastest according to Chris)|Use a Portal (On Testing)|Disabled||
    autoQuitMode:=4
@@ -297,17 +297,17 @@ If DPSCheck = 1
    global DPS:=true
 }
 
-;display tray notifications about script actions : drinking potions, autoquitting
-IniRead, TrayNotificationsCheck , Config.ini, Config, TrayNotificationsCheck, 0
-If TrayNotificationsCheck = 0
+;display tray notIfications about script actions : drinking potions, autoquitting
+IniRead, TrayNotIficationsCheck , Config.ini, Config, TrayNotIficationsCheck, 0
+If TrayNotIficationsCheck = 0
 {
-   Gui, Add, CheckBox, x272 y40 w190 h30 vTrayCheckBox gTrayNotificationsCheck, Disable Tray Notifications
-   global trayNotifications:=true
+   Gui, Add, CheckBox, x272 y40 w190 h30 vTrayCheckBox gTrayNotIficationsCheck, Disable Tray NotIfications
+   global trayNotIfications:=true
 }
-If TrayNotificationsCheck = 1
+If TrayNotIficationsCheck = 1
 {
-   Gui, Add, CheckBox, x272 y40 w190 h30 vTrayCheckBox gTrayNotificationsCheck Checked, Disable Tray Notifications
-   global trayNotifications:=false
+   Gui, Add, CheckBox, x272 y40 w190 h30 vTrayCheckBox gTrayNotIficationsCheck Checked, Disable Tray NotIfications
+   global trayNotIfications:=false
 }
 
 Gui, Add, GroupBox, x12 y40 w220 h60 , Base Pointer
@@ -465,11 +465,11 @@ If (RemainingSpam=0)
 
 Gui, Submit
 
-Gui, Show, x760 y198 h665 w474, PoE MultiScript v10.05.2014
+Gui, Show, x760 y198 h665 w474, PoE MultiScript v10.14.2014
 
 ;---------------------START DYNAMIC HOTKEYS---------------------
 
-;"Wild Mode allows hotkeys to trigger when other modifiers are also held.`nFor example, if you bound Ctrl+C to an action...`nWild Mode ON: Ctrl+Alt+C, Ctrl+Shift+C etc would still trigger the action`nWild Mode OFF: Ctrl+Alt+C etc would not trigger the action."
+;"Wild Mode allows hotkeys to trigger when other modIfiers are also held.`nFor example, If you bound Ctrl+C to an action...`nWild Mode ON: Ctrl+Alt+C, Ctrl+ShIft+C etc would still trigger the action`nWild Mode OFF: Ctrl+Alt+C etc would not trigger the action."
 
 ; Build list of "End Keys" for Input command
 EXTRA_KEY_LIST := "{Escape}"  ; DO NOT REMOVE! - Used to quit binding
@@ -494,10 +494,10 @@ EXTRA_KEY_LIST .= "{Volume_Mute}{Volume_Down}{Volume_Up}{Media_Next}{Media_Prev}
 EXTRA_KEY_LIST .= "{Launch_Mail}{Launch_Media}{Launch_App1}{Launch_App2}"
 
 ; BindMode vars
-HKModifierState := {}   ; The state of the modifiers at the end of the last detection sequence
-HKControlType := 0      ; The kind of control that the last hotkey was. 0 = regular key, 1 = solitary modifier, 2 = mouse, 3 = joystick
-HKSecondaryInput := ""  ; Set to button pressed if the last detected bind was a Mouse button, Joystick button or Solitary Modifier
-HKLastHotkey := 0       ; Time that Escape was pressed to exit key binding. Used to determine if Escape is held (Clear binding)
+HKModIfierState := {}   ; The state of the modIfiers at the end of the last detection sequence
+HKControlType := 0      ; The kind of control that the last hotkey was. 0 = regular key, 1 = solitary modIfier, 2 = mouse, 3 = joystick
+HKSecondaryInput := ""  ; Set to button pressed If the last detected bind was a Mouse button, Joystick button or Solitary ModIfier
+HKLastHotkey := 0       ; Time that Escape was pressed to exit key binding. Used to determine If Escape is held (Clear binding)
 
 DefaultHKObject := {hk: "", type: "", wild: ""}
 
@@ -531,7 +531,7 @@ LoadSettings()
 ; Enable defined hotkeys
 EnableHotkeys()
 
-Menu, Tray, Add, Configure Hotkeys, showgui2                                                      ;Check the box if Win modifier is used.
+Menu, Tray, Add, Configure Hotkeys, showgui2                                                      ;Check the box If Win modIfier is used.
 Gui, 2:Submit, Hide
 
 Menu Tray, NoStandard
@@ -662,7 +662,7 @@ Loop, 8
 SetBatchLines, -1
 DetectHiddenWindows, On
 
-if not A_IsAdmin
+If not A_IsAdmin
 {
    TrayTip, Admin Required, Seems that you are not running this program as Admin`, it might not work properlly., 5
 }
@@ -672,7 +672,7 @@ cliname=Path of Exile
 cliexesteam=PathOfExileSteam.exe
 
 cliexe=PathOfExile.exe
-AutoFlaskWatchdogPeriod:=20 ;milliseconds, time to have script recheck life/mana/flasks availability more often/increase chances of getting saved from death in time, increase this if fps drop.
+AutoFlaskWatchdogPeriod:=20 ;milliseconds, time to have script recheck Life/mana/flasks availability more often/increase chances of getting saved from death in time, increase this If fps drop.
 lagCompensation:=50
 ; Font size for the tooltip, leave empty for default(part of DPSCalc)
 FontSize := 12
@@ -687,7 +687,7 @@ TradeChannel:= 0
 tradechat:= 0
 TradeStep:= 3
 TradeSpamTimer:= 3
-ShiftDownOn:=0
+ShIftDownOn:=0
 ChatCheckTimer:= 1
 10secsTimer:=A_TickCount-10000
 20secsTimer:=A_TickCount-20000
@@ -705,7 +705,7 @@ autoQuitSoftToleranceBeforeKill:=2000 ; try to quit to loginscreen at most milli
 
 PlayerConfig:={}
 
-PlayerConfig["Default"]:={RemCorruptedBloodCharges:RemoveCorruptedBloodCharges,RemAilmentsTimer:RemoveAilmentsTimer,QuickSilverTimer:QuickSilverMovementTimer*100, minLifeRatioToInstant: minLifePercentToSpam/100, IFlaskDelay: InstantFlaskDelay,minLifeRatioToDrink: minLifePercentToDrink/100, minManaRatioToDrink: minManaPercentToDrink/100, minManaToDrink: minManaToDrinkPot, minLifeRatioToPopElementalResist: minLifePercentToElementalResist/100,minLifeRatioToPopJade: minLifePercentToJade/100, minLifeRatioToQuit: minLifePercentToQuit/100,maxLifeRatioPerHitToQuit: maxLifePercentPerHitToQuit/100,maxEShieldRatioPerHitToQuit: maxESPercentPerHitToQuit/100,minEShieldRatioToQuit: minESPercentToQuit/100, minEShieldRatioToPopElementalResist: minESPercentToElementalResist/100, minEShieldRatioToPopJade: minESPercentToJade/100}
+PlayerConfig["Default"]:={RemCorruptedBloodCharges:RemoveCorruptedBloodCharges,RemAilmentsTimer:RemoveAilmentsTimer,QuickSilverTimer:QuickSilverMovementTimer*100, minLifeRatioToInstant: minLifePercentToSpam/100, IflaskDelay: InstantFlaskDelay,minLifeRatioToDrink: minLifePercentToDrink/100, minManaRatioToDrink: minManaPercentToDrink/100, minManaToDrink: minManaToDrinkPot, minLifeRatioToPopElementalResist: minLifePercentToElementalResist/100,minLifeRatioToPopJade: minLifePercentToJade/100, minLifeRatioToQuit: minLifePercentToQuit/100,maxLifeRatioPerHitToQuit: maxLifePercentPerHitToQuit/100,maxEShieldRatioPerHitToQuit: maxESPercentPerHitToQuit/100,minEShieldRatioToQuit: minESPercentToQuit/100, minEShieldRatioToPopElementalResist: minESPercentToElementalResist/100, minEShieldRatioToPopJade: minESPercentToJade/100}
 
 PlayerConfig["Default"].FlaskConfig:=[]
 
@@ -745,11 +745,11 @@ GetWindowBasics(hwnd, byref mB="", byref pH="", byref mS="")
    mB:=WindowBasicsCache[k].mBase
    mS:=WindowBasicsCache[k].mSize
    
-   if mB=
+   If mB=
    {
       WindowBasicsCache[k]:=Object()
       GetModuleInfo(cliexe, CurrPid, mB, mS)
-      if (mB="" || mS="")
+      If (mB="" || mS="")
       {
          MsgBox, Failed to obtain moduleBase or moduleSize for PID %CurrPid%, script will now terminate
          ExitApp
@@ -759,10 +759,10 @@ GetWindowBasics(hwnd, byref mB="", byref pH="", byref mS="")
    }
 
    pH:=WindowBasicsCache[k].ProcessHandle
-   if pH=
+   If pH=
    {
       pH:=GetProcessHandle(CurrPid)
-      if (pH="" || pH=-1)
+      If (pH="" || pH=-1)
       {
          MsgBox, Invalid process handle obtained for PID %CurrPid%, script will now terminate
          ExitApp
@@ -778,18 +778,18 @@ ScanBaseMgrPtr(mBase,pH,moduleSize)
    global baseMgrPtr
    aobResult:=AobScan(pH,mBase,moduleSize,basePtrAoBArray)
 
-   if aobResult
+   If aobResult
    {
       SetFormat, IntegerFast, hex
       baseMgrPtr:=ReadMemUInt(pH,mBase+aobResult+basePtrAobOffset)-mBase
-      if (trayNotifications)
+      If (trayNotIfications)
      TrayTip, New Base Pointer Found, baseMgrPtr = %baseMgrPtr%
      IniWrite, %baseMgrPtr% , Config.ini, Config, baseMgrPtr
      GuiControl, , basePtrText, %baseMgrPtr%
      SetFormat, IntegerFast, dec
 
    }
-   else
+   Else
    {
       MsgBox, baseMgrPtr not found with AoBScan, script will now terminate
       ExitApp
@@ -808,7 +808,7 @@ GetFrameBase(hwnd)
 
    fB:=WindowBasicsCache[k].fBase
 
-   if fB=
+   If fB=
    {
    		If (A_TickCount>=10secsTimer+10000)
    		{
@@ -828,7 +828,7 @@ GetFrameBase(hwnd)
 		GetWindowBasics(hwnd, mBase, pH, mSize)
 
 
-      if baseMgrPtr= 0
+      If baseMgrPtr= 0
       {
          ScanBaseMgrPtr(mBase, pH, mSize)
       }
@@ -845,6 +845,9 @@ GetUiBase(hwnd)
    global cliname
    global 10secsTimer
    global Steam
+   global Offset3
+   global Offset4
+
 
 
 	If (A_TickCount>=10secsTimer+10000)
@@ -865,41 +868,30 @@ GetUiBase(hwnd)
 
 	GetWindowBasics(hwnd, mBase, pH, mSize)
       
-      if baseMgrPtr= 0
-      {
-         ScanBaseMgrPtr(mBase, pH, mSize)
-      }
+   If baseMgrPtr= 0
+   {
+      ScanBaseMgrPtr(mBase, pH, mSize)
+   }
       
    FrameBase:=GetFrameBase(hwnd)
-   if (FrameBase="" || FrameBase=0)
+   If (FrameBase="" || FrameBase=0)
       return
-   if (Steam)
-   {
-      uiBase:=GetMultilevelPointer(pH,[FrameBase+0x154,0x220,0x4C])
-   }
-   else
-   uiBase:=GetMultilevelPointer(pH,[FrameBase+0x13c,0x220,0x4C])
+   uiBase:=GetMultilevelPointer(pH,[FrameBase+Offset3,Offset4,0x4C])
    return uiBase
 }
 
 ReadClientResolution(hwnd, ByRef w, ByRef h)
 {
    global Steam
+   global Offset6
+   global Offset7
 
    GetWindowBasics(hwnd,mBase,pH)
-   if (mBase!=0 && pH && pH!=-1)
+   If (mBase!=0 && pH && pH!=-1)
    {
       FrameBase:=GetFrameBase(hwnd)
-      if (Steam)
-      {
-         w:=ReadMemUInt(pH,FrameBase+0x15D0)
-         h:=ReadMemUInt(pH,FrameBase+0x15D4)
-      }
-      else
-      {
-         w:=ReadMemUInt(pH,FrameBase+0x15B8)
-         h:=ReadMemUInt(pH,FrameBase+0x15BC)
-      }
+      w:=ReadMemUInt(pH,FrameBase+Offset6)
+      h:=ReadMemUInt(pH,FrameBase+Offset7)
       return true
    }   
 }
@@ -908,101 +900,126 @@ ReadClientResolution(hwnd, ByRef w, ByRef h)
 
 ReadPlayerStats(hwnd, byRef PlayerStats)
 {
-	global baseMgrPtr
-	global Steam
-
-	GetWindowBasics(hwnd, mBase, pH)
-	fBase:=GetFrameBase(hwnd)
-	BaseMgr:=ReadMemUInt(pH,mBase+baseMgrPtr)
-	if (Steam) 
-	{
-		PlayerBase:=GetMultilevelPointer(pH,[fBase+0x150,0x5A0])
-	}
-	else
-	{
-		PlayerBase:=GetMultilevelPointer(pH,[fBase+0x138,0x5A0])
-	}
-	Config:=GetMultilevelPointer(pH,[BaseMgr+0x180,0x108,0x8c])
-	PlayerStats.ConfigPath:=ReadMemStr(ph,Config+0xa4,255,"UTF-16")
-	PlayerMain:=ReadMemUInt(pH,PlayerBase+4)
-	PlayerStatsOffset:=ReadMemUInt(pH,PlayerMain+0xC)
-	PlayerStats.MaxHP:=ReadMemUInt(pH,PlayerStatsOffset+0x50)
-	PlayerStats.CurrHP:=ReadMemUInt(pH,PlayerStatsOffset+0x54)  
-	PlayerStats.ReservedHPFlat:=ReadMemUInt(pH,PlayerStatsOffset+0x5C)
-	PlayerStats.ReservedHPPercent:=ReadMemUInt(pH,PlayerStatsOffset+0x60)
-	PlayerStats.MaxMana:=ReadMemUInt(pH,PlayerStatsOffset+0x74)
-	PlayerStats.ReservedManaFlat:=ReadMemUInt(pH,PlayerStatsOffset+0x80)
-	PlayerStats.ReservedManaPercent:=ReadMemUInt(pH,PlayerStatsOffset+0x84)
-	PlayerStats.CurrMana:=ReadMemUInt(pH,PlayerStatsOffset+0x78)
-	PlayerStats.MaxEShield:=ReadMemUInt(pH,PlayerStatsOffset+0x98)
-	PlayerStats.CurrEShield:=ReadMemUInt(pH,PlayerStatsOffset+0x9C)
-	PlayerActionIDOffset:=ReadMemUInt(pH,PlayerMain+0x1C)
-	PlayerActionID:=ReadMemUInt(pH,PlayerActionIDOffset+0x9C)
-	SetFormat, IntegerFast, hex
-	PlayerActionID += 0
-	PlayerActionID .= ""
-	StringRight, PlayerActionID2, PlayerActionID, 2
-	SetFormat, IntegerFast, d
-	PlayerStats.PlayerActionID:=PlayerActionID2
-
-	BuffListStart:=ReadMemUInt(pH,PlayerStatsOffset+0xB8)
-	BuffListEnd:=ReadMemUInt(pH,PlayerStatsOffset+0xBC)
-	BuffAmount:=((BuffListEnd-BuffListStart)/4)
-	PlayerStats.BuffAmount:=((BuffListEnd-BuffListStart)/4)
-	Loop, %BuffAmount%
-	{
-		BuffBasePtr:=GetMultilevelPointer(ph,[BuffListStart+((A_Index-1)*4),4])
-		BuffNamePtr:=GetMultilevelPointer(ph,[BuffBasePtr+4,0])
-		BuffNameStr:=ReadMemStr(ph,BuffNamePtr,70,"UTF-16")
-		PlayerStats.BuffName[A_Index]:=BuffNameStr
-		BuffCharges:=ReadMemUInt(pH,BuffBasePtr+0x1C)
-		PlayerStats.BuffCharges[A_Index]:=BuffCharges
-		BuffTimer:=ReadMemFloat(pH,BuffBasePtr+0xC)
-		PlayerStats.BuffTimer[A_Index]:=BuffTimer
-	}
+   global baseMgrPtr
+   global Steam
+   global Taiwan
+   global Singapore
 
 
-	if (Steam)
-	{
-		CheckBase:=GetMultilevelPointer(pH,[fBase+0x154,0x220])
-	}
-	else
+   If (Steam) 
    {
-      CheckBase:=GetMultilevelPointer(pH,[fBase+0x13c,0x220])
+      global Offset1:=0x150
+      global Offset2:=0x5A0
+      global Offset3:=0x154
+      global Offset4:=0x220
+      global Offset5:=0x2A78
+      global Offset6:=0x15D0
+      global Offset7:=0x15D4
+      global Offset8:=0xF4
+      global Offset9:=0xd8
+      global Offset10:=0x11C
+      global Offset11:=0x184
    }
-	ChatStatusOffset:=GetMultilevelPointer(pH,[CheckBase+0xd8,0x808,0x0])
-	PlayerStats.ChatStatus:=ReadMemUInt(pH,ChatStatusOffset+0x860)
-	MouseOnEnemyOffset:=ReadMemUInt(pH,CheckBase+0x184)
-	PlayerStats.MouseOnEnemyStatus:=ReadMemUInt(pH,MouseOnEnemyOffset+0x860)
+   Else If (Taiwan)
+   {
+      global Offset1:=0x13c
+      global Offset2:=0x5A0
+      global Offset3:=0x140
+      global Offset4:=0x220
+      global Offset5:=0x2A78
+      global Offset6:=0x15BC
+      global Offset7:=0x15C0
+      global Offset8:=0xF8
+      global Offset9:=0xdc
+      global Offset10:=0x120
+      global Offset11:=0x188
+   }
+   Else
+   {
+      global Offset1:=0x138
+      global Offset2:=0x5A0
+      global Offset3:=0x13c
+      global Offset4:=0x220
+      global Offset5:=0x2A78
+      global Offset6:=0x15B8
+      global Offset7:=0x15BC
+      global Offset8:=0xF4
+      global Offset9:=0xd8
+      global Offset10:=0x11C
+      global Offset11:=0x184
+   }
+   
+   GetWindowBasics(hwnd, mBase, pH)
+   fBase:=GetFrameBase(hwnd)
+   BaseMgr:=ReadMemUInt(pH,mBase+baseMgrPtr)
+   PlayerBase:=GetMultilevelPointer(pH,[fBase+Offset1,Offset2])
+   Config:=GetMultilevelPointer(pH,[BaseMgr+0x180,0x108,0x8c])
+   PlayerStats.ConfigPath:=ReadMemStr(ph,Config+0xa4,255,"UTF-16")
+   PlayerMain:=ReadMemUInt(pH,PlayerBase+4)
+   PlayerStatsOffset:=ReadMemUInt(pH,PlayerMain+0xC)
+   PlayerStats.MaxHP:=ReadMemUInt(pH,PlayerStatsOffset+0x50)
+   PlayerStats.CurrHP:=ReadMemUInt(pH,PlayerStatsOffset+0x54)  
+   PlayerStats.ReservedHPFlat:=ReadMemUInt(pH,PlayerStatsOffset+0x5C)
+   PlayerStats.ReservedHPPercent:=ReadMemUInt(pH,PlayerStatsOffset+0x60)
+   PlayerStats.MaxMana:=ReadMemUInt(pH,PlayerStatsOffset+0x74)
+   PlayerStats.ReservedManaFlat:=ReadMemUInt(pH,PlayerStatsOffset+0x80)
+   PlayerStats.ReservedManaPercent:=ReadMemUInt(pH,PlayerStatsOffset+0x84)
+   PlayerStats.CurrMana:=ReadMemUInt(pH,PlayerStatsOffset+0x78)
+   PlayerStats.MaxEShield:=ReadMemUInt(pH,PlayerStatsOffset+0x98)
+   PlayerStats.CurrEShield:=ReadMemUInt(pH,PlayerStatsOffset+0x9C)
+   PlayerActionIDOffset:=ReadMemUInt(pH,PlayerMain+0x1C)
+   PlayerActionID:=ReadMemUInt(pH,PlayerActionIDOffset+0x9C)
+   SetFormat, IntegerFast, hex
+   PlayerActionID += 0
+   PlayerActionID .= ""
+   StringRight, PlayerActionID2, PlayerActionID, 2
+   SetFormat, IntegerFast, d
+   PlayerStats.PlayerActionID:=PlayerActionID2
 
-	PanelWaypointOffset:=ReadMemUInt(pH,CheckBase+0x118)
-	PlayerStats.PanelWaypoint:=ReadMemUInt(pH,PanelWaypointOffset+0x860)
-	PanelInventoryOffset:=ReadMemUInt(pH,CheckBase+0xF4)
-	PlayerStats.PanelInventory:=ReadMemUInt(pH,PanelInventoryOffset+0x860)
-	PanelSkillTreeOffset:=ReadMemUInt(pH,CheckBase+0x108)
-	PlayerStats.PanelSkillTree:=ReadMemUInt(pH,PanelSkillTreeOffset+0x860)
-	PanelSocialOffset:=ReadMemUInt(pH,CheckBase+0x104)
-	PlayerStats.PanelSocial:=ReadMemUInt(pH,PanelSocialOffset+0x860)
-   PanelInstanceManagerOffset:=ReadMemUInt(pH,CheckBase+0x19c)  ;added by immor
+   BuffListStart:=ReadMemUInt(pH,PlayerStatsOffset+0xB8)
+   BuffListEnd:=ReadMemUInt(pH,PlayerStatsOffset+0xBC)
+   BuffAmount:=((BuffListEnd-BuffListStart)/4)
+   PlayerStats.BuffAmount:=((BuffListEnd-BuffListStart)/4)
+   Loop, %BuffAmount%
+   {
+      BuffBasePtr:=GetMultilevelPointer(ph,[BuffListStart+((A_Index-1)*4),4])
+      BuffNamePtr:=GetMultilevelPointer(ph,[BuffBasePtr+4,0])
+      BuffNameStr:=ReadMemStr(ph,BuffNamePtr,70,"UTF-16")
+      PlayerStats.BuffName[A_Index]:=BuffNameStr
+      BuffCharges:=ReadMemUInt(pH,BuffBasePtr+0x1C)
+      PlayerStats.BuffCharges[A_Index]:=BuffCharges
+      BuffTimer:=ReadMemFloat(pH,BuffBasePtr+0xC)
+      PlayerStats.BuffTimer[A_Index]:=BuffTimer
+   }
+
+
+   CheckBase:=GetMultilevelPointer(pH,[fBase+Offset3,Offset4])
+
+   ChatStatusOffset:=GetMultilevelPointer(pH,[CheckBase+Offset9,0x808,0x0])
+   PlayerStats.ChatStatus:=ReadMemUInt(pH,ChatStatusOffset+0x860)
+
+   PanelInventoryOffset:=ReadMemUInt(pH,CheckBase+Offset8)
+   PlayerStats.PanelInventory:=ReadMemUInt(pH,PanelInventoryOffset+0x860)
+   PanelSocialOffset:=ReadMemUInt(pH,CheckBase+Offset8+0x10)
+   PlayerStats.PanelSocial:=ReadMemUInt(pH,PanelSocialOffset+0x860)
+   PanelSkillTreeOffset:=ReadMemUInt(pH,CheckBase+Offset8+0x14)
+   PlayerStats.PanelSkillTree:=ReadMemUInt(pH,PanelSkillTreeOffset+0x860)
+   PanelWaypointOffset:=ReadMemUInt(pH,CheckBase+Offset8+0x24)
+   PlayerStats.PanelWaypoint:=ReadMemUInt(pH,PanelWaypointOffset+0x860)
+   MouseOnEnemyOffset:=ReadMemUInt(pH,CheckBase+Offset8+0x90)
+   PlayerStats.MouseOnEnemyStatus:=ReadMemUInt(pH,MouseOnEnemyOffset+0x860)
+   PanelInstanceManagerOffset:=ReadMemUInt(pH,CheckBase+Offset8+0xA8)  ;added by immor
    PlayerStats.PanelInstanceManager:=ReadMemUInt(pH,PanelInstanceManagerOffset+0x860) ;added by immor
+   InCityOffset:=GetMultilevelPointer(pH,[CheckBase+Offset10,0x788,0x200])
+   PlayerStats.InCity:=ReadMemUInt(pH,InCityOffset+0x860)
+   EnemyNamePtr:=GetMultilevelPointer(ph,[CheckBase+Offset11,0x978,0xC14])
+   EnemyName:=ReadMemStr(ph,EnemyNamePtr,70,"UTF-16")
+   PlayerStats.EnemyName:=EnemyName
+   EnemyNamePtr2:=GetMultilevelPointer(ph,[CheckBase+Offset11,0x978,0xB94])
+   EnemyName2:=ReadMemStr(ph,EnemyNamePtr2+0x32,70,"UTF-16")
+   PlayerStats.EnemyName2:=EnemyName2
 
-	InCityOffset:=GetMultilevelPointer(pH,[CheckBase+0x11C,0x788,0x200])
-	PlayerStats.InCity:=ReadMemUInt(pH,InCityOffset+0x860)
-	EnemyNamePtr:=GetMultilevelPointer(ph,[CheckBase+0x184,0x978,0xC14])
-	EnemyName:=ReadMemStr(ph,EnemyNamePtr,70,"UTF-16")
-	PlayerStats.EnemyName:=EnemyName
-	EnemyNamePtr2:=GetMultilevelPointer(ph,[CheckBase+0x184,0x978,0xB94])
-	EnemyName2:=ReadMemStr(ph,EnemyNamePtr2+0x32,70,"UTF-16")
-	PlayerStats.EnemyName2:=EnemyName2
-
-   if (Steam)
-   {
-      MapNameOffset:=GetMultilevelPointer(pH,[fBase+0x150,0x8,0x4])
-   }
-   else
-   {
-      MapNameOffset:=GetMultilevelPointer(pH,[fBase+0x138,0x8,0x4])
-   }
+   MapNameOffset:=GetMultilevelPointer(pH,[fBase+Offset1,0x8,0x4])
    MapName:=ReadMemStr(ph,MapNameOffset,100,"UTF-16")
    PlayerStats.MapName:=MapName
 }
@@ -1013,7 +1030,7 @@ ReadFlasksData(hwnd, byRef FlasksData)
    
    UiBase:=GetUiBase(hwnd)
    
-   if (!UiBase) ;not InGame
+   If (!UiBase) ;not InGame
       return
    
    FlaskInvBase:=GetMultilevelPointer(pH,[UiBase+0x968,0x984,0x20])
@@ -1022,7 +1039,7 @@ ReadFlasksData(hwnd, byRef FlasksData)
    {
       currFlaskPtr:=ReadMemUInt(pH,FlaskInvBase+(A_Index-1)*4)
 
-      if (currFlaskPtr!=0) ; there's a flask in said slot
+      If (currFlaskPtr!=0) ; there's a flask in said slot
       {
          FlasksData[A_Index]:={}
 
@@ -1032,25 +1049,25 @@ ReadFlasksData(hwnd, byRef FlasksData)
             If Slot1Disabled = 1
             continue
          }
-         else If A_Index = 2
+         Else If A_Index = 2
          {
             IniRead, Slot2Disabled, Config.ini, DisableSlot, DisableSlot2, 0
             If Slot2Disabled = 1
             continue
          }
-         else If A_Index = 3
+         Else If A_Index = 3
          {
             IniRead, Slot3Disabled, Config.ini, DisableSlot, DisableSlot3, 0
             If Slot3Disabled = 1
             continue
          }
-         else If A_Index = 4
+         Else If A_Index = 4
          {
             IniRead, Slot4Disabled, Config.ini, DisableSlot, DisableSlot4, 0
             If Slot4Disabled = 1
             continue
          }
-         else If A_Index = 5
+         Else If A_Index = 5
          {
             IniRead, Slot5Disabled, Config.ini, DisableSlot, DisableSlot5, 0
             If Slot5Disabled = 1
@@ -1070,7 +1087,7 @@ ReadFlasksData(hwnd, byRef FlasksData)
          FlaskMod2Str:=ReadMemStr(ph,FlaskMod2Ptr,70,"UTF-16")
          FlasksData[A_Index].mod2:=FlaskMod2Str
 
-         if (FlasksData[A_Index].ChargesCurrent < FlasksData[A_Index].ChargesPerUse) ; not enough charges in this flask to use it, don't bother
+         If (FlasksData[A_Index].ChargesCurrent < FlasksData[A_Index].ChargesPerUse) ; not enough charges in this flask to use it, don't bother
             continue
 
          FlaskMetadataPtr:=GetMultilevelPointer(ph,[currFlaskPtr,0,8])
@@ -1080,69 +1097,80 @@ ReadFlasksData(hwnd, byRef FlasksData)
 
          FlaskLocalstatsPtr:=GetMultilevelPointer(ph,[currFlaskPtr,4,0x18,0x20,0xC])
          
-         if InStr(FlaskTypeStr, "FlaskLife")
+         If InStr(FlaskTypeStr, "FlaskLife")
          {
             FlasksData[A_Index].HPRegAmount:=ReadMemUInt(pH,FlaskLocalstatsPtr+4)
             
-            if (InStr(FlasksData[A_Index].mod1,"Bubbling"))
+            If (InStr(FlasksData[A_Index].mod1,"Bubbling"))
             FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0xC)/2.35)
-            else if (InStr(FlasksData[A_Index].mod2,"Bubbling"))
+            Else If (InStr(FlasksData[A_Index].mod2,"Bubbling"))
             FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0xC)/2.35)
-            else if (InStr(FlasksData[A_Index].mod1,"Saturated"))
+            Else If (InStr(FlasksData[A_Index].mod1,"Saturated"))
             FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0xC)/0.67)
-            else if (InStr(FlasksData[A_Index].mod2,"Saturated"))
+            Else If (InStr(FlasksData[A_Index].mod2,"Saturated"))
             FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0xC)/0.67)
-            else if (InStr(FlasksData[A_Index].mod1,"Catalysed"))
+            Else If (InStr(FlasksData[A_Index].mod1,"Catalysed"))
             FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0xC)/1.5)
-            else if (InStr(FlasksData[A_Index].mod2,"Catalysed"))
+            Else If (InStr(FlasksData[A_Index].mod2,"Catalysed"))
             FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0xC)/1.5)
-            else
+            Else If (InStr(FlasksData[A_Index].mod1,"催化的"))
+            FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0xC)/1.5)
+            Else If (InStr(FlasksData[A_Index].mod2,"催化的"))
+            FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0xC)/1.5)
+            Else
             FlasksData[A_Index].EffectDuration:=ReadMemUInt(pH,FlaskLocalstatsPtr+0xC)
-
          }
 
-         if InStr(FlaskTypeStr, "FlaskMana")
+         If InStr(FlaskTypeStr, "FlaskMana")
          {
             FlasksData[A_Index].ManaRegAmount:=ReadMemUInt(pH,FlaskLocalstatsPtr+4)
 
-            if (InStr(FlasksData[A_Index].mod1,"Bubbling"))
+            If (InStr(FlasksData[A_Index].mod1,"Bubbling"))
             FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0xC)/2.35)
-            else if (InStr(FlasksData[A_Index].mod2,"Bubbling"))
+            Else If (InStr(FlasksData[A_Index].mod2,"Bubbling"))
             FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0xC)/2.35)
-            else if (InStr(FlasksData[A_Index].mod1,"Saturated"))
+            Else If (InStr(FlasksData[A_Index].mod1,"Saturated"))
             FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0xC)/0.67)
-            else if (InStr(FlasksData[A_Index].mod2,"Saturated"))
+            Else If (InStr(FlasksData[A_Index].mod2,"Saturated"))
             FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0xC)/0.67)
-            else if (InStr(FlasksData[A_Index].mod1,"Catalysed"))
+            Else If (InStr(FlasksData[A_Index].mod1,"Catalysed"))
             FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0xC)/1.5)
-            else if (InStr(FlasksData[A_Index].mod2,"Catalysed"))
+            Else If (InStr(FlasksData[A_Index].mod2,"Catalysed"))
             FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0xC)/1.5)
-            else
+            Else If (InStr(FlasksData[A_Index].mod1,"催化的"))
+            FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0xC)/1.5)
+            Else If (InStr(FlasksData[A_Index].mod2,"催化的"))
+            FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0xC)/1.5)
+            Else
             FlasksData[A_Index].EffectDuration:=ReadMemUInt(pH,FlaskLocalstatsPtr+0xC)
 
          }
          
-         if InStr(FlaskTypeStr, "FlaskHybrid")
+         If InStr(FlaskTypeStr, "FlaskHybrid")
          {
             FlasksData[A_Index].HPRegAmount:=ReadMemUInt(pH,FlaskLocalstatsPtr+4)
             FlasksData[A_Index].ManaRegAmount:=ReadMemUInt(pH,FlaskLocalstatsPtr+0xC)
-            if (InStr(FlasksData[A_Index].mod1,"Bubbling"))
+            If (InStr(FlasksData[A_Index].mod1,"Bubbling"))
             FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0x14)/2.35)
-            else if (InStr(FlasksData[A_Index].mod2,"Bubbling"))
+            Else If (InStr(FlasksData[A_Index].mod2,"Bubbling"))
             FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0x14)/2.35)
-            else if (InStr(FlasksData[A_Index].mod1,"Saturated"))
+            Else If (InStr(FlasksData[A_Index].mod1,"Saturated"))
             FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0x14)/0.67)
-            else if (InStr(FlasksData[A_Index].mod2,"Saturated"))
+            Else If (InStr(FlasksData[A_Index].mod2,"Saturated"))
             FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0x14)/0.67)
-            else if (InStr(FlasksData[A_Index].mod1,"Catalysed"))
+            Else If (InStr(FlasksData[A_Index].mod1,"Catalysed"))
             FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0x14)/1.5)
-            else if (InStr(FlasksData[A_Index].mod2,"Catalysed"))
+            Else If (InStr(FlasksData[A_Index].mod2,"Catalysed"))
             FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0x14)/1.5)
-            else
+            Else If (InStr(FlasksData[A_Index].mod1,"催化的"))
+            FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0x14)/1.5)
+            Else If (InStr(FlasksData[A_Index].mod2,"催化的"))
+            FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0x14)/1.5)
+            Else
             FlasksData[A_Index].EffectDuration:=ReadMemUInt(pH,FlaskLocalstatsPtr+0x14)
          }
 
-         if InStr(FlaskTypeStr, "FlaskUtility")
+         If InStr(FlaskTypeStr, "FlaskUtility")
          {
             FlasksData[A_Index].EffectDuration:=ReadMemUInt(pH,FlaskLocalstatsPtr+0x4)
          }
@@ -1153,61 +1181,56 @@ ReadFlasksData(hwnd, byRef FlasksData)
 IsInGame(hwnd)
 {
 	global Steam
-   if (hwnd=0 || hwnd="")
+   global Offset3
+
+   If (hwnd=0 || hwnd="")
       return false
    GetWindowBasics(hwnd,mBase,pH)
-   if (mBase="" || mBase=0 || pH="" || pH=-1)
+   If (mBase="" || mBase=0 || pH="" || pH=-1)
       return false
    fBase:=GetFrameBase(hwnd)
-   if (fBase="" || fBase=0)
+   If (fBase="" || fBase=0)
       return false
-   if (Steam)
-   {
-      localConnection:=ReadMemUInt(pH,fBase+0x154)
-   }
-   else
-   localConnection:=ReadMemUInt(pH,fBase+0x13c)
-   if (localConnection=0 || localConnection="")
+   localConnection:=ReadMemUInt(pH,fBase+Offset3)
+   If (localConnection=0 || localConnection="")
       return false
-   else
+   Else
       return true
 }
 
 SetGameStateMenu(hwnd)
 {
    global Steam
-   if (hwnd=0 || hwnd="")
+   global Offset3
+   global Offset5
+
+   If (hwnd=0 || hwnd="")
       return false
    GetWindowBasics(hwnd,mBase,pH)
-   if (mBase="" || mBase=0 || pH="" || pH=-1)
+   If (mBase="" || mBase=0 || pH="" || pH=-1)
       return false
    fBase:=GetFrameBase(hwnd)
-   if (fBase="" || fBase=0)
+   If (fBase="" || fBase=0)
       return false
-   if (Steam)
+   localConnection:=ReadMemUInt(pH,fBase+Offset3)
+   If (localConnection!="" && localConnection!=0)
    {
-      localConnection:=ReadMemUInt(pH,fBase+0x154)
-   }
-   else
-   localConnection:=ReadMemUInt(pH,fBase+0x13c)
-   if (localConnection!="" && localConnection!=0)
-   {
-      WriteMemUInt(pH,localConnection+0x2A78,1)
+      WriteMemUInt(pH,localConnection+Offset5,1)
    }
 }
 
 ReadHeroPos(hwnd,ByRef x, ByRef y)
 {
    global Steam
+   global Offset1
+   global Offset2
+
    GetWindowBasics(hwnd,mBase,pH)
-   if (mBase!=0 && pH && pH!=-1)
+   If (mBase!=0 && pH && pH!=-1)
    {
       FrameBase:=GetFrameBase(hwnd)
 
-      if (Steam) 
-   	  PlayerPosBase:=GetMultilevelPointer(pH,[FrameBase+0x150,0x5A0,0x24])
-      else 
-      PlayerPosBase:=GetMultilevelPointer(pH,[FrameBase+0x138,0x5A0,0x24])
+      PlayerPosBase:=GetMultilevelPointer(pH,[FrameBase+Offset1,Offset2,0x24])
 
       x:=ReadMemFloat(pH,PlayerPosBase+0x2c)
       y:=ReadMemFloat(pH,PlayerPosBase+0x30)
@@ -1237,7 +1260,7 @@ GetClientCoords(byRef mx, byRef my)
 
 QuitToLoginScreen(hwnd)
 {  
-   if (!IsInGame(hwnd))
+   If (!IsInGame(hwnd))
    {
       return
    }
@@ -1248,9 +1271,9 @@ GetMaxChargesFlaskOfType(ByRef FlasksData,TypeStr)
 {
    currMaxCharges:=0
    Loop, 5
-      if (InStr(FlasksData[A_Index].type,TypeStr))
+      If (InStr(FlasksData[A_Index].type,TypeStr))
       {
-         if ((FlasksData[A_Index].ChargesCurrent>currMaxCharges) && (FlasksData[A_Index].ChargesCurrent>=FlasksData[A_Index].ChargesPerUse))
+         If ((FlasksData[A_Index].ChargesCurrent>currMaxCharges) && (FlasksData[A_Index].ChargesCurrent>=FlasksData[A_Index].ChargesPerUse))
          {
             currMaxI:=A_Index
             currMaxCharges:=FlasksData[A_Index].ChargesCurrent
@@ -1263,9 +1286,9 @@ GetMaxChargesFlaskOfMod(ByRef FlasksData,ModStr)
 {
    currMaxCharges:=0
    Loop, 5
-      if ((InStr(FlasksData[A_Index].mod1,ModStr)) || (InStr(FlasksData[A_Index].mod2,ModStr)))
+      If ((InStr(FlasksData[A_Index].mod1,ModStr)) || (InStr(FlasksData[A_Index].mod2,ModStr)))
       {
-         if ((FlasksData[A_Index].ChargesCurrent>currMaxCharges) && (FlasksData[A_Index].ChargesCurrent>=FlasksData[A_Index].ChargesPerUse))
+         If ((FlasksData[A_Index].ChargesCurrent>currMaxCharges) && (FlasksData[A_Index].ChargesCurrent>=FlasksData[A_Index].ChargesPerUse))
          {
             currMaxI:=A_Index
             currMaxCharges:=FlasksData[A_Index].ChargesCurrent
@@ -1278,11 +1301,11 @@ GetMaxChargesFlaskQuickSilver(ByRef FlasksData,TypeStr)
 {
    currMaxCharges:=0
    Loop, 5
-      if (InStr(FlasksData[A_Index].type,TypeStr))
+      If (InStr(FlasksData[A_Index].type,TypeStr))
       {
-         if FlasksData[A_Index].ChargesCurrent>=40
+         If FlasksData[A_Index].ChargesCurrent>=40
          {
-            if FlasksData[A_Index].ChargesCurrent>currMaxCharges
+            If FlasksData[A_Index].ChargesCurrent>currMaxCharges
             {
                currMaxI:=A_Index
                currMaxCharges:=FlasksData[A_Index].ChargesCurrent
@@ -1296,11 +1319,11 @@ GetMaxChargesFlaskQuickSilver2(ByRef FlasksData,TypeStr)
 {
    currMaxCharges:=0
    Loop, 5
-      if (InStr(FlasksData[A_Index].type,TypeStr))
+      If (InStr(FlasksData[A_Index].type,TypeStr))
       {
-         if FlasksData[A_Index].ChargesCurrent>=20
+         If FlasksData[A_Index].ChargesCurrent>=20
          {
-            if FlasksData[A_Index].ChargesCurrent>currMaxCharges
+            If FlasksData[A_Index].ChargesCurrent>currMaxCharges
             {
                currMaxI:=A_Index
                currMaxCharges:=FlasksData[A_Index].ChargesCurrent
@@ -1315,43 +1338,43 @@ GetMaxChargesOfInstantFlask(ByRef FlasksData,TypeStr)
    global PanickedTimer
    currMaxCharges:=0
    Loop, 5
-      if (InStr(FlasksData[A_Index].type,TypeStr))
+      If (InStr(FlasksData[A_Index].type,TypeStr))
       {
-         if (InStr(FlasksData[A_Index].mod1,"Seething"))
+         If (InStr(FlasksData[A_Index].mod1,"Seething"))
          {
-            if FlasksData[A_Index].ChargesCurrent>currMaxCharges
+            If FlasksData[A_Index].ChargesCurrent>currMaxCharges
             {
                currMaxI:=A_Index
                currMaxCharges:=FlasksData[A_Index].ChargesCurrent
             }
          }
-         else if (InStr(FlasksData[A_Index].mod2,"Seething"))
+         Else If (InStr(FlasksData[A_Index].mod2,"Seething"))
          {
-            if FlasksData[A_Index].ChargesCurrent>currMaxCharges
+            If FlasksData[A_Index].ChargesCurrent>currMaxCharges
             {
                currMaxI:=A_Index
                currMaxCharges:=FlasksData[A_Index].ChargesCurrent
             }
          }
-         else if (InStr(FlasksData[A_Index].mod1,"Bubbling"))
+         Else If (InStr(FlasksData[A_Index].mod1,"Bubbling"))
          {
-            if FlasksData[A_Index].ChargesCurrent>currMaxCharges
+            If FlasksData[A_Index].ChargesCurrent>currMaxCharges
             {
                currMaxI:=A_Index
                currMaxCharges:=FlasksData[A_Index].ChargesCurrent
             }
          }
-         else if (InStr(FlasksData[A_Index].mod2,"Bubbling"))
+         Else If (InStr(FlasksData[A_Index].mod2,"Bubbling"))
          {
-            if FlasksData[A_Index].ChargesCurrent>currMaxCharges
+            If FlasksData[A_Index].ChargesCurrent>currMaxCharges
             {
                currMaxI:=A_Index
                currMaxCharges:=FlasksData[A_Index].ChargesCurrent
             }
          }
-         else if ((InStr(FlasksData[A_Index].mod1,"Panicked")) And ((PlayerStats.CurrHP/PlayerStats.MaxHP)<=0.35)) ; "Low life" can be caused by auras hp reservation from blood magic
+         Else If ((InStr(FlasksData[A_Index].mod1,"Panicked")) And ((PlayerStats.CurrHP/PlayerStats.MaxHP)<=0.35)) ; "Low Life" can be caused by auras hp reservation from blood magic
          {
-            if FlasksData[A_Index].ChargesCurrent>currMaxCharges
+            If FlasksData[A_Index].ChargesCurrent>currMaxCharges
             {
                If (PanickedTimer>35)
                {
@@ -1361,9 +1384,9 @@ GetMaxChargesOfInstantFlask(ByRef FlasksData,TypeStr)
                }
             }
          }
-         else if ((InStr(FlasksData[A_Index].mod2,"Panicked")) And ((PlayerStats.CurrHP/PlayerStats.MaxHP)<=0.35)) ; "Low life" can be caused by auras hp reservation from blood magic
+         Else If ((InStr(FlasksData[A_Index].mod2,"Panicked")) And ((PlayerStats.CurrHP/PlayerStats.MaxHP)<=0.35)) ; "Low Life" can be caused by auras hp reservation from blood magic
          {
-            if FlasksData[A_Index].ChargesCurrent>currMaxCharges
+            If FlasksData[A_Index].ChargesCurrent>currMaxCharges
             {
                If (PanickedTimer>35)
                {
@@ -1405,7 +1428,7 @@ Main()
 	global cliname
 	global cliexe
 	global cliexesteam
-	global trayNotifications
+	global trayNotIfications
 	global autoQuitMode
 	global desync
 	global remaining
@@ -1455,6 +1478,8 @@ Main()
    global HoldCtrlCheck
    global CtrlkeyDown
    global AttackInPlaceKeyDown
+   global Taiwan
+   global Singapore
 
 	WinGet, WinID, List, %cliname%
 
@@ -1467,75 +1492,92 @@ Main()
         {
         	continue
         }
-
+        
 		If (ProcModuleName="PathOfExileSteam.exe")
 		{
 			Steam:=True
 			cliexe:="PathOfExileSteam.exe"
 		}
+
 		Else If (ProcModuleName="PathOfExile.exe")
 		{
 			Steam:=False
 			cliexe=PathOfExile.exe
 		}
 
-
-      	if (!IsInGame(WinID%A_Index%))
-		{
-			LastHP:=0
-			LastES:=0
-			LastMaxHP:=0
-			LastMaxES:=0
-			continue
-		}
-         
-       
-		if (WinID%A_Index%=WinActive("A"))
+		If (WinID%A_Index%=WinActive("A"))
 		ThisID:=WinActive("A")
+
 
 		PlayerStats:={}
 		ReadPlayerStats(WinID%A_Index%, PlayerStats)
-		if (PlayerStats.MaxHP<1 || PlayerStats.CurrHP=0) ;dead, don't bother
-		{
-			continue
-		}
 
 		CurrentConfig:=PlayerConfig["Default"]
-
+           
 		If (A_TickCount>=20secsTimer+20000)
 		{
-			ConfigPath:= PlayerStats.ConfigPath
 			Loop, 5
 			{
-				if (InStr(PlayerStats.ConfigPath,".ini"))
+				If (InStr(PlayerStats.ConfigPath,".ini"))
 				{
-					IniRead, HotkeyFlask%A_Index%, %ConfigPath%, ACTION_KEYS, use_flask_in_slot%A_Index%, %A_Index%
-					vk:=HotkeyFlask%A_Index%
-					SetFormat, IntegerFast, hex
-					vk += 0
-					vk .= ""
-					SetFormat, IntegerFast, d
-					FlaskHotkey%A_Index%={vk%vk%}
-					If (A_Index=1)
-					{
-						IniRead, AttackInPlaceKey, %ConfigPath%, ACTION_KEYS, attack_in_place, %A_Index%
-						vk:=AttackInPlaceKey
-						SetFormat, IntegerFast, hex
-						vk += 0
-						vk .= ""
-						SetFormat, IntegerFast, d
-						AttackInPlaceKey=vk%vk%
-					}
+               ConfigPath:=PlayerStats.ConfigPath
+               If (InStr(PlayerStats.ConfigPath,"garena_tw_production_Config"))
+               {
+                  Taiwan:=True
+                  Steam:=False
+                  Singapore:=False
+               }
+               Else If (InStr(PlayerStats.ConfigPath,"garena_sg_production_Config"))
+               {
+                  Taiwan:=False
+                  Steam:=False
+                  Singapore:=True
+               }
 				}
 				Else
 				{
-				   FlaskHotkey%A_Index%={%A_Index% Down %A_Index% UP}
+               ConfigPath = %A_MyDocuments%
+               ConfigPath .= "\My" . A_Space . "Games\Path" . A_Space . "of" . A_Space . "Exile\garena_tw_production_Config.ini"
+               Taiwan:=True
+               Steam:=False
+               Singapore:=True
 				}
+            IniRead, HotkeyFlask%A_Index%, %ConfigPath%, ACTION_KEYS, use_flask_in_slot%A_Index%, %A_Index%
+            vk:=HotkeyFlask%A_Index%
+            SetFormat, IntegerFast, hex
+            vk += 0
+            vk .= ""
+            SetFormat, IntegerFast, d
+            FlaskHotkey%A_Index%={vk%vk%
+            If (A_Index=1)
+            {
+               IniRead, AttackInPlaceKey, %ConfigPath%, ACTION_KEYS, attack_in_place, %A_Index%
+               vk:=AttackInPlaceKey
+               SetFormat, IntegerFast, hex
+               vk += 0
+               vk .= ""
+               SetFormat, IntegerFast, d
+               AttackInPlaceKey=vk%vk%
+            }
 			}
 			20secsTimer:=A_TickCount
 		}
+
+      If (PlayerStats.MaxHP<1 || PlayerStats.CurrHP=0) ;dead, don't bother
+      {
+         continue
+      }
+
+      If (!IsInGame(WinID%A_Index%))
+      {
+         LastHP:=0
+         LastES:=0
+         LastMaxHP:=0
+         LastMaxES:=0
+         continue
+      }
       
-		if PlayerStats.MaxEShield>0
+		If PlayerStats.MaxEShield>0
 		{
 			currEShieldRatio:=PlayerStats.CurrEShield/PlayerStats.MaxEShield
 			LastEShieldRatio:=LastES/PlayerStats.MaxEShield
@@ -1544,12 +1586,12 @@ Main()
 				LastEShieldRatio:=0
 			}
 		}
-		else 
+		Else 
 		{
 			currEShieldRatio:= 1
 		}
 
-		if (PlayerStats.MaxHP>1)
+		If (PlayerStats.MaxHP>1)
 		{
 			currLifeRatio:=PlayerStats.CurrHP/(PlayerStats.MaxHP-PlayerStats.ReservedHPFlat-PlayerStats.MaxHP*PlayerStats.ReservedHPPercent/100)
 			LastLifeRatio:=LastHP/(PlayerStats.MaxHP-PlayerStats.ReservedHPFlat-PlayerStats.MaxHP*PlayerStats.ReservedHPPercent/100)	
@@ -1558,20 +1600,20 @@ Main()
 				LastLifeRatio:=0
 			}
 		}
-		else
+		Else
 		{
 			currLifeRatio:=1
          LastLifeRatio:=0
 		}
       
-		if (PlayerStats.MaxMana>0)
+		If (PlayerStats.MaxMana>0)
 		{
 			currManaRatio:=PlayerStats.CurrMana/(PlayerStats.MaxMana-PlayerStats.ReservedManaFlat-PlayerStats.MaxMana*PlayerStats.ReservedManaPercent/100)
 		}
       
-		if (currLifeRatio<CurrentConfig.minLifeRatioToQuit || currEShieldRatio<CurrentConfig.minEShieldRatioToQuit || (currLifeRatio<LastLifeRatio And ((LastLifeRatio-currLifeRatio)>CurrentConfig.maxLifeRatioPerHitToQuit) And (CurrentConfig.maxLifeRatioPerHitToQuit<1 And CurrentConfig.maxLifeRatioPerHitToQuit>0)) || (CurrentConfig.maxEShieldRatioPerHitToQuit>0 And currEShieldRatio<LastEShieldRatio And ((LastEShieldRatio-currEShieldRatio)>CurrentConfig.maxEShieldRatioPerHitToQuit)))
+		If (currLifeRatio<CurrentConfig.minLifeRatioToQuit || currEShieldRatio<CurrentConfig.minEShieldRatioToQuit || (currLifeRatio<LastLifeRatio And ((LastLifeRatio-currLifeRatio)>CurrentConfig.maxLifeRatioPerHitToQuit) And (CurrentConfig.maxLifeRatioPerHitToQuit<1 And CurrentConfig.maxLifeRatioPerHitToQuit>0)) || (CurrentConfig.maxEShieldRatioPerHitToQuit>0 And currEShieldRatio<LastEShieldRatio And ((LastEShieldRatio-currEShieldRatio)>CurrentConfig.maxEShieldRatioPerHitToQuit)))
 		{
-			if (autoQuitMode=0)
+			If (autoQuitMode=0)
 			{
             WinActivate Path of Exile ahk_class Direct3DWindowClass
 				IfWinActive Path of Exile ahk_class Direct3DWindowClass
@@ -1582,23 +1624,23 @@ Main()
             }
 				continue
 			}
-			else if (autoQuitMode=1)
+			Else If (autoQuitMode=1)
 			{
 				QuitToLoginScreen(WinID%A_Index%)
 				continue
 			}
-			else if (autoQuitMode=3)
+			Else If (autoQuitMode=3)
 			{
 				UsePortal()
 				continue
 			}
-			else if (autoQuitMode=4)
+			Else If (autoQuitMode=4)
 			{
 
 			}
 		}
 
-		if (PlayerStats.CurrHP>0)
+		If (PlayerStats.CurrHP>0)
 		{
 			LastHP:=PlayerStats.CurrHP
 			LastES:=PlayerStats.CurrEShield
@@ -1621,22 +1663,22 @@ Main()
 		hwnd:=WinID%A_Index%
 		k="%hwnd%%CurrPid%"
 
-		if (!WindowQueuedFlaskEffects.HasKey(k))
+		If (!WindowQueuedFlaskEffects.HasKey(k))
 		{
 			WindowQueuedFlaskEffects[k]:={}
 		}
 
-		if (currLifeRatio>=1)
+		If (currLifeRatio>=1)
 		{
 			WindowQueuedFlaskEffects[k].hpQueueEndtime:=A_TickCount
 		}
 
-		if (currLifeRatio>=1)
+		If (currLifeRatio>=1)
 		{
 			WindowQueuedFlaskEffects[k].InstantQueueEndtime:=A_TickCount
 		}
 
-		if (currManaRatio>=1)
+		If (currManaRatio>=1)
 		{
 			WindowQueuedFlaskEffects[k].ManaQueueEndtime:=A_TickCount
 		}
@@ -1657,17 +1699,20 @@ Main()
       LifeRegenCheck2:=0
       ManaRegenCheck2:=0
       LeavingArea:=0
+      GracePeriod:=0
+
+      TrayTip, , %Offset1%
 
       loop, %BuffAmount%
 		{
 			BuffTimer:=PlayerStats.BuffTimer[A_Index]
 
-			if InStr(playerstats.BuffName[A_Index], "aura")
+			If InStr(playerstats.BuffName[A_Index], "aura")
 			{
 				continue
 			}
 
-			else if InStr(playerstats.BuffName[A_Index], "flask_utility_sprint")
+			Else If InStr(playerstats.BuffName[A_Index], "flask_utility_sprint")
 			{
 				QuicksilverBuff:=1
 				If (BuffTimer<0.25)
@@ -1679,29 +1724,30 @@ Main()
 			}
 
 
-			else if InStr(playerstats.BuffName[A_Index], "frozen")
+			Else If InStr(playerstats.BuffName[A_Index], "frozen")
 			{
-				if ((FlaskOnFrozenCheck) && (BuffTimer>=RemAilmentsTimer))
+				If ((FlaskOnFrozenCheck) && (BuffTimer>=RemAilmentsTimer))
 				{
 					If ((!WindowQueuedFlaskEffects[k].HasKey("FrozenQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].FrozenQueueEndtime-lagCompensation)))
 					{
 						flaskNum:=GetMaxChargesFlaskOfMod(FlasksData,"of Heat")
-						if (flaskNum!="")
+						If (flaskNum!="")
 						{  
 							WindowQueuedFlaskEffects[k].FrozenQueueEndtime:=A_TickCount+300
 							
-							if (trayNotifications)
+							If (trayNotIfications)
 							{
 								TrayTip, PoE AutoFlask Using "of Heat" flask %flaskNum%, %A_Space% , 2
 							}
 							hKey:=FlaskHotkey%flaskNum%
 							IfWinActive Path of Exile ahk_class Direct3DWindowClass
                      {
-                        Sendinput %hkey%
+                        Sendinput, %hkey% Down}
+                        Sendinput, %hkey% Up}
                      } 
                      Else
                      {
-                        ControlSend,,%hkey%, % "ahk_id" hwnd
+                        ControlSend,,%hkey% Down %hkey% Up}, % "ahk_id" hwnd
                      }
 						}
 					}
@@ -1709,29 +1755,30 @@ Main()
 				continue
 			}
 
-			else if InStr(playerstats.BuffName[A_Index], "shocked")
+			Else If InStr(playerstats.BuffName[A_Index], "shocked")
 			{
-				if ((FlaskOnShockedCheck) && (BuffTimer>=RemAilmentsTimer))
+				If ((FlaskOnShockedCheck) && (BuffTimer>=RemAilmentsTimer))
 				{
 					If ((!WindowQueuedFlaskEffects[k].HasKey("ShockedQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].ShockedQueueEndtime-lagCompensation)))
 					{
 						flaskNum:=GetMaxChargesFlaskOfMod(FlasksData,"of Grounding")
-						if (flaskNum!="")
+						If (flaskNum!="")
 						{  
 							WindowQueuedFlaskEffects[k].ShockedQueueEndtime:=A_TickCount+300
 							
-							if (trayNotifications)
+							If (trayNotIfications)
 							{
 								TrayTip, PoE AutoFlask Using "of Grounding" flask %flaskNum%, %A_Space% , 2
 							}
 							hKey:=FlaskHotkey%flaskNum%
 							IfWinActive Path of Exile ahk_class Direct3DWindowClass
                      {
-                        Sendinput %hkey%
+                        Sendinput, %hkey% Down}
+                        Sendinput, %hkey% Up}
                      } 
                      Else
                      {
-                        ControlSend,,%hkey%, % "ahk_id" hwnd
+                        ControlSend,,%hkey% Down %hkey% Up}, % "ahk_id" hwnd
                      }
 						}
 					}
@@ -1739,29 +1786,30 @@ Main()
 				continue
 			}
 
-			else if InStr(playerstats.BuffName[A_Index], "ignited")
+			Else If InStr(playerstats.BuffName[A_Index], "ignited")
 			{
-				if ((FlaskOnIgnitedCheck) && (BuffTimer>=RemAilmentsTimer))
+				If ((FlaskOnIgnitedCheck) && (BuffTimer>=RemAilmentsTimer))
 				{
 					If ((!WindowQueuedFlaskEffects[k].HasKey("IgnitedQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].IgnitedQueueEndtime-lagCompensation)))
 					{
 						flaskNum:=GetMaxChargesFlaskOfMod(FlasksData,"of Dousing")
-						if (flaskNum!="")
+						If (flaskNum!="")
 						{  
 							WindowQueuedFlaskEffects[k].IgnitedQueueEndtime:=A_TickCount+300
 							
-							if (trayNotifications)
+							If (trayNotIfications)
 							{
 								TrayTip, PoE AutoFlask Using "of Dousing" flask %flaskNum%, %A_Space% , 2
 							}
 							hKey:=FlaskHotkey%flaskNum%
 							IfWinActive Path of Exile ahk_class Direct3DWindowClass
                      {
-                        Sendinput %hkey%
+                        Sendinput, %hkey% Down}
+                        Sendinput, %hkey% Up}
                      } 
                      Else
                      {
-                        ControlSend,,%hkey%, % "ahk_id" hwnd
+                        ControlSend,,%hkey% Down %hkey% Up}, % "ahk_id" hwnd
                      }
 						}
 					}
@@ -1769,29 +1817,30 @@ Main()
 				continue
 			}
 
-         else if ((InStr(playerstats.BuffName[A_Index], "curse")) And !(InStr(playerstats.BuffName[A_Index], "flask")))
+         Else If ((InStr(playerstats.BuffName[A_Index], "curse")) And !(InStr(playerstats.BuffName[A_Index], "flask")))
          {
-            if (FlaskOnCurseCheck)
+            If (FlaskOnCurseCheck)
             {
                If ((!WindowQueuedFlaskEffects[k].HasKey("CurseQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].CurseQueueEndtime-lagCompensation)))
                {
                   flaskNum:=GetMaxChargesFlaskOfMod(FlasksData,"of Warding")
-                  if (flaskNum!="")
+                  If (flaskNum!="")
                   {  
                      WindowQueuedFlaskEffects[k].CurseQueueEndtime:=A_TickCount+300
                      
-                     if (trayNotifications)
+                     If (trayNotIfications)
                      {
                         TrayTip, PoE AutoFlask Using "of Warding" flask %flaskNum%, %A_Space% , 2
                      }
                      hKey:=FlaskHotkey%flaskNum%
                      IfWinActive Path of Exile ahk_class Direct3DWindowClass
                      {
-                        Sendinput %hkey%
+                        Sendinput, %hkey% Down}
+                        Sendinput, %hkey% Up}
                      } 
                      Else
                      {
-                        ControlSend,,%hkey%, % "ahk_id" hwnd
+                        ControlSend,,%hkey% Down %hkey% Up}, % "ahk_id" hwnd
                      }
                   }
                }
@@ -1799,30 +1848,31 @@ Main()
             continue
          }
 
-         else if InStr(playerstats.BuffName[A_Index], "corrupted_blood")
+         Else If InStr(playerstats.BuffName[A_Index], "corrupted_blood")
          {
             BuffCharges:=PlayerStats.BuffCharges[A_Index]
-            if ((FlaskOnCorruptedBloodCheck) && (BuffCharges>=RemCorruptedBloodCharges))
+            If ((FlaskOnCorruptedBloodCheck) && (BuffCharges>=RemCorruptedBloodCharges))
             {
                If ((!WindowQueuedFlaskEffects[k].HasKey("CorruptedBloodQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].CorruptedBloodQueueEndtime-lagCompensation)))
                {
                   flaskNum:=GetMaxChargesFlaskOfMod(FlasksData,"of Staunching")
-                  if (flaskNum!="")
+                  If (flaskNum!="")
                   {  
                      WindowQueuedFlaskEffects[k].CorruptedBloodQueueEndtime:=A_TickCount+300
                      
-                     if (trayNotifications)
+                     If (trayNotIfications)
                      {
                         TrayTip, PoE AutoFlask Using "of Staunching" flask %flaskNum%, %A_Space% , 2
                      }
                      hKey:=FlaskHotkey%flaskNum%
                      IfWinActive Path of Exile ahk_class Direct3DWindowClass
                      {
-                        Sendinput %hkey%
+                        Sendinput, %hkey% Down}
+                        Sendinput, %hkey% Up}
                      } 
                      Else
                      {
-                        ControlSend,,%hkey%, % "ahk_id" hwnd
+                        ControlSend,,%hkey% Down %hkey% Up}, % "ahk_id" hwnd
                      }
                   }
                }
@@ -1830,41 +1880,46 @@ Main()
             continue
          }
 
-         else if InStr(playerstats.BuffName[A_Index], "flask_effect_mana")
+         Else If InStr(playerstats.BuffName[A_Index], "flask_effect_mana")
          {
             ManaRegenCheck:=1
             ManaRegenCheck2:=1
             continue
          }
 
-         else if InStr(playerstats.BuffName[A_Index], "flask_effect_life")
+         Else If InStr(playerstats.BuffName[A_Index], "flask_effect_Life")
          {
             LifeRegenCheck:=1
             LifeRegenCheck2:=1
             continue
          }
 
-         else if InStr(playerstats.BuffName[A_Index], "leaving_area_protection")
+         Else If InStr(playerstats.BuffName[A_Index], "leaving_area_protection")
          {
             LeavingArea:=1
+            continue
+         }
+         Else If InStr(playerstats.BuffName[A_Index], "grace_period")
+         {
+            GracePeriod:=1
             continue
          }
          
 
 			/* ;Others
-			else if InStr(playerstats.BuffName[A_Index], "chilled")
+			Else If InStr(playerstats.BuffName[A_Index], "chilled")
 			{
 				TrayTip, test , THIS BUFF IS CHILLED!!! buff%A_Index%
 				continue
 			}
 
-			else if InStr(playerstats.BuffName[A_Index], "puncture")
+			Else If InStr(playerstats.BuffName[A_Index], "puncture")
 			{
 				TrayTip, test, THIS BUFF IS PUNCTURE!!! buff%A_Index%
 				continue
 			}
 
-			else if InStr(playerstats.BuffName[A_Index], "endurance_charge")
+			Else If InStr(playerstats.BuffName[A_Index], "endurance_charge")
 			{
 				BuffCharges:=PlayerStats.BuffCharges[A_Index]
 				TrayTip, test, Endurance Charge has %BuffCharges% charges  ;charges test
@@ -1891,349 +1946,362 @@ Main()
          ManaRegenCheck:=0
       }
 
-		if (currLifeRatio<CurrentConfig.minLifeRatioToDrink)
-		{
-			if ((!WindowQueuedFlaskEffects[k].HasKey("hpQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].hpQueueEndtime-lagCompensation)))
-			{
-				tflaskNum2:=GetMaxChargesFlaskOfType(FlasksData,"FlaskLife")
-				tflaskNum1:=GetMaxChargesFlaskOfType(FlasksData,"FlaskHybrid")
-				if ((tflaskNum1!=) && (tflaskNum2!=))
-				{
-					flaskNum:=(FlasksData[tflaskNum1].ChargesCurrent>FlasksData[tflaskNum2].ChargesCurrent) ? tflaskNum1 : tflaskNum2
-				}
-				else
-				{
-					if (tflaskNum1!="")
-					{
-						flaskNum:=tflaskNum1
-					}
-					if (tflaskNum2!="")
-					{
-						flaskNum:=tflaskNum2
-					}
-				}
-				if (flaskNum!="")
-				{  
-					EffectDuration:=FlasksData[flaskNum].EffectDuration
-					if (InStr(FlasksData[flaskNum].mod1,"Seething"))
-					{
-						WindowQueuedFlaskEffects[k].hpQueueEndtime:=A_TickCount+500
-					}
-					else if (InStr(FlasksData[flaskNum].mod2,"Seething"))
-					{
-						WindowQueuedFlaskEffects[k].hpQueueEndtime:=A_TickCount+500
-					}
-					else if ((InStr(FlasksData[flaskNum].mod1,"Panicked")) And ((PlayerStats.CurrHP/PlayerStats.MaxHP)<=0.35)) ; "Low life" can be caused by auras hp reservation from blood magic
-					{
-						WindowQueuedFlaskEffects[k].hpQueueEndtime:=A_TickCount+500
-					}
-					else if ((InStr(FlasksData[flaskNum].mod2,"Panicked")) And ((PlayerStats.CurrHP/PlayerStats.MaxHP)<=0.35)) ; "Low life" can be caused by auras hp reservation from blood magic
-					{
-						WindowQueuedFlaskEffects[k].hpQueueEndtime:=A_TickCount+500
-					}
-					else
-					{
-						WindowQueuedFlaskEffects[k].hpQueueEndtime:=A_TickCount+EffectDuration*100
-					}
-					if (trayNotifications)
-					{
-						TrayTip, PoE AutoFlask Using HP flask %flaskNum%, %A_Space% , 2
-					}
-					hKey:=FlaskHotkey%flaskNum%
-					IfWinActive Path of Exile ahk_class Direct3DWindowClass
-               {
-                  Sendinput %hkey%
-               } 
-               Else
-               {
-                  ControlSend,,%hkey%, % "ahk_id" hwnd
-               }
-					Break
-				}
-			}
-		}
+      If (!GracePeriod && !LeavingArea)
+      {
+      	If (currLifeRatio<CurrentConfig.minLifeRatioToDrink)
+      	{
+      		If ((!WindowQueuedFlaskEffects[k].HasKey("hpQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].hpQueueEndtime-lagCompensation)))
+      		{
+      			tflaskNum2:=GetMaxChargesFlaskOfType(FlasksData,"FlaskLife")
+      			tflaskNum1:=GetMaxChargesFlaskOfType(FlasksData,"FlaskHybrid")
+      			If ((tflaskNum1!=) && (tflaskNum2!=))
+      			{
+      				flaskNum:=(FlasksData[tflaskNum1].ChargesCurrent>FlasksData[tflaskNum2].ChargesCurrent) ? tflaskNum1 : tflaskNum2
+      			}
+      			Else
+      			{
+      				If (tflaskNum1!="")
+      				{
+      					flaskNum:=tflaskNum1
+      				}
+      				If (tflaskNum2!="")
+      				{
+      					flaskNum:=tflaskNum2
+      				}
+      			}
+      			If (flaskNum!="")
+      			{  
+      				EffectDuration:=FlasksData[flaskNum].EffectDuration
+      				If (InStr(FlasksData[flaskNum].mod1,"Seething"))
+      				{
+      					WindowQueuedFlaskEffects[k].hpQueueEndtime:=A_TickCount+500
+      				}
+      				Else If (InStr(FlasksData[flaskNum].mod2,"Seething"))
+      				{
+      					WindowQueuedFlaskEffects[k].hpQueueEndtime:=A_TickCount+500
+      				}
+      				Else If ((InStr(FlasksData[flaskNum].mod1,"Panicked")) And ((PlayerStats.CurrHP/PlayerStats.MaxHP)<=0.35)) ; "Low Life" can be caused by auras hp reservation from blood magic
+      				{
+      					WindowQueuedFlaskEffects[k].hpQueueEndtime:=A_TickCount+500
+      				}
+      				Else If ((InStr(FlasksData[flaskNum].mod2,"Panicked")) And ((PlayerStats.CurrHP/PlayerStats.MaxHP)<=0.35)) ; "Low Life" can be caused by auras hp reservation from blood magic
+      				{
+      					WindowQueuedFlaskEffects[k].hpQueueEndtime:=A_TickCount+500
+      				}
+      				Else
+      				{
+      					WindowQueuedFlaskEffects[k].hpQueueEndtime:=A_TickCount+EffectDuration*100
+      				}
+      				If (trayNotIfications)
+      				{
+      					TrayTip, PoE AutoFlask Using HP flask %flaskNum%, %A_Space% , 2
+      				}
+      				hKey:=FlaskHotkey%flaskNum%
+      				IfWinActive Path of Exile ahk_class Direct3DWindowClass
+                  {
+                     Sendinput, %hkey% Down}
+                     Sendinput, %hkey% Up}
+                  } 
+                  Else
+                  {
+                     ControlSend,,%hkey% Down %hkey% Up}, % "ahk_id" hwnd
+                  }
+      				Break
+      			}
+      		}
+      	}
 
-		if (currLifeRatio<CurrentConfig.minLifeRatioToInstant)
-		{
-			if ((!WindowQueuedFlaskEffects[k].HasKey("InstantQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].InstantQueueEndtime)))
-			{
-				tflaskNum2:=GetMaxChargesOfInstantFlask(FlasksData,"FlaskLife")
-				if (tflaskNum2!="")
-				{
-					flaskNum:=tflaskNum2
-				}
-				if (flaskNum!="")
-				{  
-					IFDelay:= (CurrentConfig.IFlaskDelay*10)
-					WindowQueuedFlaskEffects[k].InstantQueueEndtime:=A_TickCount+IFDelay
-					if (trayNotifications)
-					{
-						TrayTip, PoE AutoFlask Using HP Flask %flaskNum%, %A_Space% , 2
-					}
-					hKey:=FlaskHotkey%flaskNum%
-					IfWinActive Path of Exile ahk_class Direct3DWindowClass
-               {
-                  Sendinput %hkey%
-               } 
-               Else
-               {
-                  ControlSend,,%hkey%, % "ahk_id" hwnd
-               }
-					break
-				}
-			}
-		}
+      	If (currLifeRatio<CurrentConfig.minLifeRatioToInstant)
+      	{
+      		If ((!WindowQueuedFlaskEffects[k].HasKey("InstantQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].InstantQueueEndtime)))
+      		{
+      			tflaskNum2:=GetMaxChargesOfInstantFlask(FlasksData,"FlaskLife")
+      			If (tflaskNum2!="")
+      			{
+      				flaskNum:=tflaskNum2
+      			}
+      			If (flaskNum!="")
+      			{  
+      				IfDelay:= (CurrentConfig.IflaskDelay*10)
+      				WindowQueuedFlaskEffects[k].InstantQueueEndtime:=A_TickCount+IfDelay
+      				If (trayNotIfications)
+      				{
+      					TrayTip, PoE AutoFlask Using HP Flask %flaskNum%, %A_Space% , 2
+      				}
+      				hKey:=FlaskHotkey%flaskNum%
+      				IfWinActive Path of Exile ahk_class Direct3DWindowClass
+                  {
+                     Sendinput, %hkey% Down}
+                     Sendinput, %hkey% Up}
+                  } 
+                  Else
+                  {
+                     ControlSend,,%hkey% Down %hkey% Up}, % "ahk_id" hwnd
+                  }
+      				break
+      			}
+      		}
+      	}
 
-		if (currLifeRatio<CurrentConfig.minLifeRatioToPopJade || currEShieldRatio<CurrentConfig.minEShieldRatioToPopJade)
-		{
-			if ((!WindowQueuedFlaskEffects[k].HasKey("jadeQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].jadeQueueEndtime-lagCompensation)))
-			{
-				flaskNum:=GetMaxChargesFlaskOfType(FlasksData,"FlaskUtility9") ; Jade Flask
-				if (flaskNum!="")
-				{
-				   EffectDuration:=FlasksData[flaskNum].EffectDuration
-				   WindowQueuedFlaskEffects[k].jadeQueueEndtime:=A_TickCount+EffectDuration*100
-				   if (trayNotifications)
-				   {
-				      TrayTip, PoE AutoFlask Using Jade Flask %flaskNum%, %A_Space% , 2
-				   }
-				   hKey:=FlaskHotkey%flaskNum%
-				   IfWinActive Path of Exile ahk_class Direct3DWindowClass
-               {
-                  Sendinput %hkey%
-               } 
-               Else
-               {
-                  ControlSend,,%hkey%, % "ahk_id" hwnd
-               }
-				   break
-				}
-			}
-			if ((!WindowQueuedFlaskEffects[k].HasKey("GraniteQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].GraniteQueueEndtime-lagCompensation)))
-			{
-				flaskNum:=GetMaxChargesFlaskOfType(FlasksData,"FlaskUtility5") ; Granite Flask
-				if (flaskNum!="")
-				{
-					EffectDuration:=FlasksData[flaskNum].EffectDuration
-					WindowQueuedFlaskEffects[k].GraniteQueueEndtime:=A_TickCount+EffectDuration*100
-					if (trayNotifications)
-					{
-						TrayTip, PoE AutoFlask Using Granite Flask %flaskNum%, %A_Space% , 2
-					}
-					hKey:=FlaskHotkey%flaskNum%
-					IfWinActive Path of Exile ahk_class Direct3DWindowClass
-               {
-                  Sendinput %hkey%
-               } 
-               Else
-               {
-                  ControlSend,,%hkey%, % "ahk_id" hwnd
-               }
-					break
-				}
-			}
-		}
+      	If (currLifeRatio<CurrentConfig.minLifeRatioToPopJade || currEShieldRatio<CurrentConfig.minEShieldRatioToPopJade)
+      	{
+      		If ((!WindowQueuedFlaskEffects[k].HasKey("jadeQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].jadeQueueEndtime-lagCompensation)))
+      		{
+      			flaskNum:=GetMaxChargesFlaskOfType(FlasksData,"FlaskUtility9") ; Jade Flask
+      			If (flaskNum!="")
+      			{
+      			   EffectDuration:=FlasksData[flaskNum].EffectDuration
+      			   WindowQueuedFlaskEffects[k].jadeQueueEndtime:=A_TickCount+EffectDuration*100
+      			   If (trayNotIfications)
+      			   {
+      			      TrayTip, PoE AutoFlask Using Jade Flask %flaskNum%, %A_Space% , 2
+      			   }
+      			   hKey:=FlaskHotkey%flaskNum%
+      			   IfWinActive Path of Exile ahk_class Direct3DWindowClass
+                  {
+                     Sendinput, %hkey% Down}
+                     Sendinput, %hkey% Up}
+                  } 
+                  Else
+                  {
+                     ControlSend,,%hkey% Down %hkey% Up}, % "ahk_id" hwnd
+                  }
+      			   break
+      			}
+      		}
+      		If ((!WindowQueuedFlaskEffects[k].HasKey("GraniteQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].GraniteQueueEndtime-lagCompensation)))
+      		{
+      			flaskNum:=GetMaxChargesFlaskOfType(FlasksData,"FlaskUtility5") ; Granite Flask
+      			If (flaskNum!="")
+      			{
+      				EffectDuration:=FlasksData[flaskNum].EffectDuration
+      				WindowQueuedFlaskEffects[k].GraniteQueueEndtime:=A_TickCount+EffectDuration*100
+      				If (trayNotIfications)
+      				{
+      					TrayTip, PoE AutoFlask Using Granite Flask %flaskNum%, %A_Space% , 2
+      				}
+      				hKey:=FlaskHotkey%flaskNum%
+      				IfWinActive Path of Exile ahk_class Direct3DWindowClass
+                  {
+                     Sendinput, %hkey% Down}
+                     Sendinput, %hkey% Up}
+                  } 
+                  Else
+                  {
+                     ControlSend,,%hkey% Down %hkey% Up}, % "ahk_id" hwnd
+                  }
+      				break
+      			}
+      		}
+      	}
 
-		if (currLifeRatio<CurrentConfig.minLifeRatioToPopElementalResist || currEShieldRatio<CurrentConfig.minEShieldRatioToPopElementalResist)
-		{
-			if ((!WindowQueuedFlaskEffects[k].HasKey("RubyQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].RubyQueueEndtime-lagCompensation)))
-			{
-				flaskNum:=GetMaxChargesFlaskOfType(FlasksData,"FlaskUtility2") ; Ruby flask
-				if (flaskNum!="")
-				{
-					EffectDuration:=FlasksData[flaskNum].EffectDuration
-					WindowQueuedFlaskEffects[k].RubyQueueEndtime:=A_TickCount+EffectDuration*100
-					if (trayNotifications)
-					{
-						TrayTip, PoE AutoFlask Using Ruby Flask %flaskNum%, %A_Space% , 2
-					}
-					hKey:=FlaskHotkey%flaskNum%
-					IfWinActive Path of Exile ahk_class Direct3DWindowClass
-               {
-                  Sendinput %hkey%
-               } 
-               Else
-               {
-                  ControlSend,,%hkey%, % "ahk_id" hwnd
-               }
-					break
-				}
-			}
+      	If (currLifeRatio<CurrentConfig.minLifeRatioToPopElementalResist || currEShieldRatio<CurrentConfig.minEShieldRatioToPopElementalResist)
+      	{
+      		If ((!WindowQueuedFlaskEffects[k].HasKey("RubyQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].RubyQueueEndtime-lagCompensation)))
+      		{
+      			flaskNum:=GetMaxChargesFlaskOfType(FlasksData,"FlaskUtility2") ; Ruby flask
+      			If (flaskNum!="")
+      			{
+      				EffectDuration:=FlasksData[flaskNum].EffectDuration
+      				WindowQueuedFlaskEffects[k].RubyQueueEndtime:=A_TickCount+EffectDuration*100
+      				If (trayNotIfications)
+      				{
+      					TrayTip, PoE AutoFlask Using Ruby Flask %flaskNum%, %A_Space% , 2
+      				}
+      				hKey:=FlaskHotkey%flaskNum%
+      				IfWinActive Path of Exile ahk_class Direct3DWindowClass
+                  {
+                     Sendinput, %hkey% Down}
+                     Sendinput, %hkey% Up}
+                  } 
+                  Else
+                  {
+                     ControlSend,,%hkey% Down %hkey% Up}, % "ahk_id" hwnd
+                  }
+      				break
+      			}
+      		}
 
-			if ((!WindowQueuedFlaskEffects[k].HasKey("TopazQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].TopazQueueEndtime-lagCompensation)))
-			{
-				flaskNum:=GetMaxChargesFlaskOfType(FlasksData,"FlaskUtility4") ; Topaz flask
-				if (flaskNum!="")
-				{
-					EffectDuration:=FlasksData[flaskNum].EffectDuration
-					WindowQueuedFlaskEffects[k].TopazQueueEndtime:=A_TickCount+EffectDuration*100
-					if (trayNotifications)
-					{
-						TrayTip, PoE AutoFlask Using Topaz Flask %flaskNum%, %A_Space% , 2
-					}
-					hKey:=FlaskHotkey%flaskNum%
-					IfWinActive Path of Exile ahk_class Direct3DWindowClass
-               {
-                  Sendinput %hkey%
-               } 
-               Else
-               {
-                  ControlSend,,%hkey%, % "ahk_id" hwnd
-               }
-					break
-				}
-			}
+      		If ((!WindowQueuedFlaskEffects[k].HasKey("TopazQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].TopazQueueEndtime-lagCompensation)))
+      		{
+      			flaskNum:=GetMaxChargesFlaskOfType(FlasksData,"FlaskUtility4") ; Topaz flask
+      			If (flaskNum!="")
+      			{
+      				EffectDuration:=FlasksData[flaskNum].EffectDuration
+      				WindowQueuedFlaskEffects[k].TopazQueueEndtime:=A_TickCount+EffectDuration*100
+      				If (trayNotIfications)
+      				{
+      					TrayTip, PoE AutoFlask Using Topaz Flask %flaskNum%, %A_Space% , 2
+      				}
+      				hKey:=FlaskHotkey%flaskNum%
+      				IfWinActive Path of Exile ahk_class Direct3DWindowClass
+                  {
+                     Sendinput, %hkey% Down}
+                     Sendinput, %hkey% Up}
+                  } 
+                  Else
+                  {
+                     ControlSend,,%hkey% Down %hkey% Up}, % "ahk_id" hwnd
+                  }
+      				break
+      			}
+      		}
 
-			if ((!WindowQueuedFlaskEffects[k].HasKey("SapphireQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].SapphireQueueEndtime-lagCompensation)))
-			{
-				flaskNum:=GetMaxChargesFlaskOfType(FlasksData,"FlaskUtility3") ; Sapphire flask
-				if (flaskNum!="")
-				{
-					EffectDuration:=FlasksData[flaskNum].EffectDuration
-					WindowQueuedFlaskEffects[k].SapphireQueueEndtime:=A_TickCount+EffectDuration*100
-					if (trayNotifications)
-					{
-						TrayTip, PoE AutoFlask Using Sapphire flask %flaskNum%, %A_Space% , 2
-					}
-					hKey:=FlaskHotkey%flaskNum%
-					IfWinActive Path of Exile ahk_class Direct3DWindowClass
-               {
-                  Sendinput %hkey%
-               } 
-               Else
-               {
-                  ControlSend,,%hkey%, % "ahk_id" hwnd
-               }
-					break
-				}
-			}
+      		If ((!WindowQueuedFlaskEffects[k].HasKey("SapphireQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].SapphireQueueEndtime-lagCompensation)))
+      		{
+      			flaskNum:=GetMaxChargesFlaskOfType(FlasksData,"FlaskUtility3") ; Sapphire flask
+      			If (flaskNum!="")
+      			{
+      				EffectDuration:=FlasksData[flaskNum].EffectDuration
+      				WindowQueuedFlaskEffects[k].SapphireQueueEndtime:=A_TickCount+EffectDuration*100
+      				If (trayNotIfications)
+      				{
+      					TrayTip, PoE AutoFlask Using Sapphire flask %flaskNum%, %A_Space% , 2
+      				}
+      				hKey:=FlaskHotkey%flaskNum%
+      				IfWinActive Path of Exile ahk_class Direct3DWindowClass
+                  {
+                     Sendinput, %hkey% Down}
+                     Sendinput, %hkey% Up}
+                  } 
+                  Else
+                  {
+                     ControlSend,,%hkey% Down %hkey% Up}, % "ahk_id" hwnd
+                  }
+      				break
+      			}
+      		}
 
-			if ((!WindowQueuedFlaskEffects[k].HasKey("AmethystQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].AmethystQueueEndtime-lagCompensation)))
-			{
-				flaskNum:=GetMaxChargesFlaskOfType(FlasksData,"FlaskUtility7") ; Amethyst flask
-				if (flaskNum!="")
-				{
-					EffectDuration:=FlasksData[flaskNum].EffectDuration
-					WindowQueuedFlaskEffects[k].AmethystQueueEndtime:=A_TickCount+EffectDuration*100
-					if (trayNotifications)
-					{
-						TrayTip, PoE AutoFlask Using Amethyst Flask %flaskNum%, %A_Space% , 2
-					}
-					hKey:=FlaskHotkey%flaskNum%
-					IfWinActive Path of Exile ahk_class Direct3DWindowClass
-               {
-                  Sendinput %hkey%
-               } 
-               Else
-               {
-                  ControlSend,,%hkey%, % "ahk_id" hwnd
-               }
-					break
-				}
-			}
-		}
+      		If ((!WindowQueuedFlaskEffects[k].HasKey("AmethystQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].AmethystQueueEndtime-lagCompensation)))
+      		{
+      			flaskNum:=GetMaxChargesFlaskOfType(FlasksData,"FlaskUtility7") ; Amethyst flask
+      			If (flaskNum!="")
+      			{
+      				EffectDuration:=FlasksData[flaskNum].EffectDuration
+      				WindowQueuedFlaskEffects[k].AmethystQueueEndtime:=A_TickCount+EffectDuration*100
+      				If (trayNotIfications)
+      				{
+      					TrayTip, PoE AutoFlask Using Amethyst Flask %flaskNum%, %A_Space% , 2
+      				}
+      				hKey:=FlaskHotkey%flaskNum%
+      				IfWinActive Path of Exile ahk_class Direct3DWindowClass
+                  {
+                     Sendinput, %hkey% Down}
+                     Sendinput, %hkey% Up}
+                  } 
+                  Else
+                  {
+                     ControlSend,,%hkey% Down %hkey% Up}, % "ahk_id" hwnd
+                  }
+      				break
+      			}
+      		}
+      	}
 
-		if (PlayerStats.MaxMana>0 && (currManaRatio<CurrentConfig.minManaRatioToDrink || PlayerStats.CurrMana<CurrentConfig.minManaToDrink))
-		{      
-			if ((!WindowQueuedFlaskEffects[k].HasKey("ManaQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].ManaQueueEndtime-lagCompensation)))
-			{
-				tflaskNum2:=GetMaxChargesFlaskOfType(FlasksData,"FlaskMana")
-				tflaskNum1:=GetMaxChargesFlaskOfType(FlasksData,"FlaskHybrid")
-				  
-				if ((tflaskNum1!=) && (tflaskNum2!=))
-				{
-					flaskNum:=(FlasksData[tflaskNum1].ChargesCurrent>FlasksData[tflaskNum2].ChargesCurrent) ? tflaskNum1 : tflaskNum2
-				}
-				else
-				{
-					if (tflaskNum1!="")
-					{
-						flaskNum:=tflaskNum1
-					}
-					if (tflaskNum2!="")
-					{
-						flaskNum:=tflaskNum2
-					}
-				}
+      	If (PlayerStats.MaxMana>0 && (currManaRatio<CurrentConfig.minManaRatioToDrink || PlayerStats.CurrMana<CurrentConfig.minManaToDrink))
+      	{      
+      		If ((!WindowQueuedFlaskEffects[k].HasKey("ManaQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].ManaQueueEndtime-lagCompensation)))
+      		{
+      			tflaskNum2:=GetMaxChargesFlaskOfType(FlasksData,"FlaskMana")
+      			tflaskNum1:=GetMaxChargesFlaskOfType(FlasksData,"FlaskHybrid")
+      			  
+      			If ((tflaskNum1!=) && (tflaskNum2!=))
+      			{
+      				flaskNum:=(FlasksData[tflaskNum1].ChargesCurrent>FlasksData[tflaskNum2].ChargesCurrent) ? tflaskNum1 : tflaskNum2
+      			}
+      			Else
+      			{
+      				If (tflaskNum1!="")
+      				{
+      					flaskNum:=tflaskNum1
+      				}
+      				If (tflaskNum2!="")
+      				{
+      					flaskNum:=tflaskNum2
+      				}
+      			}
 
-				if (flaskNum!="")
-				{
-					EffectDuration:=FlasksData[flaskNum].EffectDuration
-					if (InStr(FlasksData[flaskNum].mod1,"Seething"))
-					{
-						WindowQueuedFlaskEffects[k].ManaQueueEndtime:=A_TickCount+500
-					}
-					else if (InStr(FlasksData[flaskNum].mod2,"Seething"))
-					{
-						WindowQueuedFlaskEffects[k].ManaQueueEndtime:=A_TickCount+500
-					}
-					else if ((InStr(FlasksData[flaskNum].mod1,"Panicked")) And ((PlayerStats.CurrHP/PlayerStats.MaxHP)<=0.35)) ; "Low life" can be caused by auras hp reservation from blood magic
-					{
-						WindowQueuedFlaskEffects[k].ManaQueueEndtime:=A_TickCount+500
-					}
-					else if ((InStr(FlasksData[flaskNum].mod2,"Panicked")) And ((PlayerStats.CurrHP/PlayerStats.MaxHP)<=0.35)) ; "Low life" can be caused by auras hp reservation from blood magic
-					{
-						WindowQueuedFlaskEffects[k].ManaQueueEndtime:=A_TickCount+500
-					}
-					else
-					{
-						WindowQueuedFlaskEffects[k].ManaQueueEndtime:=A_TickCount+EffectDuration*100
-					}
-					if (trayNotifications)
-					{
-						TrayTip, PoE AutoFlask Using Mana Flask %flaskNum%, %A_Space% , 2
-					}
-					hKey:=FlaskHotkey%flaskNum%
-					IfWinActive Path of Exile ahk_class Direct3DWindowClass
-               {
-                  Sendinput %hkey%
-               } 
-               Else
-               {
-                  ControlSend,,%hkey%, % "ahk_id" hwnd
-               }
-					Break
-				}
-			}
-		}
+      			If (flaskNum!="")
+      			{
+      				EffectDuration:=FlasksData[flaskNum].EffectDuration
+      				If (InStr(FlasksData[flaskNum].mod1,"Seething"))
+      				{
+      					WindowQueuedFlaskEffects[k].ManaQueueEndtime:=A_TickCount+500
+      				}
+      				Else If (InStr(FlasksData[flaskNum].mod2,"Seething"))
+      				{
+      					WindowQueuedFlaskEffects[k].ManaQueueEndtime:=A_TickCount+500
+      				}
+      				Else If ((InStr(FlasksData[flaskNum].mod1,"Panicked")) And ((PlayerStats.CurrHP/PlayerStats.MaxHP)<=0.35)) ; "Low Life" can be caused by auras hp reservation from blood magic
+      				{
+      					WindowQueuedFlaskEffects[k].ManaQueueEndtime:=A_TickCount+500
+      				}
+      				Else If ((InStr(FlasksData[flaskNum].mod2,"Panicked")) And ((PlayerStats.CurrHP/PlayerStats.MaxHP)<=0.35)) ; "Low Life" can be caused by auras hp reservation from blood magic
+      				{
+      					WindowQueuedFlaskEffects[k].ManaQueueEndtime:=A_TickCount+500
+      				}
+      				Else
+      				{
+      					WindowQueuedFlaskEffects[k].ManaQueueEndtime:=A_TickCount+EffectDuration*100
+      				}
+      				If (trayNotIfications)
+      				{
+      					TrayTip, PoE AutoFlask Using Mana Flask %flaskNum%, %A_Space% , 2
+      				}
+      				hKey:=FlaskHotkey%flaskNum%
+      				IfWinActive Path of Exile ahk_class Direct3DWindowClass
+                  {
+                     Sendinput, %hkey% Down}
+                     Sendinput, %hkey% Up}
+                  } 
+                  Else
+                  {
+                     ControlSend,,%hkey% Down %hkey% Up}, % "ahk_id" hwnd
+                  }
+      				Break
+      			}
+      		}
+      	}
+      }
 
-		if (PlayerStats.PlayerActionID!="" && PlayerStats.PlayerActionID!=80 && PlayerStats.PlayerActionID!=90)
+		If (PlayerStats.PlayerActionID!="" && PlayerStats.PlayerActionID!=80 && PlayerStats.PlayerActionID!=90)
 		{
 			MovementTimer:= A_TickCount
 		}
 		;TODO MovementTimer%A_Index%
 
-		if(QuickSilverCheck && QuicksilverBuff=0)
+		If(QuickSilverCheck && QuicksilverBuff=0)
 		{
-			if (PlayerStats.InCity!="" && PlayerStats.InCity=65537)
+			If (PlayerStats.InCity!="" && PlayerStats.InCity=65537)
 			{
-				if (PlayerStats.PanelWaypoint=65536 && PlayerStats.PanelInventory=65536 && PlayerStats.PanelSkillTree=65536 && PlayerStats.PanelSocial=65536)
+				If (PlayerStats.PanelWaypoint=65536 && PlayerStats.PanelInventory=65536 && PlayerStats.PanelSkillTree=65536 && PlayerStats.PanelSocial=65536)
 				{
-					if (PlayerStats.ChatStatus!="" && PlayerStats.ChatStatus=65536)
+					If (PlayerStats.ChatStatus!="" && PlayerStats.ChatStatus=65536)
 					{
-						if (PlayerStats.PlayerActionID!="" && (PlayerStats.PlayerActionID=80 || PlayerStats.PlayerActionID=90))
+						If (PlayerStats.PlayerActionID!="" && (PlayerStats.PlayerActionID=80 || PlayerStats.PlayerActionID=90))
 						{
 							If (A_TickCount>=MovementTimer+CurrentConfig.QuickSilverTimer)
 							{
-								if ((!WindowQueuedFlaskEffects[k].HasKey("QuickQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].QuickQueueEndtime-lagCompensation)))
+								If ((!WindowQueuedFlaskEffects[k].HasKey("QuickQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].QuickQueueEndtime-lagCompensation)))
 								{
 									flaskNum:=GetMaxChargesFlaskQuickSilver(FlasksData,"FlaskUtility6") ; QuickSilver flask
-									if (flaskNum!="")
+									If (flaskNum!="")
 									{
 										EffectDuration:=FlasksData[flaskNum].EffectDuration
 										WindowQueuedFlaskEffects[k].QuickQueueEndtime:=A_TickCount+EffectDuration*100
-										if (trayNotifications)
+										If (trayNotIfications)
 										{
 											TrayTip, PoE AutoFlask Using QuickSilver Flask %flaskNum%, %A_Space% , 2
 										}
 										hKey:=FlaskHotkey%flaskNum%
 										IfWinActive Path of Exile ahk_class Direct3DWindowClass
                               {
-                                 Sendinput %hkey%
+                                 Sendinput, %hkey% Down}
+                                 Sendinput, %hkey% Up}
                               } 
                               Else
                               {
-                                 ControlSend,,%hkey%, % "ahk_id" hwnd
+                                 ControlSend,,%hkey% Down %hkey% Up}, % "ahk_id" hwnd
                               }
 										break
 									}
@@ -2245,37 +2313,38 @@ Main()
 			}
 		}
 
-		if(QuickSilverCheck2 && QuicksilverBuff=0)
+		If(QuickSilverCheck2 && QuicksilverBuff=0)
 		{
-			if (PlayerStats.InCity!="" && PlayerStats.InCity=65537)
+			If (PlayerStats.InCity!="" && PlayerStats.InCity=65537)
 			{
-				if (PlayerStats.ChatStatus!="" && PlayerStats.ChatStatus=65536)
+				If (PlayerStats.ChatStatus!="" && PlayerStats.ChatStatus=65536)
 				{
-					if (PlayerStats.PanelWaypoint=65536 && PlayerStats.PanelInventory=65536 && PlayerStats.PanelSkillTree=65536 && PlayerStats.PanelSocial=65536)
+					If (PlayerStats.PanelWaypoint=65536 && PlayerStats.PanelInventory=65536 && PlayerStats.PanelSkillTree=65536 && PlayerStats.PanelSocial=65536)
 					{
-						if (PlayerStats.PlayerActionID!="" && (PlayerStats.PlayerActionID=80 || PlayerStats.PlayerActionID=90))
+						If (PlayerStats.PlayerActionID!="" && (PlayerStats.PlayerActionID=80 || PlayerStats.PlayerActionID=90))
 						{
 							If (A_TickCount>=MovementTimer+CurrentConfig.QuickSilverTimer)
 							{
-								if ((!WindowQueuedFlaskEffects[k].HasKey("QuickQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].QuickQueueEndtime-lagCompensation)))
+								If ((!WindowQueuedFlaskEffects[k].HasKey("QuickQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].QuickQueueEndtime-lagCompensation)))
 								{
 									flaskNum:=GetMaxChargesFlaskQuickSilver2(FlasksData,"FlaskUtility6") ; QuickSilver flask
-									if (flaskNum!="")
+									If (flaskNum!="")
 									{
 										EffectDuration:=FlasksData[flaskNum].EffectDuration
 										WindowQueuedFlaskEffects[k].QuickQueueEndtime:=A_TickCount+EffectDuration*100
-										if (trayNotifications)
+										If (trayNotIfications)
 										{
 											TrayTip, PoE AutoFlask Using QuickSilver flask %flaskNum%, %A_Space% , 2
 										}
 										hKey:=FlaskHotkey%flaskNum%
 										IfWinActive Path of Exile ahk_class Direct3DWindowClass
                               {
-                                 Sendinput %hkey%
+                                 Sendinput, %hkey% Down}
+                                 Sendinput, %hkey% Up}
                               } 
                               Else
                               {
-                                 ControlSend,,%hkey%, % "ahk_id" hwnd
+                                 ControlSend,,%hkey% Down %hkey% Up}, % "ahk_id" hwnd
                               }
 										break
 									}
@@ -2287,23 +2356,23 @@ Main()
 			}
 		}
       
-		if(AttackInPlaceCheck)
+		If(AttackInPlaceCheck)
 		{
-			if (IsInGame(hwnd))
+			If (IsInGame(hwnd))
 			{
-				if (PlayerStats.InCity!="" && PlayerStats.InCity=65537)
+				If (PlayerStats.InCity!="" && PlayerStats.InCity=65537)
 				{
-					if (PlayerStats.PanelWaypoint=65536 && PlayerStats.PanelInventory=65536 && PlayerStats.PanelSkillTree=65536 && PlayerStats.PanelSocial=65536)
+					If (PlayerStats.PanelWaypoint=65536 && PlayerStats.PanelInventory=65536 && PlayerStats.PanelSkillTree=65536 && PlayerStats.PanelSocial=65536)
 					{
-						if (PlayerStats.MouseOnEnemyStatus!="" && PlayerStats.MouseOnEnemyStatus=65537)
+						If (PlayerStats.MouseOnEnemyStatus!="" && PlayerStats.MouseOnEnemyStatus=65537)
 						{
-							if (PlayerStats.ChatStatus!="" && PlayerStats.ChatStatus=65536)
+							If (PlayerStats.ChatStatus!="" && PlayerStats.ChatStatus=65536)
 							{
-								if (PlayerStats.EnemyName!="")
+								If (PlayerStats.EnemyName!="")
 								{
-									if (PlayerStats.EnemyName2!="Oak}" && PlayerStats.EnemyName2!="Alira}" && PlayerStats.EnemyName2!="Kraityn}")
+									If (PlayerStats.EnemyName2!="Oak}" && PlayerStats.EnemyName2!="Alira}" && PlayerStats.EnemyName2!="Kraityn}")
 									{
-										If (InStr(PlayerStats.EnemyName2,"Shrine") || InStr(PlayerStats.EnemyName2,"Level"))
+										If (InStr(PlayerStats.EnemyName2,"Shrine") || InStr(PlayerStats.EnemyName2,"(Level)"))
 										{
 											AttackInPlaceKeyUp:=1
 										}
@@ -2312,7 +2381,7 @@ Main()
 											IfWinActive Path of Exile ahk_class Direct3DWindowClass
 											{
                                     GetKeyState, stateSH, %AttackInPlaceKey%
-                                    if stateRCtrl = U
+                                    If stateSH = U
                                     {
    												Sendinput, {%AttackInPlaceKey% DOWN}
    												AttackInPlaceKeyUp:=0
@@ -2362,7 +2431,7 @@ Main()
 			If (AttackInPlaceKeyUp=1 && AttackInPlaceKeyDown=1)
          {
             GetKeyState, stateSH, %AttackInPlaceKey%
-            if stateSH = D
+            If stateSH = D
             {
                Sendinput, {%AttackInPlaceKey% UP}
             }
@@ -2370,25 +2439,25 @@ Main()
          }
 		}
 
-      if(HoldCtrlCheck)
+      If(HoldCtrlCheck)
       {
-         if (IsInGame(hwnd))
+         If (IsInGame(hwnd))
          {
-            if (PlayerStats.PanelWaypoint=65537 && PlayerStats.PanelInstanceManager=65536 && PlayerStats.PanelInventory=65536 && PlayerStats.PanelSkillTree=65536 && PlayerStats.PanelSocial=65536)
+            If (PlayerStats.PanelWaypoint=65537 && PlayerStats.PanelInstanceManager=65536 && PlayerStats.PanelInventory=65536 && PlayerStats.PanelSkillTree=65536 && PlayerStats.PanelSocial=65536)
             {
-               if (PlayerStats.ChatStatus!="" && PlayerStats.ChatStatus=65536)
+               If (PlayerStats.ChatStatus!="" && PlayerStats.ChatStatus=65536)
                {
-                  if (LeavingArea=0)
+                  If (LeavingArea=0)
                   {
                      IfWinActive Path of Exile ahk_class Direct3DWindowClass
                      {
                         GetKeyState, stateRCtrl, RCtrl
-                        if stateRCtrl = U
+                        If stateRCtrl = U
                         {
                            Sendinput, {RCtrl Down}
                            CtrlKeyUp:=0
                            CtrlkeyDown:=1
-                           if (trayNotifications)
+                           If (trayNotIfications)
                            {
                               TrayTip, , CTRL key: DOWN, 1
                            }
@@ -2421,10 +2490,10 @@ Main()
          If (CtrlKeyUp=1 && CtrlkeyDown=1)
          {
             GetKeyState, stateRCtrl, RCtrl
-            if stateRCtrl = D
+            If stateRCtrl = D
             {
                Sendinput, {RCtrl Up}
-               if (trayNotifications)
+               If (trayNotIfications)
                {
                   TrayTip,, CTRL key: UP, 1
                }
@@ -2436,20 +2505,20 @@ Main()
 
 
       
-   ;if (PlayerStats.PlayerActionID!="" && PlayerStats.PlayerActionID=2176)  ;2048 not
-   ;if ((autoQuit=1) && (ThisID!="") && (ThisID!=WinActive("A")))
+   ;If (PlayerStats.PlayerActionID!="" && PlayerStats.PlayerActionID=2176)  ;2048 not
+   ;If ((autoQuit=1) && (ThisID!="") && (ThisID!=WinActive("A")))
    ;WinActivate, % "ahk_id" ThisID
       
       ++PanickedTimer  ;TODO better way
 
 
-      if desync = 1
+      If desync = 1
       {
-         if (PlayerStats.ChatStatus!="" && PlayerStats.ChatStatus=65536)
+         If (PlayerStats.ChatStatus!="" && PlayerStats.ChatStatus=65536)
          {
-            if (IsInGame(hwnd))
+            If (IsInGame(hwnd))
             {
-               if (PlayerStats.PanelWaypoint=65536 && PlayerStats.PanelInventory=65536 && PlayerStats.PanelSkillTree=65536 && PlayerStats.PanelSocial=65536)
+               If (PlayerStats.PanelWaypoint=65536 && PlayerStats.PanelInventory=65536 && PlayerStats.PanelSkillTree=65536 && PlayerStats.PanelSocial=65536)
                   {
                   IfWinActive Path of Exile ahk_class Direct3DWindowClass
                   {
@@ -2469,13 +2538,13 @@ Main()
          desync := 0
       }
 
-      if remaining = 1
+      If remaining = 1
       {
-         if (PlayerStats.ChatStatus!="" && PlayerStats.ChatStatus=65536)
+         If (PlayerStats.ChatStatus!="" && PlayerStats.ChatStatus=65536)
          {
-            if (IsInGame(hwnd))
+            If (IsInGame(hwnd))
             {
-               if (PlayerStats.PanelWaypoint=65536 && PlayerStats.PanelInventory=65536 && PlayerStats.PanelSkillTree=65536 && PlayerStats.PanelSocial=65536)
+               If (PlayerStats.PanelWaypoint=65536 && PlayerStats.PanelInventory=65536 && PlayerStats.PanelSkillTree=65536 && PlayerStats.PanelSocial=65536)
                {
                   IfWinActive Path of Exile ahk_class Direct3DWindowClass
                   {
@@ -2496,13 +2565,13 @@ Main()
          }
       }
 
-      if hideout = 1
+      If hideout = 1
       {
-         if (PlayerStats.ChatStatus!="" && PlayerStats.ChatStatus=65536)
+         If (PlayerStats.ChatStatus!="" && PlayerStats.ChatStatus=65536)
          {
-            if (IsInGame(hwnd))
+            If (IsInGame(hwnd))
             {
-               if (PlayerStats.PanelWaypoint=65536 && PlayerStats.PanelInventory=65536 && PlayerStats.PanelSkillTree=65536 && PlayerStats.PanelSocial=65536)
+               If (PlayerStats.PanelWaypoint=65536 && PlayerStats.PanelInventory=65536 && PlayerStats.PanelSkillTree=65536 && PlayerStats.PanelSocial=65536)
                {
                   IfWinActive Path of Exile ahk_class Direct3DWindowClass
                   {
@@ -2523,16 +2592,16 @@ Main()
          }
       }
 
-      if (PlayerStats.ChatStatus!="" && PlayerStats.ChatStatus=65536)
+      If (PlayerStats.ChatStatus!="" && PlayerStats.ChatStatus=65536)
       {
          ChatCheckTimer:= 1
       }
 
-      if (PlayerStats.ChatStatus!="" && PlayerStats.ChatStatus=65537)
+      If (PlayerStats.ChatStatus!="" && PlayerStats.ChatStatus=65537)
       {
          If (A_TickCount>=(ChatStatusTimer+50))
          {
-            if (IsInGame(hwnd))
+            If (IsInGame(hwnd))
             {
                IfWinActive Path of Exile ahk_class Direct3DWindowClass
                {
@@ -2573,24 +2642,24 @@ Main()
          }
       }
 
-      if tradechat = 1
+      If tradechat = 1
       {
          SendMode, Input
          If (A_TickCount>=TradeTimer+1000+(TradeSpam*2000))
          {
-            if (PlayerStats.ChatStatus!="" && PlayerStats.ChatStatus=65536)
+            If (PlayerStats.ChatStatus!="" && PlayerStats.ChatStatus=65536)
             {
-               if (IsInGame(hwnd))
+               If (IsInGame(hwnd))
                { 
-                  if (PlayerStats.PanelWaypoint=65536 && PlayerStats.PanelInventory=65536 && PlayerStats.PanelSkillTree=65536 && PlayerStats.PanelSocial=65536)
+                  If (PlayerStats.PanelWaypoint=65536 && PlayerStats.PanelInventory=65536 && PlayerStats.PanelSkillTree=65536 && PlayerStats.PanelSocial=65536)
                   {
                      IfWinActive Path of Exile ahk_class Direct3DWindowClass
                      {
                         SendMode Input
-                        GetKeyState, stateSH, SHIFT
-                        if stateSH = D
+                        GetKeyState, stateSH, SHIfT
+                        If stateSH = D
                         {
-                           Sendinput {SHIFT up}
+                           Sendinput {SHIfT up}
                         }
                         If (TradeStep = 1)
                         {
@@ -2600,13 +2669,13 @@ Main()
                            TradeStep:= 2
                            TradeTimer:= A_TickCount
                         }
-                        else If (TradeStep = 2)
+                        Else If (TradeStep = 2)
                         {
                            Send {NumpadEnter}{Up 2}{NumpadEnter}
                            TradeStep:= 3
                            TradeTimer:= A_TickCount
                         }
-                        else If (TradeStep = 3)
+                        Else If (TradeStep = 3)
                         {
                            If (TradeChannel<10)
                            {
@@ -2626,10 +2695,10 @@ Main()
                      Else
                      {
                         SendMode Input
-                        GetKeyState, stateSH, SHIFT
-                        if stateSH = D
+                        GetKeyState, stateSH, SHIfT
+                        If stateSH = D
                         {
-                           Sendinput {SHIFT up}
+                           Sendinput {SHIfT up}
                         }
                         If (TradeStep = 1)
                         {
@@ -2641,7 +2710,7 @@ Main()
                            TradeStep:= 2
                            TradeTimer:= A_TickCount
                         }
-                        else If (TradeStep = 2)
+                        Else If (TradeStep = 2)
                         {
                            SetKeyDelay, 20, 20
                            ControlSend,,{NumpadEnter}{Up 2}{NumpadEnter}, % "ahk_id" hwnd
@@ -2649,7 +2718,7 @@ Main()
                            TradeStep:= 3
                            TradeTimer:= A_TickCount
                         }
-                        else If (TradeStep = 3)
+                        Else If (TradeStep = 3)
                         {
                            If (TradeChannel<10)
                            {
@@ -2677,20 +2746,20 @@ Main()
       {
          If (A_TickCount>=(ResyncTimer+ResyncSpam*1000) And (ResyncSpam>0))
          {
-            if (PlayerStats.InCity!="" && PlayerStats.InCity=65537)
+            If (PlayerStats.InCity!="" && PlayerStats.InCity=65537)
             { 
-               if (PlayerStats.ChatStatus!="" && PlayerStats.ChatStatus=65536)
+               If (PlayerStats.ChatStatus!="" && PlayerStats.ChatStatus=65536)
                {
-                  if (IsInGame(hwnd))
+                  If (IsInGame(hwnd))
                   {
-                     if (PlayerStats.PanelWaypoint=65536 && PlayerStats.PanelInventory=65536 && PlayerStats.PanelSkillTree=65536 && PlayerStats.PanelSocial=65536)
+                     If (PlayerStats.PanelWaypoint=65536 && PlayerStats.PanelInventory=65536 && PlayerStats.PanelSkillTree=65536 && PlayerStats.PanelSocial=65536)
                      {
                         IfWinActive Path of Exile ahk_class Direct3DWindowClass
                         {
-                           GetKeyState, stateSH, SHIFT
-                           if stateSH = D
+                           GetKeyState, stateSH, SHIfT
+                           If stateSH = D
                            {
-                              Sendinput {SHIFT up}
+                              Sendinput {SHIfT up}
                            }
                            Sendinput {NumpadEnter}/oos{NumpadEnter}
                         }
@@ -2703,20 +2772,20 @@ Main()
 
          If (A_TickCount>=(RemainingTimer+RemainingSpam*1000) And (RemainingSpam>0))
          {
-            if (PlayerStats.InCity!="" && PlayerStats.InCity=65537)
+            If (PlayerStats.InCity!="" && PlayerStats.InCity=65537)
             { 
-               if (PlayerStats.ChatStatus!="" && PlayerStats.ChatStatus=65536)
+               If (PlayerStats.ChatStatus!="" && PlayerStats.ChatStatus=65536)
                {
-                  if (IsInGame(hwnd))
+                  If (IsInGame(hwnd))
                   {
-                     if (PlayerStats.PanelWaypoint=65536 && PlayerStats.PanelInventory=65536 && PlayerStats.PanelSkillTree=65536 && PlayerStats.PanelSocial=65536)
+                     If (PlayerStats.PanelWaypoint=65536 && PlayerStats.PanelInventory=65536 && PlayerStats.PanelSkillTree=65536 && PlayerStats.PanelSocial=65536)
                      {
                         IfWinActive Path of Exile ahk_class Direct3DWindowClass
                         {
-                           GetKeyState, stateSH, SHIFT
-                           if stateSH = D
+                           GetKeyState, stateSH, SHIfT
+                           If stateSH = D
                            {
-                              Sendinput {SHIFT up}
+                              Sendinput {SHIfT up}
                            }
                            Sendinput {NumpadEnter}/remaining{NumpadEnter}
                         }
@@ -2757,91 +2826,91 @@ Main()
          {
             GuiControl,4: , PlayerActionIDvar , %PlayerActionIDvalue% (Moving)
          }
-         else if (PlayerActionIDvalue=02 || PlayerActionIDvalue=10 || PlayerActionIDvalue=12)
+         Else If (PlayerActionIDvalue=02 || PlayerActionIDvalue=10 || PlayerActionIDvalue=12)
          {
             GuiControl,4: , PlayerActionIDvar , %PlayerActionIDvalue% (Attacking)
          }
-         else if (PlayerActionIDvalue=00)
+         Else If (PlayerActionIDvalue=00)
          {
             GuiControl,4: , PlayerActionIDvar , %PlayerActionIDvalue% (Nothing)
          }
-         else if (PlayerActionIDvalue=40)
+         Else If (PlayerActionIDvalue=40)
          {
             GuiControl,4: , PlayerActionIDvar , %PlayerActionIDvalue% (Dead)
          }
-         else
+         Else
          {
             GuiControl,4: , PlayerActionIDvar , %PlayerActionIDvalue% (Unknown)
          }
          ChatStatusvalue:=PlayerStats.ChatStatus
-         if (ChatStatusvalue=65537)
+         If (ChatStatusvalue=65537)
          {
             GuiControl,4: , ChatStatusvar , Opened
          }
-         else if (ChatStatusvalue=65536)
+         Else If (ChatStatusvalue=65536)
          {
             GuiControl,4: , ChatStatusvar , Closed
          }
          MouseOnEnemyStatusvalue:=PlayerStats.MouseOnEnemyStatus
-         if (MouseOnEnemyStatusvalue=65537)
+         If (MouseOnEnemyStatusvalue=65537)
          {
             GuiControl,4: , MouseOnEnemyStatusvar , Yes
          }
-         else if (MouseOnEnemyStatusvalue=65536)
+         Else If (MouseOnEnemyStatusvalue=65536)
          {
             GuiControl,4: , MouseOnEnemyStatusvar , No
          }
          PanelWaypointvalue:=PlayerStats.PanelWaypoint
-         if (PanelWaypointvalue=65537)
+         If (PanelWaypointvalue=65537)
          {
             GuiControl,4: , PanelWaypointvar , Opened
          }
-         else if (PanelWaypointvalue=65536)
+         Else If (PanelWaypointvalue=65536)
          {
             GuiControl,4: , PanelWaypointvar , Closed
          }
          PanelInventoryvalue:=PlayerStats.PanelInventory
-         if (PanelInventoryvalue=65537)
+         If (PanelInventoryvalue=65537)
          {
             GuiControl,4: , PanelInventoryvar , Opened
          }
-         else if (PanelInventoryvalue=65536)
+         Else If (PanelInventoryvalue=65536)
          {
             GuiControl,4: , PanelInventoryvar , Closed
          }
          PanelSkillTreevalue:=PlayerStats.PanelSkillTree
-         if (PanelSkillTreevalue=65537)
+         If (PanelSkillTreevalue=65537)
          {
             GuiControl,4: , PanelSkillTreevar , Opened
          }
-         else if (PanelSkillTreevalue=65536)
+         Else If (PanelSkillTreevalue=65536)
          {
             GuiControl,4: , PanelSkillTreevar , Closed
          }
          PanelSocialvalue:=PlayerStats.PanelSocial
-         if (PanelSocialvalue=65537)
+         If (PanelSocialvalue=65537)
          {
             GuiControl,4: , PanelSocialvar , Opened
          }
-         else if (PanelSkillTreevalue=65536)
+         Else If (PanelSkillTreevalue=65536)
          {
             GuiControl,4: , PanelSocialvar , Closed
          }
          InCityvalue:=PlayerStats.InCity
-         if (InCityvalue=65537)
+         If (InCityvalue=65537)
          {
             GuiControl,4: , InCityvar , No
          }
-         else if (InCityvalue=65536)
+         Else If (InCityvalue=65536)
          {
             GuiControl,4: , InCityvar , Yes
          }
          PanelInstanceManagervalue:=PlayerStats.PanelInstanceManager
-         if (PanelInstanceManagervalue=65537)
+         If (PanelInstanceManagervalue=65537)
          {
             GuiControl,4: , PanelInstanceManagervar , Opened
          }
-         else if (PanelInstanceManagervalue=65536)
+         Else If (PanelInstanceManagervalue=65536)
          {
             GuiControl,4: , PanelInstanceManagervar , Closed
          }
@@ -2921,59 +2990,59 @@ UsePortal()
       SendMode Input
       hwnd:=WinActive("A")
       GetKeyState, stateR, RButton
-      if stateR = D
+      If stateR = D
       {
          Send {RButton up}
       }
       GetKeyState, stateL, LButton
-      if stateL = D
+      If stateL = D
       {
          Send {LButton up}
       }
       GetKeyState, stateM, MButton
-      if stateM = D
+      If stateM = D
       {
          Send {MButton up}
       }
       GetKeyState, stateQ, Q
-      if stateQ = D
+      If stateQ = D
       {
          Send {Q up}
       }
       GetKeyState, stateW, W
-      if stateW = D
+      If stateW = D
       {
          Send {W up}
       }
       GetKeyState, stateE, E
-      if stateE = D
+      If stateE = D
       {
          Send {E up}
       }
       GetKeyState, stateR, R
-      if stateR = D
+      If stateR = D
       {
          Send {R up}
       }
       GetKeyState, stateT, T
-      if stateT = D
+      If stateT = D
       {
          Send {T up}
       }
       GetKeyState, stateI, I
-      if stateI = D
+      If stateI = D
       {
          Send {I up}
       }
       GetKeyState, stateSP, SPACE
-      if stateSP = D
+      If stateSP = D
       {
          Send {SPACE up}
       }
-      GetKeyState, stateSH, SHIFT
-      if stateSH = D
+      GetKeyState, stateSH, SHIfT
+      If stateSH = D
       {
-         Send {SHIFT up}
+         Send {SHIfT up}
       }
       ReadClientResolution(hwnd,w,h)
       Send {SPACE}
@@ -2985,7 +3054,7 @@ UsePortal()
       Sleep, 50
       ScrollX:= (w/2)
       ScrollY:= (h/2)
-      PixelSearch, ScrollX, ScrollY, ScrollX, ScrollY, w, h, 0xFFFFFF, 1, fast  ;2b1d35  312238
+      PixElsearch, ScrollX, ScrollY, ScrollX, ScrollY, w, h, 0xFFFFFF, 1, fast  ;2b1d35  312238
       If ErrorLevel = 0
       {
          MouseMove, (ScrollX), (ScrollY),0
@@ -2999,7 +3068,7 @@ UsePortal()
             Loop
             {
                ErrorLevel = 1
-               PixelSearch, ScrollX2, ScrollY2, ScrollX, ScrollY, (ScrollX+50), (ScrollY+10), 0xFFFFFF, 1, fast ;0xFBFBFB, 4, fast  ;2b1d35  312238
+               PixElsearch, ScrollX2, ScrollY2, ScrollX, ScrollY, (ScrollX+50), (ScrollY+10), 0xFFFFFF, 1, fast ;0xFBFBFB, 4, fast  ;2b1d35  312238
                If ErrorLevel = 0
                {
                   MouseMove, (ScrollX2), (ScrollY2),0
@@ -3013,7 +3082,7 @@ UsePortal()
                      Return
                   }
                }
-               else
+               Else
                {
                   ScrollX:= (ScrollX+50)
                   Continue
@@ -3031,8 +3100,8 @@ UsePortal()
       Loop
       {
          ErrorLevel = 1
-         PixelSearch, PixX, PixY, (w/4), (h/10), ((w/4)*3), h, 0xddbb30, 34, fast  ;0xdcc8c8 text color
-         if ErrorLevel = 0
+         PixElsearch, PixX, PixY, (w/4), (h/10), ((w/4)*3), h, 0xddbb30, 34, fast  ;0xdcc8c8 text color
+         If ErrorLevel = 0
          {
             MouseMove, (PixX), (PixY),0
             Sleep, 20
@@ -3042,7 +3111,7 @@ UsePortal()
                ReadHeroPos(hwnd,PosX1,PosY1)
                sleep, 30
                ReadHeroPos(hwnd,PosX2,PosY2)
-               if PosX1 = %PosX2%
+               If PosX1 = %PosX2%
                {
                   If PosY1 = %PosY2%
                   {
@@ -3050,11 +3119,11 @@ UsePortal()
                   }
             
                }
-               else
+               Else
                sleep, 30
             }
          }
-         else
+         Else
          {
             Break
          }
@@ -3078,7 +3147,7 @@ Toggle_Window(window)
    IfWinActive Path of Exile ahk_class Direct3DWindowClass
    {
       WinGet, S, Style, % "ahk_id " window   ; Get the style of the window
-      If (S & +0x840000)      ; if not borderless
+      If (S & +0x840000)      ; If not borderless
       {
          WinGetPos, ClientX, ClientY, ClientW, ClientH
          hwnd:=WinActive("A")
@@ -3092,7 +3161,7 @@ Toggle_Window(window)
          ClipCursor(Confine, (ClientX), (ClientY), (ClientX+w),(ClientY+h))
          return
       }
-      If (S & -0x840000)      ; if borderless
+      If (S & -0x840000)      ; If borderless
       {
          WinSet, Style, +0x840000, % "ahk_id " window   ; Reapply borders
          WinSet, Style, +0x400000, % "ahk_id " window
@@ -3237,80 +3306,80 @@ IfWinActive Path of Exile ahk_class Direct3DWindowClass
 
         Loop, parse, Clipboard, `n, `r          ; Goes through a loop with the lines of text found in the clipboard
         {
-                if (A_Index = 1)
+                If (A_Index = 1)
                 {
                         IfNotInString, A_Loopfield, Rarity:             ; Starts a check whether it has "Rarity:" in the first line, otherwise exit
                         {
                                 Exit
                         }
                 }
-                else if (A_Index = 2)
+                Else If (A_Index = 2)
                 {
                         Name := A_Loopfield
                 }
-                else if (A_Index = 3)
+                Else If (A_Index = 3)
                 {
                         Type := A_Loopfield
                 }
-                else if (!ItemLevel && RegExMatch(A_Loopfield, "Itemlevel: (\d*)", SubPat))
+                Else If (!ItemLevel && RegExMatch(A_Loopfield, "Itemlevel: (\d*)", SubPat))
                 {
                         ItemLevel := SubPat1
                 }
-                else if (!Quality && RegExMatch(A_Loopfield, "Quality: \+(\d*)\%", SubPat))
+                Else If (!Quality && RegExMatch(A_Loopfield, "Quality: \+(\d*)\%", SubPat))
                 {
                         Quality := SubPat1/100
                 }
                
-                else if (!AttackSpeed && RegExMatch(A_Loopfield, "Attacks per Second: (\d\.\d*)", SubPat))
+                Else If (!AttackSpeed && RegExMatch(A_Loopfield, "Attacks per Second: (\d\.\d*)", SubPat))
                 {
                         AttackSpeed     := SubPat1
                 }
-                else if (!PhysicalDamageLow && RegExMatch(A_Loopfield, "Physical Damage: (\d*)-(\d*)", SubPat))
+                Else If (!PhysicalDamageLow && RegExMatch(A_Loopfield, "Physical Damage: (\d*)-(\d*)", SubPat))
                 {
                         PhysicalDamageLow := SubPat1
                         PhysicalDamageHigh := SubPat2
                 }
-                else if (!IncreasedPhysicalDamage && RegExMatch(A_Loopfield, "(\d*)\% increased Physical Damage", SubPat))
+                Else If (!IncreasedPhysicalDamage && RegExMatch(A_Loopfield, "(\d*)\% increased Physical Damage", SubPat))
                 {
                         IncreasedPhysicalDamage := SubPat1/100
                 }
                
-                else if (!FireDamageLow && RegExMatch(A_Loopfield, "Adds (\d*)-(\d*) Fire Damage", SubPat))
+                Else If (!FireDamageLow && RegExMatch(A_Loopfield, "Adds (\d*)-(\d*) Fire Damage", SubPat))
                 {
                         FireDamageLow := SubPat1
                         FireDamageHigh := SubPat2
                 }
-                else if (!ColdDamageLow && RegExMatch(A_Loopfield, "Adds (\d*)-(\d*) Cold Damage", SubPat))
+                Else If (!ColdDamageLow && RegExMatch(A_Loopfield, "Adds (\d*)-(\d*) Cold Damage", SubPat))
                 {
                         ColdDamageLow := SubPat1
                         ColdDamageHigh := SubPat2
                 }
-                else if (!LightningDamageLow && RegExMatch(A_Loopfield, "Adds (\d*)-(\d*) Lightning Damage", SubPat))
+                Else If (!LightningDamageLow && RegExMatch(A_Loopfield, "Adds (\d*)-(\d*) Lightning Damage", SubPat))
                 {
                         LightningDamageLow := SubPat1
                         LightningDamageHigh := SubPat2
                 }
-                else if (!ChaosDamageLow && RegExMatch(A_Loopfield, "Adds (\d*)-(\d*) Chaos Damage", SubPat))
+                Else If (!ChaosDamageLow && RegExMatch(A_Loopfield, "Adds (\d*)-(\d*) Chaos Damage", SubPat))
                 {
                         ChaosDamageLow := SubPat1
                         ChaosDamageHigh := SubPat2
                 }      
                
-                else if (!Armour && RegExMatch(A_Loopfield, "Armour: (\d*)", SubPat))
+                Else If (!Armour && RegExMatch(A_Loopfield, "Armour: (\d*)", SubPat))
                 {
                         Armour:= SubPat1
                 }
-                else if (!EvasionRating && RegExMatch(A_Loopfield, "Evasion Rating: (\d*)", SubPat))
+                Else If (!EvasionRating && RegExMatch(A_Loopfield, "Evasion Rating: (\d*)", SubPat))
                 {
                         EvasionRating:= SubPat1
                 }
-                else if (!EnergyShield && RegExMatch(A_Loopfield, "Energy Shield: (\d*)", SubPat))
+                Else If (!EnergyShield && RegExMatch(A_Loopfield, "Energy Shield: (\d*)", SubPat))
                 {
                         EnergyShield:= SubPat1
                 }      
          }
    
-      if (!ItemLevel) ; If we didn't get the itemlevel...
+      If (!ItemLevel) ; If we didn't get the itemlevel...
       {
          Portal := "Portal Scroll"
          If Portal = %name%
@@ -3520,15 +3589,15 @@ GuiUpdate:
 
    
    IniWrite, %InstantFlaskDelay% , Config.ini, Config, InstantFlaskDelay
-   IFDelay:= InstantFlaskDelay
+   IfDelay:= InstantFlaskDelay
 
-   PlayerConfig["Default"]:={RemCorruptedBloodCharges:RemoveCorruptedBloodCharges,RemAilmentsTimer:RemoveAilmentsTimer,QuickSilverTimer:QuickSilverMovementTimer*100, minLifeRatioToInstant: minLifePercentToSpam/100, IFlaskDelay: InstantFlaskDelay,minLifeRatioToDrink: minLifePercentToDrink/100, minManaRatioToDrink: minManaPercentToDrink/100, minManaToDrink: minManaToDrinkPot, minLifeRatioToPopElementalResist: minLifePercentToElementalResist/100,minLifeRatioToPopJade: minLifePercentToJade/100, minLifeRatioToQuit: minLifePercentToQuit/100,maxLifeRatioPerHitToQuit: maxLifePercentPerHitToQuit/100,maxEShieldRatioPerHitToQuit: maxESPercentPerHitToQuit/100,minEShieldRatioToQuit: minESPercentToQuit/100, minEShieldRatioToPopElementalResist: minESPercentToElementalResist/100, minEShieldRatioToPopJade: minESPercentToJade/100}
+   PlayerConfig["Default"]:={RemCorruptedBloodCharges:RemoveCorruptedBloodCharges,RemAilmentsTimer:RemoveAilmentsTimer,QuickSilverTimer:QuickSilverMovementTimer*100, minLifeRatioToInstant: minLifePercentToSpam/100, IflaskDelay: InstantFlaskDelay,minLifeRatioToDrink: minLifePercentToDrink/100, minManaRatioToDrink: minManaPercentToDrink/100, minManaToDrink: minManaToDrinkPot, minLifeRatioToPopElementalResist: minLifePercentToElementalResist/100,minLifeRatioToPopJade: minLifePercentToJade/100, minLifeRatioToQuit: minLifePercentToQuit/100,maxLifeRatioPerHitToQuit: maxLifePercentPerHitToQuit/100,maxEShieldRatioPerHitToQuit: maxESPercentPerHitToQuit/100,minEShieldRatioToQuit: minESPercentToQuit/100, minEShieldRatioToPopElementalResist: minESPercentToElementalResist/100, minEShieldRatioToPopJade: minESPercentToJade/100}
 
 
 return
 
 ExitSub:
-if A_ExitReason not in Logoff,Shutdown  ; Avoid spaces around the comma in this line.
+If A_ExitReason not in Logoff,Shutdown  ; Avoid spaces around the comma in this line.
 {
     IniWrite, %TabChoice%, Config.ini, Config, LastTab
 }
@@ -3799,23 +3868,23 @@ ConfigList:
       GuiControl, , RemainingSpamUpdatePercent, s
    }
 
-   PlayerConfig["Default"]:={RemCorruptedBloodCharges:RemoveCorruptedBloodCharges,RemAilmentsTimer:RemoveAilmentsTimer,QuickSilverTimer:QuickSilverMovementTimer*100, minLifeRatioToInstant: minLifePercentToSpam/100, IFlaskDelay: InstantFlaskDelay,minLifeRatioToDrink: minLifePercentToDrink/100, minManaRatioToDrink: minManaPercentToDrink/100, minManaToDrink: minManaToDrinkPot, minLifeRatioToPopElementalResist: minLifePercentToElementalResist/100,minLifeRatioToPopJade: minLifePercentToJade/100, minLifeRatioToQuit: minLifePercentToQuit/100,maxLifeRatioPerHitToQuit: maxLifePercentPerHitToQuit/100,maxEShieldRatioPerHitToQuit: maxESPercentPerHitToQuit/100,minEShieldRatioToQuit: minESPercentToQuit/100, minEShieldRatioToPopElementalResist: minESPercentToElementalResist/100, minEShieldRatioToPopJade: minESPercentToJade/100}
+   PlayerConfig["Default"]:={RemCorruptedBloodCharges:RemoveCorruptedBloodCharges,RemAilmentsTimer:RemoveAilmentsTimer,QuickSilverTimer:QuickSilverMovementTimer*100, minLifeRatioToInstant: minLifePercentToSpam/100, IflaskDelay: InstantFlaskDelay,minLifeRatioToDrink: minLifePercentToDrink/100, minManaRatioToDrink: minManaPercentToDrink/100, minManaToDrink: minManaToDrinkPot, minLifeRatioToPopElementalResist: minLifePercentToElementalResist/100,minLifeRatioToPopJade: minLifePercentToJade/100, minLifeRatioToQuit: minLifePercentToQuit/100,maxLifeRatioPerHitToQuit: maxLifePercentPerHitToQuit/100,maxEShieldRatioPerHitToQuit: maxESPercentPerHitToQuit/100,minEShieldRatioToQuit: minESPercentToQuit/100, minEShieldRatioToPopElementalResist: minESPercentToElementalResist/100, minEShieldRatioToPopJade: minESPercentToJade/100}
    
 return
 
-TrayNotificationsCheck:
+TrayNotIficationsCheck:
    Gui, Submit, NoHide
    If TrayCheckBox = 0
    {
-      TrayNotificationsCheck = 0
-      trayNotifications:=true
+      TrayNotIficationsCheck = 0
+      trayNotIfications:=true
    }
    If TrayCheckBox = 1
    {
-      TrayNotificationsCheck = 1
-      trayNotifications:=false
+      TrayNotIficationsCheck = 1
+      trayNotIfications:=false
    }
-   IniWrite, %TrayNotificationsCheck% , Config.ini, Config, TrayNotificationsCheck
+   IniWrite, %TrayNotIficationsCheck% , Config.ini, Config, TrayNotIficationsCheck
 return   
 
 QuickSilverCheck:
@@ -3995,7 +4064,7 @@ DisableSlot:
 		{
 			IniWrite, 0 , Config.ini, DisableSlot, DisableSlot%A_Index%
 		}
-		else If DisableSlot%A_Index% = 1
+		Else If DisableSlot%A_Index% = 1
 		{
 			IniWrite, 1 , Config.ini, DisableSlot, DisableSlot%A_Index%
 		}
@@ -4008,12 +4077,12 @@ ReadMe:
 return
 
 Donate:
-   Run "https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=gurud.exe@gmail.com&lc=BR&item_name=MultiScript Support&currency_code=USD&bn=PP-DonationsBF:btn_donateCC_LG.gif:NonHosted"
+   Run "https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=gurud.exe@gmail.com&lc=BR&item_name=MultiScript Support&currency_code=USD&bn=PP-DonationsBF:btn_donateCC_LG.gIf:NonHosted"
 return
 
 GuiClose:
    Gui, Submit
-   if (trayNotifications)
+   If (trayNotIfications)
    {
       TrayTip, Script is Still Running in the Background, %A_Space% , 2
    }
@@ -4096,7 +4165,7 @@ Bind:
 
 Bind(ctrlnum)
 {
-   global HKModifierState
+   global HKModIfierState
    global BindMode
    global EXTRA_KEY_LIST
    global HKControlType
@@ -4107,7 +4176,7 @@ Bind(ctrlnum)
 
    ; init vars
    HKControlType := 0
-   HKModifierState := {ctrl: 0, alt: 0, shift: 0, win: 0}
+   HKModIfierState := {ctrl: 0, alt: 0, shIft: 0, win: 0}
 
    ; Disable existing hotkeys
    DisableHotkeys()
@@ -4115,13 +4184,13 @@ Bind(ctrlnum)
    ; Enable Joystick detection hotkeys
    JoystickDetection(1)
 
-   ; Start Bind Mode - this starts detection for mouse buttons and modifier keys
+   ; Start Bind Mode - this starts detection for mouse buttons and modIfier keys
    BindMode := 1
 
    ; Show the prompt
    prompt := "Please press the desired key combination.`n`n"
-   prompt .= "Supports most keyboard keys and all mouse buttons. Also Ctrl, Alt, Shift, Win as modifiers or individual keys.`n"
-   prompt .= "Joystick buttons are also supported, but currently not with modifiers.`n"
+   prompt .= "Supports most keyboard keys and all mouse buttons. Also Ctrl, Alt, ShIft, Win as modIfiers or individual keys.`n"
+   prompt .= "Joystick buttons are also supported, but currently not with modIfiers.`n"
    prompt .= "`nHit Escape to cancel."
    prompt .= "`nHold Escape to clear a binding."
    Gui, 3:Add, text, center, %prompt%
@@ -4132,18 +4201,18 @@ Bind(ctrlnum)
 
    Input, detectedkey, L1 M, %EXTRA_KEY_LIST%
 
-   if (substr(ErrorLevel,1,7) == "EndKey:"){
+   If (substr(ErrorLevel,1,7) == "EndKey:"){
       ; A "Special" (Non-printable) key was pressed
       tmp := substr(ErrorLevel,8)
       detectedkey := tmp
-      if (tmp == "Escape"){
+      If (tmp == "Escape"){
          ; Detection ended by Escape
-         if (HKControlType > 0){
+         If (HKControlType > 0){
             ; The Escape key was sent because a special button was used
             detectedkey := HKSecondaryInput
-         } else {
+         } Else {
             detectedkey := ""
-            ; Start listening to key up event for Escape, to see if it was held
+            ; Start listening to key up event for Escape, to see If it was held
             HKLastHotkey := ctrlnum
             hotkey, Escape up, EscapeReleased, ON
             SetTimer, DeleteHotkey, 1000
@@ -4161,14 +4230,14 @@ Bind(ctrlnum)
 
    ; Process results
 
-   modct := CurrentModifierCount()
+   modct := CurrentModIfierCount()
 
-   if (detectedkey && modct && HKControlType == 3){
-      msgbox ,,Error, Modifiers (Ctrl, Alt, Shift, Win) are currently not supported with Joystick buttons.
+   If (detectedkey && modct && HKControlType == 3){
+      msgbox ,,Error, ModIfiers (Ctrl, Alt, ShIft, Win) are currently not supported with Joystick buttons.
       detectedkey := ""
    }
 
-   if (detectedkey)
+   If (detectedkey)
    {
       ; Update the hotkey object
       outhk := BuildHotkeyString(detectedkey,HKControlType)
@@ -4176,20 +4245,20 @@ Bind(ctrlnum)
 
       clash := 0
       Loop % HotkeyList.MaxIndex(){
-         if (A_Index == ctrlnum)
+         If (A_Index == ctrlnum)
          {
             continue
          }
-         if (StripPrefix(HotkeyList[A_Index].hk) == StripPrefix(tmp.hk))
+         If (StripPrefix(HotkeyList[A_Index].hk) == StripPrefix(tmp.hk))
          {
             clash := 1
          }
       }
-      if (clash)
+      If (clash)
       {
-         msgbox You cannot bind the same hotkey to two different actions. Aborting...
+         msgbox You cannot bind the same hotkey to two dIfferent actions. Aborting...
       } 
-      else 
+      Else 
       {
          HotkeyList[ctrlnum] := tmp
       }
@@ -4205,9 +4274,9 @@ Bind(ctrlnum)
       ; Enable the hotkeys
       ;EnableHotkeys()
    } 
-   else 
+   Else 
    {
-      ; Escape was pressed - resotre original hotkey, if any
+      ; Escape was pressed - resotre original hotkey, If any
       EnableHotkeys()
    }
    return
@@ -4246,7 +4315,7 @@ EnableHotkeys()
    {
       status := HotkeyList[A_Index].status
       hk := HotkeyList[A_Index].hk
-      if (hk != "" && status == 0){
+      If (hk != "" && status == 0){
          prefix := BuildPrefix(HotkeyList[A_Index])
          ;Msgbox % "ADDING: " prefix "," hk
          hotkey, %prefix%%hk%, DoHotkey%A_Index%, ON
@@ -4263,7 +4332,7 @@ DisableHotkeys()
    Loop % HotkeyList.MaxIndex(){
       status := HotkeyList[A_Index].status
       hk := HotkeyList[A_Index].hk
-      if (hk != "" && status == 1){
+      If (hk != "" && status == 1){
          prefix := BuildPrefix(HotkeyList[A_Index])
          ;Msgbox % "REMOVING: " prefix "," hk
          hotkey, %prefix%%hk%, DoHotkey%A_Index%, OFF
@@ -4277,23 +4346,23 @@ DisableHotkeys()
 BuildPrefix(hk)
 {
    prefix := "~"
-   ;if (!hk.block){
+   ;If (!hk.block){
    ;  prefix .= "~"
    ;}
-   if (hk.wild){
+   If (hk.wild){
       prefix .= "*"
    }
    return prefix
 }
 
-; Removes ~ * etc prefixes (But NOT modifiers!) from a hotkey object for comparison
+; Removes ~ * etc prefixes (But NOT modIfiers!) from a hotkey object for comparison
 StripPrefix(hk)
 {
    Loop {
       chr := substr(hk,1,1)
-      if (chr == "~" || chr == "*" || chr == "$"){
+      If (chr == "~" || chr == "*" || chr == "$"){
          hk := substr(hk,2)
-      } else {
+      } Else {
          break
       }
    }
@@ -4313,7 +4382,7 @@ SaveSettings()
       ;block := HotkeyList[A_Index].block
       wild := HotkeyList[A_Index].wild
 
-      ;if (hk != ""){
+      ;If (hk != ""){
          iniwrite, %hk%, %ININame%, Hotkeys, hk_%A_Index%_hk
          iniwrite, %type%, %ININame%, Hotkeys, hk_%A_Index%_type
          ;iniwrite, %block%, %ININame%, Hotkeys, hk_%A_Index%_block
@@ -4378,7 +4447,7 @@ LoadSettings()
       
       ;IniRead, val, %ININame% , Hotkeys, hk_%A_Index%_hk,
       
-      if (val != "ERROR")
+      If (val != "ERROR")
       {
          If A_index=9
          {
@@ -4405,12 +4474,12 @@ UpdateHotkeyControls()
 
    Loop % HotkeyList.MaxIndex()
    {
-      if (HotkeyList[A_Index].hk != "")
+      If (HotkeyList[A_Index].hk != "")
       {
          tmp := BuildHotkeyName(HotkeyList[A_Index].hk,HotkeyList[A_Index].type)
          GuiControl, 2:, HotkeyName%A_Index%, %tmp%
       } 
-      else 
+      Else 
       {
          GuiControl, 2:, HotkeyName%A_Index%, None
       }
@@ -4426,36 +4495,36 @@ UpdateHotkeyControls()
 ; Builds an AHK String (eg "^c" for CTRL + C) from the last detected hotkey
 BuildHotkeyString(str, type := 0)
 {
-   global HKModifierState
+   global HKModIfierState
 
    outhk := ""
-   modct := CurrentModifierCount()
+   modct := CurrentModIfierCount()
 
-   if (type == 1){
-      ; Solitary modifier key used (eg Left / Right Alt)
+   If (type == 1){
+      ; Solitary modIfier key used (eg Left / Right Alt)
       outhk := str
-   } else {
-      if (modct){
-         ; Modifiers used in combination with something else - List modifiers in a specific order
-         modifiers := ["CTRL","ALT","SHIFT","WIN"]
+   } Else {
+      If (modct){
+         ; ModIfiers used in combination with something Else - List modIfiers in a specIfic order
+         modIfiers := ["CTRL","ALT","SHIfT","WIN"]
 
          Loop, 4 {
-            key := modifiers[A_Index]
-            value := HKModifierState[modifiers[A_Index]]
-            if (value){
-               if (key == "CTRL"){
+            key := modIfiers[A_Index]
+            value := HKModIfierState[modIfiers[A_Index]]
+            If (value){
+               If (key == "CTRL"){
                   outhk .= "^"
-               } else if (key == "ALT"){
+               } Else If (key == "ALT"){
                   outhk .= "!"
-               } else if (key == "SHIFT"){
+               } Else If (key == "SHIfT"){
                   outhk .= "+"
-               } else if (key == "WIN"){
+               } Else If (key == "WIN"){
                   outhk .= "#"
                }
             }
          }
       }
-      ; Modifiers etc processed, complete the string
+      ; ModIfiers etc processed, complete the string
       outhk .= str
    }
 
@@ -4473,80 +4542,80 @@ BuildHotkeyName(hk,ctrltype)
       chr := substr(hk,1,1)
       mod := 0
 
-      if (chr == "^"){
+      If (chr == "^"){
          ; Ctrl
          mod := "CTRL"
          modctr++
-      } else if (chr == "!"){
+      } Else If (chr == "!"){
          ; Alt
          mod := "ALT"
          modctr++
-      } else if (chr == "+"){
-         ; Shift
-         mod := "SHIFT"
+      } Else If (chr == "+"){
+         ; ShIft
+         mod := "SHIfT"
          modctr++
-      } else if (chr == "#"){
+      } Else If (chr == "#"){
          ; Win
          mod := "WIN"
          modctr++
-      } else {
+      } Else {
          break
       }
-      if (mod){
-         if (modctr > 1){
+      If (mod){
+         If (modctr > 1){
             outstr .= " + "
          }
          outstr .= mod
-         ; shift character out
+         ; shIft character out
          hk := substr(hk,2)
       }
    }
-   if (modctr){
+   If (modctr){
       outstr .= " + "
    }
 
-   if (ctrltype == 1){
-      ; Solitary Modifiers
+   If (ctrltype == 1){
+      ; Solitary ModIfiers
       pfx := substr(hk,1,1)
-      if (pfx == "L"){
+      If (pfx == "L"){
          outstr .= "LEFT "
-      } else {
+      } Else {
          outstr .= "RIGHT "
       }
       outstr .= substr(hk,2)
-   } else if (ctrltype == 2){
+   } Else If (ctrltype == 2){
       ; Mouse Buttons
-      if (hk == "LBUTTON") {
+      If (hk == "LBUTTON") {
          outstr .= "LEFT MOUSE"
-      } else if (hk == "RBUTTON") {
+      } Else If (hk == "RBUTTON") {
          outstr .= "RIGHT MOUSE"
-      } else if (hk == "MBUTTON") {
+      } Else If (hk == "MBUTTON") {
          outstr .= "MIDDLE MOUSE"
-      } else if (hk == "XBUTTON1") {
+      } Else If (hk == "XBUTTON1") {
          outstr .= "MOUSE THUMB 1"
-      } else if (hk == "XBUTTON2") {
+      } Else If (hk == "XBUTTON2") {
          outstr .= "MOUSE THUMB 2"
-      } else if (hk == "WHEELUP") {
+      } Else If (hk == "WHEELUP") {
          outstr .= "MOUSE WHEEL U"
-      } else if (hk == "WHEELDOWN") {
+      } Else If (hk == "WHEELDOWN") {
          outstr .= "MOUSE WHEEL D"
-      } else if (hk == "WHEELLEFT") {
+      } Else If (hk == "WHEELLEFT") {
          outstr .= "MOUSE WHEEL L"
-      } else if (hk == "WHEELRIGHT") {
+      } Else If (hk == "WHEELRIGHT") {
          outstr .= "MOUSE WHEEL R"
       }
-   } else if (ctrltype == 3){
+   } Else If (ctrltype == 3){
       ; Joystick Buttons
       pos := instr(hk,"JOY")
       id := substr(hk,1,pos-1)
       button := substr(hk,5)
       outstr .= "JOYSTICK " id " BTN " button
-   } else {
+   } Else {
       ; Keyboard Keys
       tmp := instr(hk,"NUMPAD")
-      if (tmp){
+      If (tmp){
          outstr .= "NUMPAD " substr(hk,7)
-      } else {
+      } Else {
          ; Replace underscores with spaces (In case of key name like MEDIA_PLAY_PAUSE)
          StringReplace, hk, hk, _ , %A_SPACE%, All
          outstr .= hk
@@ -4557,44 +4626,44 @@ BuildHotkeyName(hk,ctrltype)
    return outstr
 }
 
-; Detects Modifiers and Mouse Buttons in BindMode
+; Detects ModIfiers and Mouse Buttons in BindMode
 #If BindMode
-   ; Detect key down of modifier keys
+   ; Detect key down of modIfier keys
    *lctrl::
    *rctrl::
    *lalt::
    *ralt::
-   *lshift::
-   *rshift::
+   *lshIft::
+   *rshIft::
    *lwin::
    *rwin::
       mod := substr(A_ThisHotkey,2)
-      SetModifier(mod,1)
+      SetModIfier(mod,1)
       return
 
-   ; Detect key up of modifier keys
+   ; Detect key up of modIfier keys
    *lctrl up::
    *rctrl up::
    *lalt up::
    *ralt up::
-   *lshift up::
-   *rshift up::
+   *lshIft up::
+   *rshIft up::
    *lwin up::
    *rwin up::
       ; Strip * from beginning, " up" from end etc
       mod := substr(substr(A_ThisHotkey,2),1,strlen(A_ThisHotkey) -4)
-      if (CurrentModifierCount() == 1){
-         ; If CurrentModifierCount is 1 when an up is received, then that is a Solitary Modifier
-         ; It cannot be a modifier + normal key, as this code would have quit on keydown of normal key
+      If (CurrentModIfierCount() == 1){
+         ; If CurrentModIfierCount is 1 when an up is received, then that is a Solitary ModIfier
+         ; It cannot be a modIfier + normal key, as this code would have quit on keydown of normal key
 
          HKControlType := 1
          HKSecondaryInput := mod
 
          ; Send Escape - This will cause the Input command to quit with an EndKey of Escape
-         ; But we stored the modifier key, so we will know it was not really escape
+         ; But we stored the modIfier key, so we will know it was not really escape
          Send {Escape}
       }
-      SetModifier(mod,0)
+      SetModIfier(mod,0)
       return
 
    ; Detect Mouse buttons
@@ -4616,9 +4685,9 @@ BuildHotkeyName(hk,ctrltype)
 ; Adds / removes hotkeys to detect Joystick Buttons in BindMode
 JoystickDetection(mode := 1)
 {
-   if (mode){
+   If (mode){
       mode := "ON"
-   } else {
+   } Else {
       mode := "OFF"
    }
    Loop , 16 {
@@ -4637,29 +4706,29 @@ JoystickPressed:
    Send {Escape}
    return
 
-; Sets the state of the HKModifierState object to reflect the state of the modifier keys
-SetModifier(hk,state)
+; Sets the state of the HKModIfierState object to reflect the state of the modIfier keys
+SetModIfier(hk,state)
 {
-   global HKModifierState
+   global HKModIfierState
 
-   if (hk == "lctrl" || hk == "rctrl"){
-      HKModifierState.ctrl := state
-   } else if (hk == "lalt" || hk == "ralt"){
-      HKModifierState.alt := state
-   } else if (hk == "lshift" || hk == "rshift"){
-      HKModifierState.shift := state
-   } else if (hk == "lwin" || hk == "rwin"){
-      HKModifierState.win := state
+   If (hk == "lctrl" || hk == "rctrl"){
+      HKModIfierState.ctrl := state
+   } Else If (hk == "lalt" || hk == "ralt"){
+      HKModIfierState.alt := state
+   } Else If (hk == "lshIft" || hk == "rshIft"){
+      HKModIfierState.shIft := state
+   } Else If (hk == "lwin" || hk == "rwin"){
+      HKModIfierState.win := state
    }
    return
 }
 
-; Counts how many modifier keys are currently held
-CurrentModifierCount()
+; Counts how many modIfier keys are currently held
+CurrentModIfierCount()
 {
-   global HKModifierState
+   global HKModIfierState
 
-   return HKModifierState.ctrl + HKModifierState.alt + HKModifierState.shift  + HKModifierState.win
+   return HKModIfierState.ctrl + HKModIfierState.alt + HKModIfierState.shIft  + HKModIfierState.win
 }
 
 ; Takes the start of the file name (before .ini or .exe and replaces it with .ini)
@@ -4672,8 +4741,8 @@ BuildIniName()
    Loop, % tmp0
    {
       ; build the string up to the last period (.)
-      if (last != ""){
-         if (ini_name != ""){
+      If (last != ""){
+         If (ini_name != ""){
             ini_name := ini_name "."
          }
          ini_name := ini_name last
@@ -4690,7 +4759,7 @@ BuildIniName()
 ; This script can be found here:
 ; https://www.pathofexile.com/forum/view-thread/594346
 ; If you have any questions or comments please post them there as well. If you think you can help
-; improve this project. I am looking for contributors. So Pm me if you think you can help.
+; improve this project. I am looking for contributors. So Pm me If you think you can help.
 ;
 ;
 ; If you have a issue please post what version you are using.
@@ -4835,7 +4904,7 @@ DPSCalc()
             PhysHi := Arr2
             Continue
          }
-         ;Fix for Elemental damage only weapons. Like the Oro's Sacrifice
+         ;Fix for Elemental damage only weapons. Like the Oro's SacrIfice
          IfInString, A_LoopField, Elemental Damage:
          {
             IsWeapon = True
@@ -4861,7 +4930,7 @@ DPSCalc()
                Continue
             }
          
-         ;Lines to skip fix for converted type damage. Like the Voltaxic Rift
+         ;Lines to skip fix for converted type damage. Like the Voltaxic RIft
          IfInString, A_LoopField, Converted to
           Goto, SkipDamageParse
          IfInString, A_LoopField, can Shock
@@ -4901,7 +4970,7 @@ DPSCalc()
     
          TT = %TT%`nPhys DPS:  %PhysDps%`nElem DPS:  %EleDps%`nTotal DPS: %TotalDps%
     
-         ; Only show Q20 values if item is not Q20
+         ; Only show Q20 values If item is not Q20
          If Quality < 20
          {
             TotalPhysMult := (PhysMult + Quality + 100) / 100
@@ -4926,7 +4995,7 @@ DPSCalc()
 }
  
 ; Tick every 100 ms
-; Remove tooltip if mouse is moved or 5 seconds pass
+; Remove tooltip If mouse is moved or 5 seconds pass
 ToolTipTimer:
 ToolTipTimeout += 1
 MouseGetPos, CurrX, CurrY
