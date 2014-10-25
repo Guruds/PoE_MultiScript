@@ -317,9 +317,32 @@ Gui, Add, Text, x22 y70 w70 h20 vbasePtrText , %baseMgrPtr%
 
 Gui, Add, Button, x262 y120 w180 h40 gshowgui2, Configure Hotkeys
 
-Gui, Add, Button, x32 y180 w180 h40 gshowgui4, Debug Window
+Gui, Add, Button, x32 y190 w180 h40 gshowgui4, Debug Window
 
-Gui, Add, Button, x262 y180 w180 h40 gDefaultHotkeys, Restore Default Hotkeys
+Gui, Add, Button, x262 y190 w180 h40 gDefaultHotkeys, Restore Default Hotkeys
+
+Gui, Add, GroupBox, x12 y250 w220 h60, Client Server
+IniRead, ClientServer , Config.ini, Config, ClientServer, 1
+If ClientServer = 1
+{
+   Gui, Add, DropDownList, x22 y270 w200 h21 AltSubmit gClientServerList vClientServerChoice R5, Global||Steam|Singapore/Malasya|Taiwan
+   ClientServerMode:=1
+}
+Else If ClientServer = 2
+{
+   Gui, Add, DropDownList, x22 y270 w200 h21 AltSubmit gClientServerList vClientServerChoice R5, Global|Steam||Singapore/Malasya|Taiwan
+   ClientServerMode:=2
+}
+Else If ClientServer = 3
+{
+   Gui, Add, DropDownList, x22 y270 w200 h21 AltSubmit gClientServerList vClientServerChoice R5, Global|Steam|Singapore/Malasya||Taiwan
+   ClientServerMode:=3
+}
+Else If ClientServer = 4
+{
+   Gui, Add, DropDownList, x22 y270 w200 h21 AltSubmit gClientServerList vClientServerChoice R5, Global|Steam|Singapore/Malasya|Taiwan||
+   ClientServerMode:=4
+}
 
 
 Gui, Tab, Others
@@ -465,7 +488,7 @@ If (RemainingSpam=0)
 
 Gui, Submit
 
-Gui, Show, x760 y198 h665 w474, PoE MultiScript v10.14.2014
+Gui, Show, x760 y198 h665 w474, PoE MultiScript v10.25.2014
 
 ;---------------------START DYNAMIC HOTKEYS---------------------
 
@@ -697,8 +720,43 @@ LastES:=0
 FlaskOnFrozen:=1
 FlaskOnShocked:=1
 FlaskOnIgnited:=1
-ManaRegenCheck:=0
-LifeRegenCheck:=0
+
+If (ClientServerMode = 1)
+{
+   ConfigPath = %A_MyDocuments%
+   ConfigPath .= "\My" . A_Space . "Games\Path" . A_Space . "of" . A_Space . "Exile\production_Config.ini"
+   Taiwan:=False
+   Steam:=False
+   Singapore:=False
+   GlobalS:=True
+}
+If (ClientServerMode = 2)
+{
+   ConfigPath = %A_MyDocuments%
+   ConfigPath .= "\My" . A_Space . "Games\Path" . A_Space . "of" . A_Space . "Exile\production_Config.ini"
+   Taiwan:=False
+   Steam:=True
+   Singapore:=False
+   GlobalS:=False
+}
+If (ClientServerMode = 3)
+{
+   ConfigPath = %A_MyDocuments%
+   ConfigPath .= "\My" . A_Space . "Games\Path" . A_Space . "of" . A_Space . "Exile\garena_sg_production_Config.ini"
+   Taiwan:=False
+   Steam:=False
+   Singapore:=True
+   GlobalS:=False
+}
+If (ClientServerMode = 4)
+{
+   ConfigPath = %A_MyDocuments%
+   ConfigPath .= "\My" . A_Space . "Games\Path" . A_Space . "of" . A_Space . "Exile\garena_tw_production_Config.ini"
+   Taiwan:=True
+   Steam:=False
+   Singapore:=False
+   GlobalS:=False
+}
 
 autoQuitPauseBeforeClick:=100
 autoQuitSoftToleranceBeforeKill:=2000 ; try to quit to loginscreen at most milliseconds before killing game window(in case we can't quit by clicking menu option for some reason)
@@ -709,13 +767,10 @@ PlayerConfig["Default"]:={RemCorruptedBloodCharges:RemoveCorruptedBloodCharges,R
 
 PlayerConfig["Default"].FlaskConfig:=[]
 
-attachedtext=:false
-
 WindowQueuedFlaskEffects:=[] ;keyed by "%hwnd%%CurrPid%", hpQueueEndtime, manaQueueEndtime
 
-
-basePtrAoBArray:=[0x53,0x55,0x56,0x57,0x33,0xFF,0x3B,0xC7]
-basePtrAobOffset:=-0x0A
+basePtrAoBArray:=[0x00,0x00,0x53,0x55,0x33,0xDB,0x56,0x57,0x3B,0xC3]
+basePtrAobOffset:=-0x08
 
 WindowBasicsCache:=[] ; keyed by "%hwnd%%CurrPid%", entries are objects with properties processHandle, moduleBase, moduleSize, baseFramePtr
 
@@ -904,6 +959,7 @@ ReadPlayerStats(hwnd, byRef PlayerStats)
    global Steam
    global Taiwan
    global Singapore
+   global GlobalS
 
 
    If (Steam) 
@@ -915,10 +971,10 @@ ReadPlayerStats(hwnd, byRef PlayerStats)
       global Offset5:=0x2A78
       global Offset6:=0x15D0
       global Offset7:=0x15D4
-      global Offset8:=0xF4
-      global Offset9:=0xd8
-      global Offset10:=0x11C
-      global Offset11:=0x184
+      global Offset8:=0xF8
+      global Offset9:=0xDC
+      global Offset10:=0x120
+      global Offset11:=0x188
    }
    Else If (Taiwan)
    {
@@ -930,11 +986,11 @@ ReadPlayerStats(hwnd, byRef PlayerStats)
       global Offset6:=0x15BC
       global Offset7:=0x15C0
       global Offset8:=0xF8
-      global Offset9:=0xdc
-      global Offset10:=0x120
-      global Offset11:=0x188
+      global Offset9:=0xE0
+      global Offset10:=0x124
+      global Offset11:=0x18c
    }
-   Else
+   Else If (GlobalS)
    {
       global Offset1:=0x138
       global Offset2:=0x5A0
@@ -943,18 +999,32 @@ ReadPlayerStats(hwnd, byRef PlayerStats)
       global Offset5:=0x2A78
       global Offset6:=0x15B8
       global Offset7:=0x15BC
-      global Offset8:=0xF4
-      global Offset9:=0xd8
-      global Offset10:=0x11C
-      global Offset11:=0x184
+      global Offset8:=0xF8
+      global Offset9:=0xDC
+      global Offset10:=0x120
+      global Offset11:=0x188
+   }
+   Else If (Singapore)
+   {
+      global Offset1:=0x138
+      global Offset2:=0x5A0
+      global Offset3:=0x13c
+      global Offset4:=0x220
+      global Offset5:=0x2A78
+      global Offset6:=0x15B8
+      global Offset7:=0x15BC
+      global Offset8:=0xF8
+      global Offset9:=0xDC
+      global Offset10:=0x120
+      global Offset11:=0x188
    }
    
    GetWindowBasics(hwnd, mBase, pH)
    fBase:=GetFrameBase(hwnd)
    BaseMgr:=ReadMemUInt(pH,mBase+baseMgrPtr)
    PlayerBase:=GetMultilevelPointer(pH,[fBase+Offset1,Offset2])
-   Config:=GetMultilevelPointer(pH,[BaseMgr+0x180,0x108,0x8c])
-   PlayerStats.ConfigPath:=ReadMemStr(ph,Config+0xa4,255,"UTF-16")
+   ;Config:=GetMultilevelPointer(pH,[BaseMgr+0x180,0x108,0x8c])
+   ;PlayerStats.ConfigPath:=ReadMemStr(ph,Config+0xa4,255,"UTF-16")
    PlayerMain:=ReadMemUInt(pH,PlayerBase+4)
    PlayerStatsOffset:=ReadMemUInt(pH,PlayerMain+0xC)
    PlayerStats.MaxHP:=ReadMemUInt(pH,PlayerStatsOffset+0x50)
@@ -1012,10 +1082,10 @@ ReadPlayerStats(hwnd, byRef PlayerStats)
    PlayerStats.PanelInstanceManager:=ReadMemUInt(pH,PanelInstanceManagerOffset+0x860) ;added by immor
    InCityOffset:=GetMultilevelPointer(pH,[CheckBase+Offset10,0x788,0x200])
    PlayerStats.InCity:=ReadMemUInt(pH,InCityOffset+0x860)
-   EnemyNamePtr:=GetMultilevelPointer(ph,[CheckBase+Offset11,0x978,0xC14])
+   EnemyNamePtr:=GetMultilevelPointer(ph,[CheckBase+Offset11,0x978,0xC18])
    EnemyName:=ReadMemStr(ph,EnemyNamePtr,70,"UTF-16")
    PlayerStats.EnemyName:=EnemyName
-   EnemyNamePtr2:=GetMultilevelPointer(ph,[CheckBase+Offset11,0x978,0xB94])
+   EnemyNamePtr2:=GetMultilevelPointer(ph,[CheckBase+Offset11,0x978,0xB98])
    EnemyName2:=ReadMemStr(ph,EnemyNamePtr2+0x32,70,"UTF-16")
    PlayerStats.EnemyName2:=EnemyName2
 
@@ -1105,9 +1175,17 @@ ReadFlasksData(hwnd, byRef FlasksData)
             FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0xC)/2.35)
             Else If (InStr(FlasksData[A_Index].mod2,"Bubbling"))
             FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0xC)/2.35)
+            Else If (InStr(FlasksData[A_Index].mod1,"起泡的"))
+            FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0xC)/2.35)
+            Else If (InStr(FlasksData[A_Index].mod2,"起泡的"))
+            FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0xC)/2.35)
             Else If (InStr(FlasksData[A_Index].mod1,"Saturated"))
             FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0xC)/0.67)
             Else If (InStr(FlasksData[A_Index].mod2,"Saturated"))
+            FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0xC)/2.35)
+            Else If (InStr(FlasksData[A_Index].mod1,"飽和的"))
+            FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0xC)/0.67)
+            Else If (InStr(FlasksData[A_Index].mod2,"飽和的"))
             FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0xC)/0.67)
             Else If (InStr(FlasksData[A_Index].mod1,"Catalysed"))
             FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0xC)/1.5)
@@ -1129,9 +1207,17 @@ ReadFlasksData(hwnd, byRef FlasksData)
             FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0xC)/2.35)
             Else If (InStr(FlasksData[A_Index].mod2,"Bubbling"))
             FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0xC)/2.35)
+            Else If (InStr(FlasksData[A_Index].mod1,"起泡的"))
+            FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0xC)/2.35)
+            Else If (InStr(FlasksData[A_Index].mod2,"起泡的"))
+            FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0xC)/2.35)
             Else If (InStr(FlasksData[A_Index].mod1,"Saturated"))
             FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0xC)/0.67)
             Else If (InStr(FlasksData[A_Index].mod2,"Saturated"))
+            FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0xC)/0.67)
+            Else If (InStr(FlasksData[A_Index].mod1,"飽和的"))
+            FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0xC)/0.67)
+            Else If (InStr(FlasksData[A_Index].mod2,"飽和的"))
             FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0xC)/0.67)
             Else If (InStr(FlasksData[A_Index].mod1,"Catalysed"))
             FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0xC)/1.5)
@@ -1154,9 +1240,17 @@ ReadFlasksData(hwnd, byRef FlasksData)
             FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0x14)/2.35)
             Else If (InStr(FlasksData[A_Index].mod2,"Bubbling"))
             FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0x14)/2.35)
+            Else If (InStr(FlasksData[A_Index].mod1,"起泡的"))
+            FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0x14)/2.35)
+            Else If (InStr(FlasksData[A_Index].mod2,"起泡的"))
+            FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0x14)/2.35)
             Else If (InStr(FlasksData[A_Index].mod1,"Saturated"))
             FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0x14)/0.67)
             Else If (InStr(FlasksData[A_Index].mod2,"Saturated"))
+            FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0x14)/2.35)
+            Else If (InStr(FlasksData[A_Index].mod1,"飽和的"))
+            FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0x14)/0.67)
+            Else If (InStr(FlasksData[A_Index].mod2,"飽和的"))
             FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0x14)/0.67)
             Else If (InStr(FlasksData[A_Index].mod1,"Catalysed"))
             FlasksData[A_Index].EffectDuration:=(ReadMemUInt(pH,FlaskLocalstatsPtr+0x14)/1.5)
@@ -1356,6 +1450,22 @@ GetMaxChargesOfInstantFlask(ByRef FlasksData,TypeStr)
                currMaxCharges:=FlasksData[A_Index].ChargesCurrent
             }
          }
+         Else If (InStr(FlasksData[A_Index].mod1,"沸騰的"))
+         {
+            If FlasksData[A_Index].ChargesCurrent>currMaxCharges
+            {
+               currMaxI:=A_Index
+               currMaxCharges:=FlasksData[A_Index].ChargesCurrent
+            }
+         }
+         Else If (InStr(FlasksData[A_Index].mod2,"沸騰的"))
+         {
+            If FlasksData[A_Index].ChargesCurrent>currMaxCharges
+            {
+               currMaxI:=A_Index
+               currMaxCharges:=FlasksData[A_Index].ChargesCurrent
+            }
+         }
          Else If (InStr(FlasksData[A_Index].mod1,"Bubbling"))
          {
             If FlasksData[A_Index].ChargesCurrent>currMaxCharges
@@ -1365,6 +1475,22 @@ GetMaxChargesOfInstantFlask(ByRef FlasksData,TypeStr)
             }
          }
          Else If (InStr(FlasksData[A_Index].mod2,"Bubbling"))
+         {
+            If FlasksData[A_Index].ChargesCurrent>currMaxCharges
+            {
+               currMaxI:=A_Index
+               currMaxCharges:=FlasksData[A_Index].ChargesCurrent
+            }
+         }
+         Else If (InStr(FlasksData[A_Index].mod1," 起泡的"))
+         {
+            If FlasksData[A_Index].ChargesCurrent>currMaxCharges
+            {
+               currMaxI:=A_Index
+               currMaxCharges:=FlasksData[A_Index].ChargesCurrent
+            }
+         }
+         Else If (InStr(FlasksData[A_Index].mod2," 起泡的"))
          {
             If FlasksData[A_Index].ChargesCurrent>currMaxCharges
             {
@@ -1385,6 +1511,30 @@ GetMaxChargesOfInstantFlask(ByRef FlasksData,TypeStr)
             }
          }
          Else If ((InStr(FlasksData[A_Index].mod2,"Panicked")) And ((PlayerStats.CurrHP/PlayerStats.MaxHP)<=0.35)) ; "Low Life" can be caused by auras hp reservation from blood magic
+         {
+            If FlasksData[A_Index].ChargesCurrent>currMaxCharges
+            {
+               If (PanickedTimer>35)
+               {
+                  currMaxI:=A_Index
+                  currMaxCharges:=FlasksData[A_Index].ChargesCurrent
+                  PanickedTimer:= 0
+               }
+            }
+         }
+         Else If ((InStr(FlasksData[A_Index].mod1,"恐慌的")) And ((PlayerStats.CurrHP/PlayerStats.MaxHP)<=0.35)) ; "Low Life" can be caused by auras hp reservation from blood magic
+         {
+            If FlasksData[A_Index].ChargesCurrent>currMaxCharges
+            {
+               If (PanickedTimer>35)
+               {
+                  currMaxI:=A_Index
+                  currMaxCharges:=FlasksData[A_Index].ChargesCurrent
+                  PanickedTimer:= 0
+               }
+            }
+         }
+         Else If ((InStr(FlasksData[A_Index].mod2,"恐慌的")) And ((PlayerStats.CurrHP/PlayerStats.MaxHP)<=0.35)) ; "Low Life" can be caused by auras hp reservation from blood magic
          {
             If FlasksData[A_Index].ChargesCurrent>currMaxCharges
             {
@@ -1471,15 +1621,13 @@ Main()
 	global QuicksilverBuff
    global FlaskOnCurseCheck
    global FlaskOnCorruptedBloodCheck
-   global ManaRegenCheck
-   global LifeRegenCheck
-   global ManaRegenCheck2
-   global LifeRegenCheck2
    global HoldCtrlCheck
    global CtrlkeyDown
    global AttackInPlaceKeyDown
    global Taiwan
    global Singapore
+   global ClientServerMode
+   global ConfigPath
 
 	WinGet, WinID, List, %cliname%
 
@@ -1508,40 +1656,12 @@ Main()
 		If (WinID%A_Index%=WinActive("A"))
 		ThisID:=WinActive("A")
 
-
-		PlayerStats:={}
-		ReadPlayerStats(WinID%A_Index%, PlayerStats)
-
-		CurrentConfig:=PlayerConfig["Default"]
-           
-		If (A_TickCount>=20secsTimer+20000)
-		{
-			Loop, 5
-			{
-				If (InStr(PlayerStats.ConfigPath,".ini"))
-				{
-               ConfigPath:=PlayerStats.ConfigPath
-               If (InStr(PlayerStats.ConfigPath,"garena_tw_production_Config"))
-               {
-                  Taiwan:=True
-                  Steam:=False
-                  Singapore:=False
-               }
-               Else If (InStr(PlayerStats.ConfigPath,"garena_sg_production_Config"))
-               {
-                  Taiwan:=False
-                  Steam:=False
-                  Singapore:=True
-               }
-				}
-				Else
-				{
-               ConfigPath = %A_MyDocuments%
-               ConfigPath .= "\My" . A_Space . "Games\Path" . A_Space . "of" . A_Space . "Exile\garena_tw_production_Config.ini"
-               Taiwan:=True
-               Steam:=False
-               Singapore:=True
-				}
+      ;--------------Get keys Start---------------
+  
+      If (A_TickCount>=20secsTimer+20000)
+      {
+         Loop, 5
+         {
             IniRead, HotkeyFlask%A_Index%, %ConfigPath%, ACTION_KEYS, use_flask_in_slot%A_Index%, %A_Index%
             vk:=HotkeyFlask%A_Index%
             SetFormat, IntegerFast, hex
@@ -1549,19 +1669,25 @@ Main()
             vk .= ""
             SetFormat, IntegerFast, d
             FlaskHotkey%A_Index%={vk%vk%
-            If (A_Index=1)
-            {
-               IniRead, AttackInPlaceKey, %ConfigPath%, ACTION_KEYS, attack_in_place, %A_Index%
-               vk:=AttackInPlaceKey
-               SetFormat, IntegerFast, hex
-               vk += 0
-               vk .= ""
-               SetFormat, IntegerFast, d
-               AttackInPlaceKey=vk%vk%
-            }
-			}
-			20secsTimer:=A_TickCount
-		}
+         }
+
+         IniRead, AttackInPlaceKey, %ConfigPath%, ACTION_KEYS, attack_in_place, %A_Index%
+         vk:=AttackInPlaceKey
+         SetFormat, IntegerFast, hex
+         vk += 0
+         vk .= ""
+         SetFormat, IntegerFast, d
+         AttackInPlaceKey=vk%vk%
+
+         20secsTimer:=A_TickCount
+      }
+
+      ;--------------Get keys End-----------------
+
+      PlayerStats:={}
+      ReadPlayerStats(WinID%A_Index%, PlayerStats)
+
+      CurrentConfig:=PlayerConfig["Default"]
 
       If (PlayerStats.MaxHP<1 || PlayerStats.CurrHP=0) ;dead, don't bother
       {
@@ -1668,17 +1794,13 @@ Main()
 			WindowQueuedFlaskEffects[k]:={}
 		}
 
-		If (currLifeRatio>=1)
+		If (currLifeRatio>=0.90)
 		{
 			WindowQueuedFlaskEffects[k].hpQueueEndtime:=A_TickCount
+         WindowQueuedFlaskEffects[k].InstantQueueEndtime:=A_TickCount
 		}
 
-		If (currLifeRatio>=1)
-		{
-			WindowQueuedFlaskEffects[k].InstantQueueEndtime:=A_TickCount
-		}
-
-		If (currManaRatio>=1)
+		If (currManaRatio>=0.90)
 		{
 			WindowQueuedFlaskEffects[k].ManaQueueEndtime:=A_TickCount
 		}
@@ -1696,8 +1818,6 @@ Main()
 
 		RemAilmentsTimer:=Round(CurrentConfig.RemAilmentsTimer/10,1)
 
-      LifeRegenCheck2:=0
-      ManaRegenCheck2:=0
       LeavingArea:=0
       GracePeriod:=0
 
@@ -1880,19 +2000,25 @@ Main()
             continue
          }
 
-         Else If InStr(playerstats.BuffName[A_Index], "flask_effect_mana")
+         /* Lag dependent?
+         Else If InStr(playerstats.BuffName[A_Index], "flask_effect_Life")
          {
-            ManaRegenCheck:=1
-            ManaRegenCheck2:=1
+            If (BuffTimer)
+            {
+               WindowQueuedFlaskEffects[k].hpQueueEndtime:=(A_TickCount+(BuffTimer*100))
+            }
             continue
          }
 
-         Else If InStr(playerstats.BuffName[A_Index], "flask_effect_Life")
+         Else If InStr(playerstats.BuffName[A_Index], "flask_effect_mana")
          {
-            LifeRegenCheck:=1
-            LifeRegenCheck2:=1
+            If (BuffTimer)
+            {
+               WindowQueuedFlaskEffects[k].ManaQueueEndtime:=(A_TickCount+(BuffTimer*100))
+            }
             continue
          }
+         */
 
          Else If InStr(playerstats.BuffName[A_Index], "leaving_area_protection")
          {
@@ -1928,26 +2054,40 @@ Main()
 			*/
 		}
 
-      If (LifeRegenCheck=1 And LifeRegenCheck2=0)
-      {
-         If ((WindowQueuedFlaskEffects[k].hpQueueEndtime)>A_TickCount+500)
-         {
-            WindowQueuedFlaskEffects[k].hpQueueEndtime:=A_TickCount
-         }
-         LifeRegenCheck:=0
-      }
-
-      If (ManaRegenCheck=1 And ManaRegenCheck2=0)
-      {
-         If ((WindowQueuedFlaskEffects[k].ManaQueueEndtime)>A_TickCount+500)
-         {
-            WindowQueuedFlaskEffects[k].ManaQueueEndtime:=A_TickCount
-         }
-         ManaRegenCheck:=0
-      }
-
       If (!GracePeriod && !LeavingArea)
       {
+         If (currLifeRatio<CurrentConfig.minLifeRatioToInstant)
+         {
+            If ((!WindowQueuedFlaskEffects[k].HasKey("InstantQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].InstantQueueEndtime)))
+            {
+               tflaskNum2:=GetMaxChargesOfInstantFlask(FlasksData,"FlaskLife")
+               If (tflaskNum2!="")
+               {
+                  flaskNum:=tflaskNum2
+               }
+               If (flaskNum!="")
+               {  
+                  IfDelay:= (CurrentConfig.IflaskDelay*10)
+                  WindowQueuedFlaskEffects[k].InstantQueueEndtime:=A_TickCount+IfDelay
+                  If (trayNotIfications)
+                  {
+                     TrayTip, PoE AutoFlask Using HP Flask %flaskNum%, %A_Space% , 2
+                  }
+                  hKey:=FlaskHotkey%flaskNum%
+                  IfWinActive Path of Exile ahk_class Direct3DWindowClass
+                  {
+                     Sendinput, %hkey% Down}
+                     Sendinput, %hkey% Up}
+                  } 
+                  Else
+                  {
+                     ControlSend,,%hkey% Down %hkey% Up}, % "ahk_id" hwnd
+                  }
+                  break
+               }
+            }
+         }
+
       	If (currLifeRatio<CurrentConfig.minLifeRatioToDrink)
       	{
       		If ((!WindowQueuedFlaskEffects[k].HasKey("hpQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].hpQueueEndtime-lagCompensation)))
@@ -1980,6 +2120,14 @@ Main()
       				{
       					WindowQueuedFlaskEffects[k].hpQueueEndtime:=A_TickCount+500
       				}
+                  Else If (InStr(FlasksData[flaskNum].mod1,"沸騰的"))
+                  {
+                     WindowQueuedFlaskEffects[k].hpQueueEndtime:=A_TickCount+500
+                  }
+                  Else If (InStr(FlasksData[flaskNum].mod2,"沸騰的"))
+                  {
+                     WindowQueuedFlaskEffects[k].hpQueueEndtime:=A_TickCount+500
+                  }
       				Else If ((InStr(FlasksData[flaskNum].mod1,"Panicked")) And ((PlayerStats.CurrHP/PlayerStats.MaxHP)<=0.35)) ; "Low Life" can be caused by auras hp reservation from blood magic
       				{
       					WindowQueuedFlaskEffects[k].hpQueueEndtime:=A_TickCount+500
@@ -1988,6 +2136,14 @@ Main()
       				{
       					WindowQueuedFlaskEffects[k].hpQueueEndtime:=A_TickCount+500
       				}
+                  Else If ((InStr(FlasksData[flaskNum].mod1,"恐慌的")) And ((PlayerStats.CurrHP/PlayerStats.MaxHP)<=0.35)) ; "Low Life" can be caused by auras hp reservation from blood magic
+                  {
+                     WindowQueuedFlaskEffects[k].hpQueueEndtime:=A_TickCount+500
+                  }
+                  Else If ((InStr(FlasksData[flaskNum].mod2,"恐慌的")) And ((PlayerStats.CurrHP/PlayerStats.MaxHP)<=0.35)) ; "Low Life" can be caused by auras hp reservation from blood magic
+                  {
+                     WindowQueuedFlaskEffects[k].hpQueueEndtime:=A_TickCount+500
+                  }
       				Else
       				{
       					WindowQueuedFlaskEffects[k].hpQueueEndtime:=A_TickCount+EffectDuration*100
@@ -2007,38 +2163,6 @@ Main()
                      ControlSend,,%hkey% Down %hkey% Up}, % "ahk_id" hwnd
                   }
       				Break
-      			}
-      		}
-      	}
-
-      	If (currLifeRatio<CurrentConfig.minLifeRatioToInstant)
-      	{
-      		If ((!WindowQueuedFlaskEffects[k].HasKey("InstantQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].InstantQueueEndtime)))
-      		{
-      			tflaskNum2:=GetMaxChargesOfInstantFlask(FlasksData,"FlaskLife")
-      			If (tflaskNum2!="")
-      			{
-      				flaskNum:=tflaskNum2
-      			}
-      			If (flaskNum!="")
-      			{  
-      				IfDelay:= (CurrentConfig.IflaskDelay*10)
-      				WindowQueuedFlaskEffects[k].InstantQueueEndtime:=A_TickCount+IfDelay
-      				If (trayNotIfications)
-      				{
-      					TrayTip, PoE AutoFlask Using HP Flask %flaskNum%, %A_Space% , 2
-      				}
-      				hKey:=FlaskHotkey%flaskNum%
-      				IfWinActive Path of Exile ahk_class Direct3DWindowClass
-                  {
-                     Sendinput, %hkey% Down}
-                     Sendinput, %hkey% Up}
-                  } 
-                  Else
-                  {
-                     ControlSend,,%hkey% Down %hkey% Up}, % "ahk_id" hwnd
-                  }
-      				break
       			}
       		}
       	}
@@ -2232,6 +2356,14 @@ Main()
       				{
       					WindowQueuedFlaskEffects[k].ManaQueueEndtime:=A_TickCount+500
       				}
+                  Else If (InStr(FlasksData[flaskNum].mod1,"沸騰的"))
+                  {
+                     WindowQueuedFlaskEffects[k].ManaQueueEndtime:=A_TickCount+500
+                  }
+                  Else If (InStr(FlasksData[flaskNum].mod2,"沸騰的"))
+                  {
+                     WindowQueuedFlaskEffects[k].ManaQueueEndtime:=A_TickCount+500
+                  }
       				Else If ((InStr(FlasksData[flaskNum].mod1,"Panicked")) And ((PlayerStats.CurrHP/PlayerStats.MaxHP)<=0.35)) ; "Low Life" can be caused by auras hp reservation from blood magic
       				{
       					WindowQueuedFlaskEffects[k].ManaQueueEndtime:=A_TickCount+500
@@ -2240,6 +2372,14 @@ Main()
       				{
       					WindowQueuedFlaskEffects[k].ManaQueueEndtime:=A_TickCount+500
       				}
+                  Else If ((InStr(FlasksData[flaskNum].mod1,"恐慌的")) And ((PlayerStats.CurrHP/PlayerStats.MaxHP)<=0.35)) ; "Low Life" can be caused by auras hp reservation from blood magic
+                  {
+                     WindowQueuedFlaskEffects[k].ManaQueueEndtime:=A_TickCount+500
+                  }
+                  Else If ((InStr(FlasksData[flaskNum].mod2,"恐慌的")) And ((PlayerStats.CurrHP/PlayerStats.MaxHP)<=0.35)) ; "Low Life" can be caused by auras hp reservation from blood magic
+                  {
+                     WindowQueuedFlaskEffects[k].ManaQueueEndtime:=A_TickCount+500
+                  }
       				Else
       				{
       					WindowQueuedFlaskEffects[k].ManaQueueEndtime:=A_TickCount+EffectDuration*100
@@ -2972,9 +3112,9 @@ Main()
          }
       }
       ;--------------Debug Window Update------------------
+      Sleep, %AutoFlaskWatchdogPeriod%
    }
-
-	Sleep, %AutoFlaskWatchdogPeriod%   
+   Sleep, 1
 }
 
 ;-------MAIN FUNCTIONS-----------------MAIN FUNCTIONS-----------------MAIN FUNCTIONS-----------------
@@ -3651,6 +3791,20 @@ AutoQuitList:
    
    IniWrite, %AutoQuitChoice% , Config.ini, Config, AutoQuitMethod
 return
+
+ClientServerList:
+   Gui, Submit, NoHide
+   If ClientServerChoice = 1
+   ClientServerMode:=1
+   If ClientServerChoice = 2
+   ClientServerMode:=2
+   If ClientServerChoice = 3
+   ClientServerMode:=3
+   If ClientServerChoice = 4
+   ClientServerMode:=4
+   
+   IniWrite, %ClientServerChoice% , Config.ini, Config, ClientServer
+reload
 
 ConfigList:
    Gui, Submit, NoHide
