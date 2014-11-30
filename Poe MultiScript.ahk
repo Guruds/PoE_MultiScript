@@ -488,7 +488,7 @@ If (RemainingSpam=0)
 
 Gui, Submit
 
-Gui, Show, x760 y198 h665 w474, PoE MultiScript v10.25.2014
+Gui, Show, x760 y198 h665 w474, PoE MultiScript v11.30.2014
 
 ;---------------------START DYNAMIC HOTKEYS---------------------
 
@@ -968,7 +968,7 @@ ReadPlayerStats(hwnd, byRef PlayerStats)
       global Offset2:=0x5A0
       global Offset3:=0x154
       global Offset4:=0x220
-      global Offset5:=0x2A78
+      global Offset5:=0x2AF8
       global Offset6:=0x15D0
       global Offset7:=0x15D4
       global Offset8:=0xF8
@@ -978,17 +978,17 @@ ReadPlayerStats(hwnd, byRef PlayerStats)
    }
    Else If (Taiwan)
    {
-      global Offset1:=0x13c
+      global Offset1:=0x138
       global Offset2:=0x5A0
-      global Offset3:=0x140
+      global Offset3:=0x13c
       global Offset4:=0x220
-      global Offset5:=0x2A78
+      global Offset5:=0x2AF8
       global Offset6:=0x15BC
       global Offset7:=0x15C0
-      global Offset8:=0xF8
+      global Offset8:=0xFC
       global Offset9:=0xE0
       global Offset10:=0x124
-      global Offset11:=0x18c
+      global Offset11:=0x18C
    }
    Else If (GlobalS)
    {
@@ -996,7 +996,7 @@ ReadPlayerStats(hwnd, byRef PlayerStats)
       global Offset2:=0x5A0
       global Offset3:=0x13c
       global Offset4:=0x220
-      global Offset5:=0x2A78
+      global Offset5:=0x2AF8
       global Offset6:=0x15B8
       global Offset7:=0x15BC
       global Offset8:=0xF8
@@ -1010,7 +1010,7 @@ ReadPlayerStats(hwnd, byRef PlayerStats)
       global Offset2:=0x5A0
       global Offset3:=0x13c
       global Offset4:=0x220
-      global Offset5:=0x2A78
+      global Offset5:=0x2AF8
       global Offset6:=0x15B8
       global Offset7:=0x15BC
       global Offset8:=0xF8
@@ -1844,13 +1844,21 @@ Main()
 			}
 
 
-			Else If InStr(playerstats.BuffName[A_Index], "frozen")
+			Else If (InStr(playerstats.BuffName[A_Index], "frozen") || InStr(playerstats.BuffName[A_Index], "冰凍"))
 			{
 				If ((FlaskOnFrozenCheck) && (BuffTimer>=RemAilmentsTimer))
 				{
 					If ((!WindowQueuedFlaskEffects[k].HasKey("FrozenQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].FrozenQueueEndtime-lagCompensation)))
 					{
-						flaskNum:=GetMaxChargesFlaskOfMod(FlasksData,"of Heat")
+                  If Taiwan
+                  {
+                     flaskNum:=GetMaxChargesFlaskOfMod(FlasksData,"熱火之")
+                  }
+                  else
+                  {
+						   flaskNum:=GetMaxChargesFlaskOfMod(FlasksData,"of Heat")
+                  }
+
 						If (flaskNum!="")
 						{  
 							WindowQueuedFlaskEffects[k].FrozenQueueEndtime:=A_TickCount+300
@@ -1875,14 +1883,22 @@ Main()
 				continue
 			}
 
-			Else If InStr(playerstats.BuffName[A_Index], "shocked")
+			Else If (InStr(playerstats.BuffName[A_Index], "shocked") || InStr(playerstats.BuffName[A_Index], "感電"))
 			{
 				If ((FlaskOnShockedCheck) && (BuffTimer>=RemAilmentsTimer))
 				{
 					If ((!WindowQueuedFlaskEffects[k].HasKey("ShockedQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].ShockedQueueEndtime-lagCompensation)))
 					{
-						flaskNum:=GetMaxChargesFlaskOfMod(FlasksData,"of Grounding")
-						If (flaskNum!="")
+                  If Taiwan
+                  {
+                     flaskNum:=GetMaxChargesFlaskOfMod(FlasksData,"接地之")
+                  }
+                  else
+                  {
+						   flaskNum:=GetMaxChargesFlaskOfMod(FlasksData,"of Grounding")
+						}
+
+                  If (flaskNum!="")
 						{  
 							WindowQueuedFlaskEffects[k].ShockedQueueEndtime:=A_TickCount+300
 							
@@ -1906,13 +1922,21 @@ Main()
 				continue
 			}
 
-			Else If InStr(playerstats.BuffName[A_Index], "ignited")
+			Else If (InStr(playerstats.BuffName[A_Index], "ignited") || InStr(playerstats.BuffName[A_Index], "燃燒"))
 			{
 				If ((FlaskOnIgnitedCheck) && (BuffTimer>=RemAilmentsTimer))
 				{
 					If ((!WindowQueuedFlaskEffects[k].HasKey("IgnitedQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].IgnitedQueueEndtime-lagCompensation)))
 					{
-						flaskNum:=GetMaxChargesFlaskOfMod(FlasksData,"of Dousing")
+                  If Taiwan
+                  {
+                     flaskNum:=GetMaxChargesFlaskOfMod(FlasksData,"澆熄之")
+                  }
+                  else
+                  {
+						   flaskNum:=GetMaxChargesFlaskOfMod(FlasksData,"of Dousing")
+                  }
+
 						If (flaskNum!="")
 						{  
 							WindowQueuedFlaskEffects[k].IgnitedQueueEndtime:=A_TickCount+300
@@ -1937,13 +1961,21 @@ Main()
 				continue
 			}
 
-         Else If ((InStr(playerstats.BuffName[A_Index], "curse")) And !(InStr(playerstats.BuffName[A_Index], "flask")))
+         Else If (((InStr(playerstats.BuffName[A_Index], "curse")) || InStr(playerstats.BuffName[A_Index], "冰凍")) And !(InStr(playerstats.BuffName[A_Index], "flask")))
          {
             If (FlaskOnCurseCheck)
             {
                If ((!WindowQueuedFlaskEffects[k].HasKey("CurseQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].CurseQueueEndtime-lagCompensation)))
                {
-                  flaskNum:=GetMaxChargesFlaskOfMod(FlasksData,"of Warding")
+                  If Taiwan
+                  {
+                     flaskNum:=GetMaxChargesFlaskOfMod(FlasksData,"守護之")
+                  }
+                  else
+                  {
+                     flaskNum:=GetMaxChargesFlaskOfMod(FlasksData,"of Warding")
+                  }
+
                   If (flaskNum!="")
                   {  
                      WindowQueuedFlaskEffects[k].CurseQueueEndtime:=A_TickCount+300
@@ -1968,14 +2000,22 @@ Main()
             continue
          }
 
-         Else If InStr(playerstats.BuffName[A_Index], "corrupted_blood")
+         Else If (InStr(playerstats.BuffName[A_Index], "corrupted_blood") || InStr(playerstats.BuffName[A_Index], "腐化之血"))
          {
             BuffCharges:=PlayerStats.BuffCharges[A_Index]
             If ((FlaskOnCorruptedBloodCheck) && (BuffCharges>=RemCorruptedBloodCharges))
             {
                If ((!WindowQueuedFlaskEffects[k].HasKey("CorruptedBloodQueueEndtime")) || (A_TickCount>=(WindowQueuedFlaskEffects[k].CorruptedBloodQueueEndtime-lagCompensation)))
                {
-                  flaskNum:=GetMaxChargesFlaskOfMod(FlasksData,"of Staunching")
+                  If Taiwan
+                  {
+                     flaskNum:=GetMaxChargesFlaskOfMod(FlasksData,"止血之")
+                  }
+                  else
+                  {
+                     flaskNum:=GetMaxChargesFlaskOfMod(FlasksData,"of Staunching")
+                  }
+
                   If (flaskNum!="")
                   {  
                      WindowQueuedFlaskEffects[k].CorruptedBloodQueueEndtime:=A_TickCount+300
