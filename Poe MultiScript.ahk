@@ -488,7 +488,7 @@ If (RemainingSpam=0)
 
 Gui, Submit
 
-Gui, Show, x760 y198 h665 w474, PoE MultiScript v11.30.2014
+Gui, Show, x760 y198 h665 w474, PoE MultiScript v12.13.2014
 
 ;---------------------START DYNAMIC HOTKEYS---------------------
 
@@ -968,13 +968,13 @@ ReadPlayerStats(hwnd, byRef PlayerStats)
       global Offset2:=0x5A0
       global Offset3:=0x154
       global Offset4:=0x220
-      global Offset5:=0x2AF8
+      global Offset5:=0x2D80
       global Offset6:=0x15D0
       global Offset7:=0x15D4
-      global Offset8:=0xF8
-      global Offset9:=0xDC
-      global Offset10:=0x120
-      global Offset11:=0x188
+      global Offset8:=0xFC
+      global Offset9:=0xE0
+      global Offset10:=0x128
+      global Offset11:=0x194
    }
    Else If (Taiwan)
    {
@@ -996,13 +996,13 @@ ReadPlayerStats(hwnd, byRef PlayerStats)
       global Offset2:=0x5A0
       global Offset3:=0x13c
       global Offset4:=0x220
-      global Offset5:=0x2AF8
+      global Offset5:=0x2D80
       global Offset6:=0x15B8
       global Offset7:=0x15BC
-      global Offset8:=0xF8
-      global Offset9:=0xDC
-      global Offset10:=0x120
-      global Offset11:=0x188
+      global Offset8:=0xFC
+      global Offset9:=0xE0
+      global Offset10:=0x128
+      global Offset11:=0x194
    }
    Else If (Singapore)
    {
@@ -1074,11 +1074,11 @@ ReadPlayerStats(hwnd, byRef PlayerStats)
    PlayerStats.PanelSocial:=ReadMemUInt(pH,PanelSocialOffset+0x860)
    PanelSkillTreeOffset:=ReadMemUInt(pH,CheckBase+Offset8+0x14)
    PlayerStats.PanelSkillTree:=ReadMemUInt(pH,PanelSkillTreeOffset+0x860)
-   PanelWaypointOffset:=ReadMemUInt(pH,CheckBase+Offset8+0x24)
+   PanelWaypointOffset:=ReadMemUInt(pH,CheckBase+Offset8+0x28)
    PlayerStats.PanelWaypoint:=ReadMemUInt(pH,PanelWaypointOffset+0x860)
-   MouseOnEnemyOffset:=ReadMemUInt(pH,CheckBase+Offset8+0x90)
+   MouseOnEnemyOffset:=ReadMemUInt(pH,CheckBase+Offset8+0x98)
    PlayerStats.MouseOnEnemyStatus:=ReadMemUInt(pH,MouseOnEnemyOffset+0x860)
-   PanelInstanceManagerOffset:=ReadMemUInt(pH,CheckBase+Offset8+0xA8)  ;added by immor
+   PanelInstanceManagerOffset:=ReadMemUInt(pH,CheckBase+Offset8+0xB0)  ;added by immor
    PlayerStats.PanelInstanceManager:=ReadMemUInt(pH,PanelInstanceManagerOffset+0x860) ;added by immor
    InCityOffset:=GetMultilevelPointer(pH,[CheckBase+Offset10,0x788,0x200])
    PlayerStats.InCity:=ReadMemUInt(pH,InCityOffset+0x860)
@@ -1149,11 +1149,11 @@ ReadFlasksData(hwnd, byRef FlasksData)
          FlasksData[A_Index].ChargesCurrent:=ReadMemUInt(pH,FlaskChargesPtr+0xC)
          FlasksData[A_Index].ChargesPerUse:=ReadMemUInt(pH,ReadMemUInt(pH,FlaskChargesPtr+8)+0xC)
 
-         FlaskMod1Ptr:=GetMultilevelPointer(ph,[currFlaskPtr,4,0x1C,4,4,0x10,0x44,0x14,0x30])
+         FlaskMod1Ptr:=GetMultilevelPointer(ph,[currFlaskPtr,4,0x1C,4,4,0x10,0x60,0x14,0x30])
          FlaskMod1Str:=ReadMemStr(ph,FlaskMod1Ptr,70,"UTF-16")
          FlasksData[A_Index].mod1:=FlaskMod1Str
 
-         FlaskMod2Ptr:=GetMultilevelPointer(ph,[currFlaskPtr,4,0x1C,4,4,0x10,0x44,0x2c,0x30])
+         FlaskMod2Ptr:=GetMultilevelPointer(ph,[currFlaskPtr,4,0x1C,4,4,0x10,0x60,0x2c,0x30])
          FlaskMod2Str:=ReadMemStr(ph,FlaskMod2Ptr,70,"UTF-16")
          FlasksData[A_Index].mod2:=FlaskMod2Str
 
