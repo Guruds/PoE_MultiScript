@@ -488,7 +488,7 @@ If (RemainingSpam=0)
 
 Gui, Submit
 
-Gui, Show, x760 y198 h665 w474, PoE MultiScript v12.13.2014
+Gui, Show, x760 y198 h665 w474, PoE MultiScript v12.18.2014
 
 ;---------------------START DYNAMIC HOTKEYS---------------------
 
@@ -971,10 +971,10 @@ ReadPlayerStats(hwnd, byRef PlayerStats)
       global Offset5:=0x2D80
       global Offset6:=0x15D0
       global Offset7:=0x15D4
-      global Offset8:=0xFC
-      global Offset9:=0xE0
-      global Offset10:=0x128
-      global Offset11:=0x194
+      global Offset8:=0x100
+      global Offset9:=0xE4
+      global Offset10:=0x12C
+      global Offset11:=0x198
    }
    Else If (Taiwan)
    {
@@ -982,13 +982,13 @@ ReadPlayerStats(hwnd, byRef PlayerStats)
       global Offset2:=0x5A0
       global Offset3:=0x13c
       global Offset4:=0x220
-      global Offset5:=0x2AF8
-      global Offset6:=0x15BC
-      global Offset7:=0x15C0
-      global Offset8:=0xFC
-      global Offset9:=0xE0
-      global Offset10:=0x124
-      global Offset11:=0x18C
+      global Offset5:=0x2D80
+      global Offset6:=0x15B8
+      global Offset7:=0x15BC
+      global Offset8:=0x100
+      global Offset9:=0xE4
+      global Offset10:=0x12C
+      global Offset11:=0x198
    }
    Else If (GlobalS)
    {
@@ -999,10 +999,10 @@ ReadPlayerStats(hwnd, byRef PlayerStats)
       global Offset5:=0x2D80
       global Offset6:=0x15B8
       global Offset7:=0x15BC
-      global Offset8:=0xFC
-      global Offset9:=0xE0
-      global Offset10:=0x128
-      global Offset11:=0x194
+      global Offset8:=0x100
+      global Offset9:=0xE4
+      global Offset10:=0x12C
+      global Offset11:=0x198
    }
    Else If (Singapore)
    {
@@ -1010,13 +1010,13 @@ ReadPlayerStats(hwnd, byRef PlayerStats)
       global Offset2:=0x5A0
       global Offset3:=0x13c
       global Offset4:=0x220
-      global Offset5:=0x2AF8
+      global Offset5:=0x2D80
       global Offset6:=0x15B8
       global Offset7:=0x15BC
-      global Offset8:=0xF8
-      global Offset9:=0xDC
-      global Offset10:=0x120
-      global Offset11:=0x188
+      global Offset8:=0x100
+      global Offset9:=0xE4
+      global Offset10:=0x12C
+      global Offset11:=0x198
    }
    
    GetWindowBasics(hwnd, mBase, pH)
