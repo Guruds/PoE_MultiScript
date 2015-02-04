@@ -488,7 +488,9 @@ If (RemainingSpam=0)
 
 Gui, Submit
 
-Gui, Show, x760 y198 h665 w474, PoE MultiScript v12.18.2014
+StringTrimRight, Name, A_ScriptName, 4
+
+Gui, Show, x760 y198 h665 w474, %Name%
 
 ;---------------------START DYNAMIC HOTKEYS---------------------
 
