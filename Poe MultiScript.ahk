@@ -968,7 +968,7 @@ ReadPlayerStats(hwnd, byRef PlayerStats)
       global Offset2:=0x5A0
       global Offset3:=0x154
       global Offset4:=0x220
-      global Offset5:=0x2D80
+      global Offset5:=0x2E80
       global Offset6:=0x15D0
       global Offset7:=0x15D4
       global Offset8:=0x100
@@ -982,7 +982,7 @@ ReadPlayerStats(hwnd, byRef PlayerStats)
       global Offset2:=0x5A0
       global Offset3:=0x13c
       global Offset4:=0x220
-      global Offset5:=0x2D80
+      global Offset5:=0x2E80
       global Offset6:=0x15B8
       global Offset7:=0x15BC
       global Offset8:=0x100
@@ -996,7 +996,7 @@ ReadPlayerStats(hwnd, byRef PlayerStats)
       global Offset2:=0x5A0
       global Offset3:=0x13c
       global Offset4:=0x220
-      global Offset5:=0x2D80
+      global Offset5:=0x2E80
       global Offset6:=0x15B8
       global Offset7:=0x15BC
       global Offset8:=0x100
@@ -1010,7 +1010,7 @@ ReadPlayerStats(hwnd, byRef PlayerStats)
       global Offset2:=0x5A0
       global Offset3:=0x13c
       global Offset4:=0x220
-      global Offset5:=0x2D80
+      global Offset5:=0x2E80
       global Offset6:=0x15B8
       global Offset7:=0x15BC
       global Offset8:=0x100
